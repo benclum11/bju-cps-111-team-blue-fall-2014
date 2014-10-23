@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     unit.cpp \
     base.cpp \
     object.cpp \
-    highscore.cpp
+    highscore.cpp \
+    load.cpp \
+    save.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -31,7 +33,9 @@ HEADERS  += mainwindow.h \
     unit.h \
     base.h \
     object.h \
-    highscore.h
+    highscore.h \
+    load.h \
+    save.h
 
 FORMS    += mainwindow.ui
 
