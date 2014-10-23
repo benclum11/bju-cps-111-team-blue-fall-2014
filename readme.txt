@@ -1,1 +1,1 @@
-This is the team repo.
+This is the team repository
