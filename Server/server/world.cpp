@@ -24,7 +24,7 @@ World::World() {
 void World::readMapFile() {
 
     ifstream readmap;
-    readmap.open("map.txt");
+    readmap.open("://textfiles/map.txt");
     char temp[10];
     readmap.getline(temp,4);
     int rows = stoi(temp);
