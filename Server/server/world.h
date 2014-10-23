@@ -2,7 +2,6 @@
 #define WORLD_H
 
 #include <vector>
-#include "object.h"
 #include "building.h"
 #include "unit.h"
 #include "tile.h"
@@ -15,7 +14,7 @@ class World {
     vector<Unit> unitTypes;
     vector<Building> buildingTypes;
     Tile*** map;
-    vector<Object*> livingTypes;
+    vector<Object*> object;
 
 public:
 

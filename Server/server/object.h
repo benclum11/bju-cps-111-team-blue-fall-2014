@@ -3,6 +3,8 @@
 
 class Object {
 
+    int ID;
+
 };
 
 #endif // OBJECT_H

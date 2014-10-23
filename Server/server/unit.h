@@ -1,7 +1,11 @@
 #ifndef UNIT_H
 #define UNIT_H
 
-class Unit {
+#include "object.h"
+
+class Unit : Object {
+
+    int health, speed, damage, size;
 
 };
 

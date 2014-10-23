@@ -16,15 +16,19 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     tile.cpp \
     world.cpp \
-    object.cpp \
     building.cpp \
-    unit.cpp
+    unit.cpp \
+    base.cpp \
+    object.cpp \
+    buildabletile.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
     world.h \
-    object.h \
     building.h \
-    unit.h
+    unit.h \
+    buildabletile.h \
+    base.h \
+    object.h
 
 FORMS    += mainwindow.ui

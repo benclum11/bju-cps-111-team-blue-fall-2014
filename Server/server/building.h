@@ -1,7 +1,11 @@
 #ifndef BUILDING_H
 #define BUILDING_H
 
-class Building {
+#include "object.h"
+
+class Building : Object {
+
+    int type, attack, production, range, lvl, speed, unlock;
 
 };
 
