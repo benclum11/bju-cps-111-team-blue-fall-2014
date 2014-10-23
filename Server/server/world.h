@@ -18,6 +18,8 @@ class World {
 
     World();
 
+    void readMapFile();
+
 public:
 
     static World* Instance();

@@ -17,12 +17,18 @@ World* World::Instance() {
 
 World::World() {
 
-    ifstream readworld;
-    readworld.open("world.txt");
+    readMapFile();
+
+}
+
+void World::readMapFile() {
+
+    ifstream readmap;
+    readmap.open("map.txt");
     char temp[10];
-    readworld.getline(temp,4);
+    readmap.getline(temp,4);
     int rows = stoi(temp);
-    readworld.getline(temp,4);
+    readmap.getline(temp,4);
     int columns = stoi(temp);
 
     map = new Tile**[rows];
@@ -32,5 +38,4 @@ World::World() {
             map[i][j] = new Tile();
         }
     }
-
 }
