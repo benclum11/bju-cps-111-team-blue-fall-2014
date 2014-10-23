@@ -19,7 +19,7 @@ World::World() {
 
     ifstream readworld;
     readworld.open("world.txt");
-    string temp;
+    char temp[10];
     readworld.getline(temp,4);
     int rows = stoi(temp);
     readworld.getline(temp,4);
