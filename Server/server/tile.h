@@ -17,6 +17,9 @@ class Tile {
 
     void getCenterpoint(int& x, int& y) { x = xCoord; y = yCoord; }
 
+public:
+    Tile();
+
 };
 
 #endif // TILE_H
