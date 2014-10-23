@@ -7,6 +7,8 @@
 
         int health, money;
 
+        void ontick();
+
     };
 
 #endif // BASE_H

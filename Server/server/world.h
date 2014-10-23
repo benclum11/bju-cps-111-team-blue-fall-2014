@@ -10,15 +10,17 @@ using namespace std;
 
 class World {
 
-    World* world;
+    static World* world;
     vector<Unit> unitTypes;
     vector<Building> buildingTypes;
     Tile*** map;
     vector<Object*> object;
 
+    World();
+
 public:
 
-    World* Instance();
+    static World* Instance();
 
 };
 

@@ -5,6 +5,8 @@ class Object {
 
     int ID;
 
+    virtual void ontick() = 0;
+
 };
 
 #endif // OBJECT_H
