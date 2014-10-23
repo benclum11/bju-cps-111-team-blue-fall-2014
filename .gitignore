@@ -1,1 +1,4 @@
 *.pro.user
+build-server-Desktop-Debug
+build-client-Desktop-Debug
+*.autosave
