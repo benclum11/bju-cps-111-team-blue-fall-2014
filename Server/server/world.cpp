@@ -26,6 +26,7 @@ World::World() {
 
 void World::readMapFile() {
 
+<<<<<<< HEAD
     QFile mapFile("://textfiles/map.txt");
     if (!mapFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -36,6 +37,14 @@ void World::readMapFile() {
     int rows = temp.toInt();
     temp = readMap.readLine();
     int columns = temp.toInt();
+=======
+    ifstream readmap("://textfiles/map.txt");
+    string temp;
+    getline(readmap, temp);
+    int rows = stoi(temp);
+    getline(readmap,temp);
+    int columns = stoi(temp);
+>>>>>>> parent of 1df6558... Infile cant open file
 
     map = new Tile**[rows];
     for (int i = 0; i < rows; ++i) {
