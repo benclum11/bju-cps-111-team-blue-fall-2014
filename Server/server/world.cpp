@@ -26,25 +26,13 @@ World::World() {
 
 void World::readMapFile() {
 
-<<<<<<< HEAD
     QFile mapFile("://textfiles/map.txt");
-    if (!mapFile.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        return;
-    }
+    if (!mapFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readMap(&mapFile);
     QString temp = readMap.readLine();
     int rows = temp.toInt();
     temp = readMap.readLine();
     int columns = temp.toInt();
-=======
-    ifstream readmap("://textfiles/map.txt");
-    string temp;
-    getline(readmap, temp);
-    int rows = stoi(temp);
-    getline(readmap,temp);
-    int columns = stoi(temp);
->>>>>>> parent of 1df6558... Infile cant open file
 
     map = new Tile**[rows];
     for (int i = 0; i < rows; ++i) {
@@ -56,6 +44,7 @@ void World::readMapFile() {
         }
     }
     readPaths(readMap);
+    readTowerSpots(readMap);
     mapFile.close();
 }
 
@@ -84,6 +73,62 @@ void World::readPaths(QTextStream& readMap) {
     }
 }
 
+void World::readTowerSpots(QTextStream& readMap) {
+    QString temp = readMap.readLine();
+    QStringList data = temp.split(" ");
+    for (int i = 0; i < data.length(); ++i) {
+        QStringList point = data[i].split(",");
+        Tile* tile = map[point[1].toInt()][point[0].toInt()];
+        team1towers.push_back(tile);
+    }
+    temp = readMap.readLine();
+    data = temp.split(" ");
+    for (int i = 0; i < data.length(); ++i) {
+        QStringList point = data[i].split(",");
+        Tile* tile = map[point[1].toInt()][point[0].toInt()];
+        team2towers.push_back(tile);
+    }
+}
+
 void World::readTowerFile() {
+    QFile buildingFile("://textfiles/buildings.txt");
+    if (!buildingFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
+    QTextStream readBuildings(&buildingFile);
+    QString temp = readBuildings.readLine();
+    for (int i = 0; i < temp.toInt(); ++i) {
+        for (int i = 0; i < 5; ++i) {
+            readTowerInfo(readBuildings);
+        }
+    }
+    readBaseLocation(readBuildings);
+}
+
+void World::readTowerInfo(QTextStream& readBuildings)
+{
+    QString temp = readBuildings.readLine();
+    QStringList data = temp.split(" ");
+    Building tempbuilding;
+
+    tempbuilding.setType(data[0].toInt());
+    tempbuilding.setLevel(data[1].toInt());
+    tempbuilding.setHealth(data[2].toInt());
+    tempbuilding.setAttack(data[3].toInt());
+    tempbuilding.setProduction(data[4].toInt());
+    tempbuilding.setRange(data[5].toInt());
+    tempbuilding.setSpeed(data[6].toInt());
+
+    if (data[7] != "0") {
+        QStringList tempunlocks = data[7].split(",");
+        vector<int> unlocks;
+        for(int i = 0; i < tempunlocks.length(); ++i) {
+            unlocks.push_back(tempunlocks[i].toInt());
+        }
+        tempbuilding.setUnlock(unlocks);
+    }
+    buildingTypes.push_back(tempbuilding);
+}
+
+void World::readBaseLocation(QTextStream &)
+{
 
 }

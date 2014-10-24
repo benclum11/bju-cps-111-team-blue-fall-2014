@@ -3,12 +3,15 @@
 
 #include "building.h"
 
-    class Base : Building {
+class Base : Building {
 
-        int health, money;
+    int health, money;
 
-        void ontick();
+    void ontick();
 
-    };
+public:
+    void setHealth(int init) { health = init; }
+
+};
 
 #endif // BASE_H

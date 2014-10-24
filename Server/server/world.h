@@ -18,13 +18,18 @@ class World {
     vector<Object*> object;
     vector<Tile*> team1path;
     vector<Tile*> team2path;
+    vector<Tile*> team1towers;
+    vector<Tile*> team2towers;
 
     World();
 
     void readMapFile();
     void readTileInfo(QTextStream&, Tile*);
     void readPaths(QTextStream&);
+    void readTowerSpots(QTextStream&);
     void readTowerFile();
+    void readTowerInfo(QTextStream&);
+    void readBaseLocation(QTextStream&);
 
 public:
 
