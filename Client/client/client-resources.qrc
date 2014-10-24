@@ -1,1 +1,19 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/source.txt</file>
+        <file>Resources/tankBase.png</file>
+        <file>Resources/tankTurret.png</file>
+        <file>Resources/E-100_preview.png</file>
+        <file>Resources/E-100_strip2.png</file>
+        <file>Resources/KV-2_preview.png</file>
+        <file>Resources/KV-2_strip2.png</file>
+        <file>Resources/Pz.Kpfw.IV_preview.png</file>
+        <file>Resources/Pz.Kpfw.IV_strip2.png</file>
+        <file>Resources/T34_preview.png</file>
+        <file>Resources/T34_strip2.png</file>
+        <file>Resources/Tiger-II_preview.png</file>
+        <file>Resources/Tiger-II_strip2.png</file>
+        <file>Resources/VK.3601h_preview.png</file>
+        <file>Resources/VK.3601h_strip2.png</file>
+    </qresource>
+</RCC>
