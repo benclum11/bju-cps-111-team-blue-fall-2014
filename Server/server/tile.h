@@ -11,7 +11,7 @@ class Tile {
     int xCoord, yCoord; // center of the tile
     bool buildable; //whether the tile can have a building
     Building* building; //building on the tile
-    bool team; //If a building can be placed what team can place it
+    int team; //0 for neutral 1 or 2 for buildables
 
     void getCenterpoint(int& x, int& y) { x = xCoord; y = yCoord; }
 

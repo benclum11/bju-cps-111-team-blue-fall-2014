@@ -3,9 +3,12 @@
 
 class Object {
 
-    int ID, xCoord, yCoord;
-
     virtual void ontick() = 0;
+
+protected:
+    int ID, xCoord, yCoord, team;
+
+public:
 
 };
 

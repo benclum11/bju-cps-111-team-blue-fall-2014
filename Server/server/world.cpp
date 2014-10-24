@@ -17,6 +17,17 @@ World* World::Instance() {
     return world;
 }
 
+Building World::getBuildingType(int type)
+{
+    for(unsigned int i = 0; i < buildingTypes.size(); ++i) {
+        if(buildingTypes[i].getType() == type) {
+            return buildingTypes[i];
+        }
+    }
+    Building fail;
+    return fail;
+}
+
 World::World() {
 
     readMapFile();
@@ -53,9 +64,7 @@ void World::readTileInfo(QTextStream& readMap, Tile* tile) {
     tile->setBuildable(data[0] == "1");
     tile->setXCoord(data[1].toInt());
     tile->setYCoord(data[2].toInt());
-    if(tile->isBuildable()) {
-        tile->setTeam(data[3] == "1");
-    }
+    tile->setTeam(data[3].toInt());
 }
 
 void World::readPaths(QTextStream& readMap) {
@@ -96,14 +105,13 @@ void World::readTowerInfo(QTextStream& readBuildings)
 
     tempbuilding.setType(data[0].toInt());
     tempbuilding.setLevel(data[1].toInt());
-    tempbuilding.setHealth(data[2].toInt());
-    tempbuilding.setAttack(data[3].toInt());
-    tempbuilding.setProduction(data[4].toInt());
-    tempbuilding.setRange(data[5].toInt());
-    tempbuilding.setSpeed(data[6].toInt());
+    tempbuilding.setAttack(data[2].toInt());
+    tempbuilding.setProduction(data[3].toInt());
+    tempbuilding.setRange(data[4].toInt());
+    tempbuilding.setSpeed(data[5].toInt());
 
-    if (data[7] != "0") {
-        QStringList tempunlocks = data[7].split(",");
+    if (data[6] != "0") {
+        QStringList tempunlocks = data[6].split(",");
         vector<int> unlocks;
         for(int i = 0; i < tempunlocks.length(); ++i) {
             unlocks.push_back(tempunlocks[i].toInt());
@@ -118,7 +126,7 @@ void World::readBaseLocation(QTextStream& readBuildings)
     QString temp = readBuildings.readLine();
     QStringList data = temp.split(" ");
     QStringList basePoint = data[0].split(",");
-    Building* base;
+    Building* base = new Building(buildingTypes[0]);
 
     map[basePoint[1].toInt()][basePoint[0].toInt()]->placeBuilding(base);
 }

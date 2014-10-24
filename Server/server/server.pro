@@ -20,22 +20,22 @@ SOURCES += main.cpp\
     world.cpp \
     building.cpp \
     unit.cpp \
-    base.cpp \
     object.cpp \
     highscore.cpp \
     load.cpp \
-    save.cpp
+    save.cpp \
+    player.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
     world.h \
     building.h \
     unit.h \
-    base.h \
     object.h \
     highscore.h \
     load.h \
-    save.h
+    save.h \
+    player.h
 
 FORMS    += mainwindow.ui
 

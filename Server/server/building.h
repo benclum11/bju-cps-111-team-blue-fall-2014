@@ -11,7 +11,7 @@ class Building : Object {
     int type, attack, production, range, lvl, speed;
     vector<int> unlock;
 
-    virtual void ontick();
+    void ontick();
 
 public:
     Building() {}
@@ -23,7 +23,14 @@ public:
     void setLevel(int init) { lvl = init; }
     void setSpeed(int init) { speed = init; }
     void setUnlock(vector<int> init) { unlock = init; }
-    virtual void setHealth(int init) { (void)init; }
+
+    int getType() {return type;}
+    int getAttack() {return attack;}
+    int getProduction() {return production;}
+    int getRange() {return range;}
+    int getLevel() {return lvl;}
+    int getSpeed() {return speed;}
+    vector<int> getUnlock() {return unlock;}
 
 };
 

@@ -6,6 +6,7 @@
 #include "building.h"
 #include "unit.h"
 #include "tile.h"
+#include "player.h"
 
 using namespace std;
 
@@ -18,6 +19,7 @@ class World {
     vector<Object*> object;
     vector<Tile*> team1path;
     vector<Tile*> team2path;
+    vector<Player*> players;
 
     World();
 
@@ -31,6 +33,7 @@ class World {
 public:
 
     static World* Instance();
+    Building getBuildingType(int);
 
 };
 

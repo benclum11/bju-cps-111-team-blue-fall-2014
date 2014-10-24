@@ -9,6 +9,8 @@ class Unit : Object {
 
     void ontick();
 
+    Unit() {}
+
 };
 
 #endif // UNIT_H
