@@ -3,7 +3,7 @@
 
 class Object {
 
-    int ID;
+    int ID, xCoord, yCoord;
 
     virtual void ontick() = 0;
 

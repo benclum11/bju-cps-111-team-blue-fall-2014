@@ -44,7 +44,6 @@ void World::readMapFile() {
         }
     }
     readPaths(readMap);
-    readTowerSpots(readMap);
     mapFile.close();
 }
 
@@ -54,6 +53,9 @@ void World::readTileInfo(QTextStream& readMap, Tile* tile) {
     tile->setBuildable(data[0] == "1");
     tile->setXCoord(data[1].toInt());
     tile->setYCoord(data[2].toInt());
+    if(tile->isBuildable()) {
+        tile->setTeam(data[3] == "1");
+    }
 }
 
 void World::readPaths(QTextStream& readMap) {
@@ -70,23 +72,6 @@ void World::readPaths(QTextStream& readMap) {
         QStringList point = data[i].split(",");
         Tile* tile = map[point[1].toInt()][point[0].toInt()];
         team2path.push_back(tile);
-    }
-}
-
-void World::readTowerSpots(QTextStream& readMap) {
-    QString temp = readMap.readLine();
-    QStringList data = temp.split(" ");
-    for (int i = 0; i < data.length(); ++i) {
-        QStringList point = data[i].split(",");
-        Tile* tile = map[point[1].toInt()][point[0].toInt()];
-        team1towers.push_back(tile);
-    }
-    temp = readMap.readLine();
-    data = temp.split(" ");
-    for (int i = 0; i < data.length(); ++i) {
-        QStringList point = data[i].split(",");
-        Tile* tile = map[point[1].toInt()][point[0].toInt()];
-        team2towers.push_back(tile);
     }
 }
 
@@ -128,7 +113,12 @@ void World::readTowerInfo(QTextStream& readBuildings)
     buildingTypes.push_back(tempbuilding);
 }
 
-void World::readBaseLocation(QTextStream &)
+void World::readBaseLocation(QTextStream& readBuildings)
 {
+    QString temp = readBuildings.readLine();
+    QStringList data = temp.split(" ");
+    QStringList basePoint = data[0].split(",");
+    Building* base;
 
+    map[basePoint[1].toInt()][basePoint[0].toInt()]->placeBuilding(base);
 }
