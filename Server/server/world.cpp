@@ -24,12 +24,11 @@ World::World() {
 
 void World::readMapFile() {
 
-    ifstream readmap;
-    readmap.open("://textfiles/map.txt");
-    char temp[10];
-    readmap.getline(temp,3);
+    ifstream readmap("://textfiles/map.txt");
+    string temp;
+    getline(readmap, temp);
     int rows = stoi(temp);
-    readmap.getline(temp,3);
+    getline(readmap,temp);
     int columns = stoi(temp);
 
     map = new Tile**[rows];
