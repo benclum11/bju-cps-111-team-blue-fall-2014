@@ -9,7 +9,6 @@ using namespace std;
 class Tile {
 
     int xCoord, yCoord; // center of the tile
-    string Picture; //picture of the tile
     bool buildable; //whether the tile can have a building
     Building* building; //building on the tile
 
@@ -18,7 +17,12 @@ class Tile {
     void getCenterpoint(int& x, int& y) { x = xCoord; y = yCoord; }
 
 public:
-    Tile();
+    Tile() {}
+
+    void setBuildable(int init) { buildable = init; }
+    void setXCoord(int init) { xCoord = init; }
+    void setYCoord(int init) { yCoord = init; }
+    void placeBuilding(Building* init) { building = init; }
 
 };
 
