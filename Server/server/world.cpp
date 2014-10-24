@@ -1,6 +1,7 @@
 #include "world.h"
 #include <string>
-#include <iostream>
+#include <QFile>
+#include <QTextStream>
 #include <QString>
 #include <QStringList>
 
@@ -19,58 +20,61 @@ World* World::Instance() {
 World::World() {
 
     readMapFile();
+    readTowerFile();
 
 }
 
 void World::readMapFile() {
 
-    ifstream readmap;
-    readmap.open("map.txt", ios::in);
-    bool test = readmap.is_open();
-    string temp;
-    getline(readmap, temp);
-    int rows = stoi(temp);
-    getline(readmap,temp);
-    int columns = stoi(temp);
+    QFile mapFile("://textfiles/map.txt");
+    if (!mapFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return;
+    }
+    QTextStream readMap(&mapFile);
+    QString temp = readMap.readLine();
+    int rows = temp.toInt();
+    temp = readMap.readLine();
+    int columns = temp.toInt();
 
     map = new Tile**[rows];
     for (int i = 0; i < rows; ++i) {
         map[i] = new Tile*[columns];
         for (int j = 0; j < columns; ++j) {
-            map[i][j] = new Tile();
-            readTileInfo(readmap, map[i][j]);
+            Tile* tempTile = new Tile();
+            readTileInfo(readMap, tempTile);
+            map[i][j] = tempTile;
         }
     }
-    readPaths(readmap);
-    readmap.close();
+    readPaths(readMap);
+    mapFile.close();
 }
 
-void World::readTileInfo(ifstream& readmap, Tile* tile) {
-    char temp[50];
-    readmap.getline(temp, 40);
-    QString line = temp;
-    QStringList data = line.split(" ");
+void World::readTileInfo(QTextStream& readMap, Tile* tile) {
+    QString temp = readMap.readLine();
+    QStringList data = temp.split(" ");
     tile->setBuildable(data[0] == "1");
     tile->setXCoord(data[1].toInt());
     tile->setYCoord(data[2].toInt());
 }
 
-void World::readPaths(ifstream& readmap) {
-    char temp[50];
-    readmap.getline(temp, 40);
-    QString line = temp;
-    QStringList data = line.split(" ");
+void World::readPaths(QTextStream& readMap) {
+    QString temp = readMap.readLine();
+    QStringList data = temp.split(" ");
     for (int i = 0; i < data.length(); ++i) {
         QStringList point = data[i].split(",");
         Tile* tile = map[point[1].toInt()][point[0].toInt()];
         team1path.push_back(tile);
     }
-    readmap.getline(temp, 40);
-    line = temp;
-    data = line.split(" ");
+    temp = readMap.readLine();
+    data = temp.split(" ");
     for (int i = 0; i < data.length(); ++i) {
         QStringList point = data[i].split(",");
         Tile* tile = map[point[1].toInt()][point[0].toInt()];
         team2path.push_back(tile);
     }
+}
+
+void World::readTowerFile() {
+
 }

@@ -2,7 +2,7 @@
 #define WORLD_H
 
 #include <vector>
-#include <fstream>
+#include <QTextStream>
 #include "building.h"
 #include "unit.h"
 #include "tile.h"
@@ -22,8 +22,9 @@ class World {
     World();
 
     void readMapFile();
-    void readTileInfo(ifstream&, Tile*);
-    void readPaths(ifstream&);
+    void readTileInfo(QTextStream&, Tile*);
+    void readPaths(QTextStream&);
+    void readTowerFile();
 
 public:
 
