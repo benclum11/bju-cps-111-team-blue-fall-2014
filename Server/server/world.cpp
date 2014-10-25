@@ -44,6 +44,12 @@ void World::buildTower(int type, Tile* tile)
     tile->placeBuilding(building);
 }
 
+void World::upgradeTower(Tile* tile)
+{
+    Building* building = tile->getBuilding();
+    building->getType();
+}
+
 //deploys a unit of specified type on specified team
 void World::deployUnit(int type, int team)
 {
@@ -92,26 +98,10 @@ void World::canDeployUnits()
 //constructs the initial game state
 World::World() : counter(500)
 {
-    readPlayerFile();
     readMapFile();
     readTowerFile();
     readUnitFile();
-
-}
-
-void World::readPlayerFile()
-{
-    QFile playerFile("://textfiles/players.txt");
-    if (!playerFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
-    QTextStream readPlayerInfo(&playerFile);
-    QString temp = readPlayerInfo.readLine();
-    QStringList info = temp.split(" ");
-    Player* player = new Player(info[0].toInt(), info[1].toInt(), 1);
-    players.push_back(player);
-    temp = readPlayerInfo.readLine();
-    info = temp.split(" ");
-    player = new Player(info[0].toInt(), info[1].toInt(), 1);
-    players.push_back(player);
+    readPlayerFile();
 }
 
 //reads the initial map state
@@ -223,4 +213,21 @@ void World::readUnitFile()
     QTextStream readUnits(&unitFile);
 
 
+}
+
+void World::readPlayerFile()
+{
+    QFile playerFile("://textfiles/players.txt");
+    if (!playerFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
+    QTextStream readPlayerInfo(&playerFile);
+    QString temp = readPlayerInfo.readLine();
+    QStringList info = temp.split(" ");
+    Player* player = new Player(info[0].toInt(), info[1].toInt(), 1);
+    player->setInitialUnlocks(buildingTypes, unitTypes);
+    players.push_back(player);
+    temp = readPlayerInfo.readLine();
+    info = temp.split(" ");
+    player = new Player(info[0].toInt(), info[1].toInt(), 1);
+    player->setInitialUnlocks(buildingTypes, unitTypes);
+    players.push_back(player);
 }

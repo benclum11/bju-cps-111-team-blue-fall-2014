@@ -43,12 +43,12 @@ public:
     vector<Tile*>& getPath(int team);
 
     void buildTower(int,Tile*);
+    void upgradeTower(Tile*);
     void deployUnit(int,int);
 
     void updateWorld();
 
     void canDeployUnits();
-
 };
 
 
