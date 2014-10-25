@@ -25,6 +25,7 @@ class World {
 
     World();
 
+    void readPlayerFile();
     void readMapFile();
     void readTileInfo(QTextStream&, Tile*);
     void readPaths(QTextStream&);

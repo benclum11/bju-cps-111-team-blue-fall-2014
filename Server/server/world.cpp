@@ -51,7 +51,8 @@ void World::deployUnit(int type, int team)
     vector<Tile*> path = getPath(team);
     unit->setXCoord(path[0]->getXCoord());
     unit->setYCoord(path[0]->getYCoord());
-
+    unit->setTeam(team);
+    livingUnits.push_back(unit);
 }
 
 //runs every 20 milliseconds
@@ -89,12 +90,28 @@ void World::canDeployUnits()
 }
 
 //constructs the initial game state
-World::World() : counter(500) {
-
+World::World() : counter(500)
+{
+    readPlayerFile();
     readMapFile();
     readTowerFile();
     readUnitFile();
 
+}
+
+void World::readPlayerFile()
+{
+    QFile playerFile("://textfiles/players.txt");
+    if (!playerFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
+    QTextStream readPlayerInfo(&playerFile);
+    QString temp = readPlayerInfo.readLine();
+    QStringList info = temp.split(" ");
+    Player* player = new Player(info[0].toInt(), info[1].toInt(), 1);
+    players.push_back(player);
+    temp = readPlayerInfo.readLine();
+    info = temp.split(" ");
+    player = new Player(info[0].toInt(), info[1].toInt(), 1);
+    players.push_back(player);
 }
 
 //reads the initial map state
