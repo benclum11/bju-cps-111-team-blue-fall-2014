@@ -6,14 +6,11 @@
 using namespace std;
 
 Load::Load(string filename) {
-    ifstream infile;
-    infile.open(filename);
-    //create file to load
-    infile.close();
+   loadFile();
 }
 
 void Load::loadFile() {
-
+    //open saved file
+    //read type and x y coordinates, health, of every tower, unit, and base
+    //intialize all instance variables
 }
-
-

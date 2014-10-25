@@ -13,5 +13,6 @@ Save::Save(string filename) {
 }
 
 void Save::saveFile() {
-
+    //write type and x y coordinates, health, of every tower, unit, and base to new file
+    //intialize all instance variables
 }
