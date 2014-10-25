@@ -1,13 +1,22 @@
 #ifndef HIGHSCORE_H
 #define HIGHSCORE_H
+#include <string>
 
-class Highscore {
+class HighScore {
 
-    int finalscore;
+    int newScore;
+    int currentHScore;
+    std::string highSName;
 
-    Highscore(int finalscore) {
-        //open highscore file and store in finalscore
-    }
+public:
+    HighScore();
+    bool checkHScore(int finaleScore); //Should we include this? Why not check and set in the same method?
+    void newHScore(std::string newName);
+    //Needs file load/save logic.
+
+    //getters
+    int getHScore() { return currentHScore; }
+    std::string getHSName() { return highSName; }
 
 };
 
