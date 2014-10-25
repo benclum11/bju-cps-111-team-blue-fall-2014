@@ -10,7 +10,7 @@ class Save {
 
     Save(string filename);
 
-    void saveFile();
+    void saveFile(ifstream &infile);
 };
 
 #endif // SAVE_H

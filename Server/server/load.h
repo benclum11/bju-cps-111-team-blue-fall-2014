@@ -10,7 +10,15 @@ class Load {
 
     Load(string filename);
 
-    void loadFile();
+public:
+
+    void loadFile(ifstream &infile);
+
+    void createTower(stringstream &sstrm);
+
+    void createUnit(stringstream &sstrm);
+
+    void createBase(stringstream &sstrm);
 };
 
 #endif // LOAD_H

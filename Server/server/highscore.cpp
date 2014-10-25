@@ -33,9 +33,11 @@ void HighScore::newHScore(std::string newName)
 }
 
 //Unit Tests (Where do I put these?)
+/*
 assert(HighScore::checkHScore(100));
 HighScore::newHScore("User");
 assert(HighScore::getHScore() == 100);
 assert(HighScore::getHSName() == "User");
 
 assert(!HighScore::checkHScore(50));
+*/
