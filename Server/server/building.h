@@ -32,6 +32,8 @@ public:
     int getSpeed() {return speed;}
     vector<int> getUnlock() {return unlock;}
 
+    void updateState();
+
 };
 
 #endif // BUILDING_H

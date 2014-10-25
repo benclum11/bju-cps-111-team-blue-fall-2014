@@ -10,6 +10,8 @@ protected:
 
 public:
 
+    virtual void updateState() = 0;
+
 };
 
 #endif // OBJECT_H

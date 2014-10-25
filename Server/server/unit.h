@@ -9,7 +9,10 @@ class Unit : Object {
 
     void ontick();
 
+public:
     Unit() {}
+
+    void updateState();
 
 };
 

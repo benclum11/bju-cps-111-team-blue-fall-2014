@@ -5,3 +5,8 @@ void Unit::ontick()
 {
 
 }
+
+void Unit::updateState()
+{
+
+}

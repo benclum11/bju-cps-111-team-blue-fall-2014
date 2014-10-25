@@ -17,9 +17,11 @@ class World {
     vector<Building> buildingTypes;
     Tile*** map;
     vector<Object*> object;
-    vector<Tile*> team1path;
-    vector<Tile*> team2path;
+    vector<Tile*> team1path, team2path;
     vector<Player*> players;
+    vector<Unit*> livingUnits;
+    int counter;
+    vector<int> team1unitCues,team2unitCues;
 
     World();
 
@@ -29,11 +31,20 @@ class World {
     void readTowerFile();
     void readTowerInfo(QTextStream&);
     void readBaseLocation(QTextStream&);
+    void readUnitFile();
 
 public:
 
     static World* Instance();
     Building getBuildingType(int);
+    Unit getUnitType(int);
+
+    void buildTower(int,int,Tile*);
+    void deployUnit(int,int);
+
+    void updateWorld();
+
+    void canDeployUnits();
 
 };
 

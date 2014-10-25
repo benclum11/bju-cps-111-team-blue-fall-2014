@@ -5,3 +5,8 @@ void Building::ontick()
 {
 
 }
+
+void Building::updateState()
+{
+
+}
