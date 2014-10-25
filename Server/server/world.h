@@ -36,8 +36,10 @@ class World {
 public:
 
     static World* Instance();
-    Building getBuildingType(int);
-    Unit getUnitType(int);
+    Building getBuildingType(int, int);
+    Unit getUnitType(int, int);
+
+    vector<Tile*>& getPath(int team);
 
     void buildTower(int,Tile*);
     void deployUnit(int,int);

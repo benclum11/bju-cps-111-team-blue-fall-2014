@@ -3,7 +3,7 @@
 
 #include "object.h"
 
-class Unit : Object {
+class Unit : public Object {
 
     int health, speed, damage, size;
 

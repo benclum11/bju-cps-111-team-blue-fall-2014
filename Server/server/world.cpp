@@ -18,32 +18,39 @@ World* World::Instance() {
 }
 
 //returns a copy of the building type
-Building World::getBuildingType(int type)
+Building World::getBuildingType(int type, int level)
 {
-    for(unsigned int i = 0; i < buildingTypes.size(); ++i) {
-        if(buildingTypes[i].getType() == type) {
-            return buildingTypes[i];
-        }
-    }
-    Building fail;
-    return fail;
+    int towerIndex = type*5 + level - 1;
+    return buildingTypes[towerIndex];
 }
 
 //returns a copy of the unit type
-Unit World::getUnitType(int type)
+Unit World::getUnitType(int type, int level)
 {
+    int unitIndex = type*5 + level - 1;
+    return unitTypes[unitIndex];
+}
 
+vector<Tile*>& World::getPath(int team)
+{
+    if(team == 1) {return team1path;}
+    else {return team2path;}
 }
 
 //places a tower of specified type in the specified tile
 void World::buildTower(int type, Tile* tile)
 {
-
+    Building* building = new Building(getBuildingType(type, 1));
+    tile->placeBuilding(building);
 }
 
 //deploys a unit of specified type on specified team
 void World::deployUnit(int type, int team)
 {
+    Unit* unit = new Unit(getUnitType(type, players[team]->checkLevelofUnit(type)));
+    vector<Tile*> path = getPath(team);
+    unit->setXCoord(path[0]->getXCoord());
+    unit->setYCoord(path[0]->getYCoord());
 
 }
 
@@ -178,6 +185,7 @@ void World::readTowerInfo(QTextStream& readBuildings)
         }
         tempbuilding.setUnlock(unlocks);
     }
+    tempbuilding.setCost(data[7].toInt());
     buildingTypes.push_back(tempbuilding);
 }
 
@@ -187,13 +195,15 @@ void World::readBaseLocation(QTextStream& readBuildings)
     QString temp = readBuildings.readLine();
     QStringList data = temp.split(" ");
     QStringList basePoint = data[0].split(",");
-    Building* base = new Building(buildingTypes[0]);
-
-    map[basePoint[1].toInt()][basePoint[0].toInt()]->placeBuilding(base);
+    buildTower(10, map[basePoint[1].toInt()][basePoint[0].toInt()]);
 }
 
 //reads the stats of the types of units
 void World::readUnitFile()
 {
+    QFile unitFile("://textfiles/units.txt");
+    if (!unitFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
+    QTextStream readUnits(&unitFile);
+
 
 }

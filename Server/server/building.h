@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Building : Object {
+class Building : public Object {
 
     int type, attack, production, range, lvl, speed;
     vector<int> unlock;
@@ -22,7 +22,7 @@ public:
     void setRange(int init) { range = init; }
     void setLevel(int init) { lvl = init; }
     void setSpeed(int init) { speed = init; }
-    void setUnlock(vector<int> init) { unlock = init; }
+    void setUnlock(vector<int>& init) { unlock = init; }
 
     int getType() {return type;}
     int getAttack() {return attack;}

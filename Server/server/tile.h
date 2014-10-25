@@ -26,6 +26,8 @@ public:
 
     bool isBuildable() { return buildable; }
     Building* getBuilding() { return building; }
+    int getXCoord() { return xCoord; }
+    int getYCoord() { return yCoord; }
 
 };
 
