@@ -16,7 +16,7 @@ class Tile {
     void getCenterpoint(int& x, int& y) { x = xCoord; y = yCoord; }
 
 public:
-    Tile() {}
+    Tile() { building = nullptr; }
 
     void setBuildable(int init) { buildable = init; }
     void setXCoord(int init) { xCoord = init; }
@@ -25,6 +25,7 @@ public:
     void placeBuilding(Building* init) { building = init; }
 
     bool isBuildable() { return buildable; }
+    Building* getBuilding() { return building; }
 
 };
 

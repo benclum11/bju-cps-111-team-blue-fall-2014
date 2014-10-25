@@ -20,7 +20,7 @@ class World {
     vector<Tile*> team1path, team2path;
     vector<Player*> players;
     vector<Unit*> livingUnits;
-    int counter;
+    int counter, rows, columns;
     vector<int> team1unitCues,team2unitCues;
 
     World();
@@ -39,7 +39,7 @@ public:
     Building getBuildingType(int);
     Unit getUnitType(int);
 
-    void buildTower(int,int,Tile*);
+    void buildTower(int,Tile*);
     void deployUnit(int,int);
 
     void updateWorld();

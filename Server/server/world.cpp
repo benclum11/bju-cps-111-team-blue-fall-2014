@@ -35,7 +35,8 @@ Unit World::getUnitType(int type)
 
 }
 
-void World::buildTower(int type, int team, Tile* tile)
+//places a tower of specified type in the specified tile
+void World::buildTower(int type, Tile* tile)
 {
 
 }
@@ -53,19 +54,28 @@ void World::updateWorld()
     {
         livingUnits[i]->updateState();
     }
-
+    for(int i = 0; i < rows; ++i) {
+        for(int j = 0; j < columns; ++j) {
+            if (map[i][j]->isBuildable() && map[i][j]->getBuilding() != nullptr) {
+                map[i][j]->getBuilding()->updateState();
+            }
+        }
+    }
 }
 
+//checks to see whether this interval is the one to deploy
 void World::canDeployUnits()
 {
     if (counter == 0)
     {
         for(unsigned int i = 0; i < team1unitCues.size(); ++i) {
             deployUnit(i, 1);
+            --team1unitCues[i];
         }
 
         for(unsigned int i = 0; i < team2unitCues.size(); ++i) {
             deployUnit(i, 2);
+            --team2unitCues[i];
         }
         counter = 150;
     } else { --counter; }
@@ -87,9 +97,9 @@ void World::readMapFile() {
     if (!mapFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readMap(&mapFile);
     QString temp = readMap.readLine();
-    int rows = temp.toInt();
+    rows = temp.toInt();
     temp = readMap.readLine();
-    int columns = temp.toInt();
+    columns = temp.toInt();
 
     map = new Tile**[rows];
     for (int i = 0; i < rows; ++i) {
