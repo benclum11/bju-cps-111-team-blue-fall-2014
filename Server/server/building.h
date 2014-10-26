@@ -33,6 +33,7 @@ public:
     vector<int> getUnlock() {return unlock;}
 
     void updateState();
+    void upgrade(Building& upgrade);
 
 };
 

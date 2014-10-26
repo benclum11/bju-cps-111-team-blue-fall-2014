@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include <vector>
+#include <QString>
 #include <QTextStream>
 #include "building.h"
 #include "unit.h"
@@ -24,21 +25,22 @@ class World {
     vector<int> team1unitCues,team2unitCues;
 
     World();
+    World(vector<QString> filenames);
 
-    void readPlayerFile();
-    void readMapFile();
+    void readMapFile(QString);
     void readTileInfo(QTextStream&, Tile*);
     void readPaths(QTextStream&);
-    void readTowerFile();
+    void readTowerFile(QString);
     void readTowerInfo(QTextStream&);
     void readBaseLocation(QTextStream&);
-    void readUnitFile();
+    void readUnitFile(QString);
+    void readPlayerFile(QString);
 
 public:
 
     static World* Instance();
-    Building getBuildingType(int, int);
-    Unit getUnitType(int, int);
+    Building& getBuildingType(int, int);
+    Unit& getUnitType(int, int);
 
     vector<Tile*>& getPath(int team);
 

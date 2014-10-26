@@ -1,8 +1,5 @@
 #include "world.h"
-#include <string>
 #include <QFile>
-#include <QTextStream>
-#include <QString>
 #include <QStringList>
 
 using namespace std;
@@ -10,7 +7,9 @@ using namespace std;
 // Global static pointer used to ensure a single instance of the class.
 World* World::world = NULL;
 
-World* World::Instance() {
+//returns the instance of the world and if there is none creates it
+World* World::Instance()
+{
     if(!world) {
         world = new World();
     }
@@ -18,19 +17,20 @@ World* World::Instance() {
 }
 
 //returns a copy of the building type
-Building World::getBuildingType(int type, int level)
+Building& World::getBuildingType(int type, int level)
 {
     int towerIndex = type*5 + level - 1;
     return buildingTypes[towerIndex];
 }
 
 //returns a copy of the unit type
-Unit World::getUnitType(int type, int level)
+Unit& World::getUnitType(int type, int level)
 {
     int unitIndex = type*5 + level - 1;
     return unitTypes[unitIndex];
 }
 
+//return the path the units must travel
 vector<Tile*>& World::getPath(int team)
 {
     if(team == 1) {return team1path;}
@@ -44,10 +44,11 @@ void World::buildTower(int type, Tile* tile)
     tile->placeBuilding(building);
 }
 
+//increases calls the upgrade method of the building and passes the info to use
 void World::upgradeTower(Tile* tile)
 {
     Building* building = tile->getBuilding();
-    building->getType();
+    building->upgrade(getBuildingType(building->getType(), building->getLevel() + 1));
 }
 
 //deploys a unit of specified type on specified team
@@ -98,16 +99,26 @@ void World::canDeployUnits()
 //constructs the initial game state
 World::World() : counter(500)
 {
-    readMapFile();
-    readTowerFile();
-    readUnitFile();
-    readPlayerFile();
+    readMapFile("://textfiles/map.txt");
+    readTowerFile("://textfiles/buildings.txt");
+    readUnitFile("://textfiles/units.txt");
+    readPlayerFile("://textfiles/players.txt");
+}
+
+//constructs the initial game state from nondefault files
+World::World(vector<QString> filenames)
+{
+    readMapFile("://textfiles/" + filenames[0]);
+    readTowerFile("://textfiles/" + filenames[1]);
+    readUnitFile("://textfiles/" + filenames[2]);
+    readPlayerFile("://textfiles/" + filenames[3]);
 }
 
 //reads the initial map state
-void World::readMapFile() {
+void World::readMapFile(QString filename)
+{
 
-    QFile mapFile("://textfiles/map.txt");
+    QFile mapFile(filename);
     if (!mapFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readMap(&mapFile);
     QString temp = readMap.readLine();
@@ -129,7 +140,8 @@ void World::readMapFile() {
 }
 
 //reads individual tile info
-void World::readTileInfo(QTextStream& readMap, Tile* tile) {
+void World::readTileInfo(QTextStream& readMap, Tile* tile)
+{
     QString temp = readMap.readLine();
     QStringList data = temp.split(" ");
     tile->setBuildable(data[0] == "1");
@@ -139,7 +151,8 @@ void World::readTileInfo(QTextStream& readMap, Tile* tile) {
 }
 
 //reads what paths the units will use
-void World::readPaths(QTextStream& readMap) {
+void World::readPaths(QTextStream& readMap)
+{
     QString temp = readMap.readLine();
     QStringList data = temp.split(" ");
     for (int i = 0; i < data.length(); ++i) {
@@ -157,8 +170,9 @@ void World::readPaths(QTextStream& readMap) {
 }
 
 //reads the stats of the types of towers
-void World::readTowerFile() {
-    QFile buildingFile("://textfiles/buildings.txt");
+void World::readTowerFile(QString filename)
+{
+    QFile buildingFile(filename);
     if (!buildingFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readBuildings(&buildingFile);
     QString temp = readBuildings.readLine();
@@ -184,7 +198,8 @@ void World::readTowerInfo(QTextStream& readBuildings)
     tempbuilding.setRange(data[4].toInt());
     tempbuilding.setSpeed(data[5].toInt());
 
-    if (data[6] != "0") {
+    if (data[6] != "0")
+    {
         QStringList tempunlocks = data[6].split(",");
         vector<int> unlocks;
         for(int i = 0; i < tempunlocks.length(); ++i) {
@@ -206,18 +221,19 @@ void World::readBaseLocation(QTextStream& readBuildings)
 }
 
 //reads the stats of the types of units
-void World::readUnitFile()
+void World::readUnitFile(QString filename)
 {
-    QFile unitFile("://textfiles/units.txt");
+    QFile unitFile(filename);
     if (!unitFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readUnits(&unitFile);
 
 
 }
 
-void World::readPlayerFile()
+//reads the starting stats of the players
+void World::readPlayerFile(QString filename)
 {
-    QFile playerFile("://textfiles/players.txt");
+    QFile playerFile(filename);
     if (!playerFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readPlayerInfo(&playerFile);
     QString temp = readPlayerInfo.readLine();

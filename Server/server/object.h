@@ -21,6 +21,7 @@ public:
     void setXCoord(int init) { xCoord = init; }
     void setYCoord(int init) { yCoord = init; }
 
+    int getCost() { return cost; }
 };
 
 #endif // OBJECT_H

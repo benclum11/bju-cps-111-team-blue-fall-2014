@@ -15,5 +15,7 @@
         <file>Resources/Tiger-II_strip2.png</file>
         <file>Resources/VK.3601h_preview.png</file>
         <file>Resources/VK.3601h_strip2.png</file>
+        <file>Resources/pathtile.png</file>
+        <file>Resources/towertile.png</file>
     </qresource>
 </RCC>
