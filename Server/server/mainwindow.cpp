@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "world.h"
+#include <QTcpServer>
+#include <QTcpSocket>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,12 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
     timer = new QTimer(this);
     timer->setInterval(20);
     connect(timer, &QTimer::timeout, this, &MainWindow::timerHit);
-
-    timer->start();
 }
 
-void MainWindow::timerHit() {
-    World::Instance();
+void MainWindow::timerHit()
+{
+
 }
 
 MainWindow::~MainWindow()

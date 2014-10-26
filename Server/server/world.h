@@ -36,6 +36,8 @@ class World {
     void readUnitFile(QString);
     void readPlayerFile(QString);
 
+    void sendWorldStartInfotoClient();
+
 public:
 
     static World* Instance();

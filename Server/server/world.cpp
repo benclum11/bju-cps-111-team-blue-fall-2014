@@ -103,6 +103,7 @@ World::World() : counter(500)
     readTowerFile("://textfiles/buildings.txt");
     readUnitFile("://textfiles/units.txt");
     readPlayerFile("://textfiles/players.txt");
+    sendWorldStartInfotoClient();
 }
 
 //constructs the initial game state from nondefault files
@@ -112,6 +113,7 @@ World::World(vector<QString> filenames)
     readTowerFile("://textfiles/" + filenames[1]);
     readUnitFile("://textfiles/" + filenames[2]);
     readPlayerFile("://textfiles/" + filenames[3]);
+    sendWorldStartInfotoClient();
 }
 
 //reads the initial map state
@@ -246,4 +248,10 @@ void World::readPlayerFile(QString filename)
     player = new Player(info[0].toInt(), info[1].toInt(), 1);
     player->setInitialUnlocks(buildingTypes, unitTypes);
     players.push_back(player);
+}
+
+//self explanatory
+void World::sendWorldStartInfotoClient()
+{
+
 }
