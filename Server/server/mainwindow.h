@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QTcpServer>
 
 namespace Ui {
 class MainWindow;
@@ -19,11 +20,16 @@ public:
 private slots:
 
     void timerHit();
+    void clientConnected();
+    void clientDisconnected();
+    void dataRecieved();
     
 private:
     Ui::MainWindow *ui;
 
     QTimer* timer;
+
+    QTcpServer* server;
 };
 
 #endif // MAINWINDOW_H
