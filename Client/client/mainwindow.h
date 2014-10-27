@@ -15,6 +15,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
+private slots:
+    void on_btnExit_clicked();
+
+    void on_btnStart_clicked();
+
+    void on_btnHelp_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
