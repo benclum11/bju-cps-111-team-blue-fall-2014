@@ -24,8 +24,7 @@ class World {
     int counter, rows, columns;
     vector<int> team1unitCues,team2unitCues;
 
-    World();
-    World(vector<QString> filenames);
+    World(QString);
 
     void readMapFile(QString);
     void readTileInfo(QTextStream&, Tile*);
@@ -36,11 +35,10 @@ class World {
     void readUnitFile(QString);
     void readPlayerFile(QString);
 
-    void sendWorldStartInfotoClient();
-
 public:
 
     static World* Instance();
+    static World* Instance(QString);
     Building& getBuildingType(int, int);
     Unit& getUnitType(int, int);
 
@@ -53,6 +51,9 @@ public:
     void updateWorld();
 
     void canDeployUnits();
+    void sendWorldStartInfotoClients();
+    
+    void save(QString);
 };
 
 

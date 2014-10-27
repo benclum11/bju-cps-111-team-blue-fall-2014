@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    worldCreated = false;
+    paused = true;
+
     ui->setupUi(this);
 
     timer = new QTimer(this);
@@ -38,7 +41,11 @@ void MainWindow::clientConnected()
     QTcpSocket* sock = server->nextPendingConnection();
     connect(sock, &QTcpSocket::disconnected, this, &MainWindow::clientDisconnected);
     connect(sock, &QTcpSocket::readyRead, this, &MainWindow::dataRecieved);
-
+    if(server->children().size() == 2 && worldCreated)
+    {
+        timer->start();
+        paused = false;
+    }
 }
 
 void MainWindow::clientDisconnected()
@@ -52,8 +59,28 @@ void MainWindow::dataRecieved()
     QTcpSocket* sock = dynamic_cast<QTcpSocket*>(sender());
     while(sock->canReadLine()) {
          QString line = sock->readLine();
-         //process Data
-         //yay
+         if(!worldCreated) {
+             World::Instance(line);
+         } else {
+             processClientMessage(line);
+         }
+    }
+}
+
+void MainWindow::processClientMessage(QString& message)
+{
+    QStringList data = message.split("");
+    QString command = data.at(0);
+    if(command == "5") {
+        if (paused) {
+            timer->start();
+            paused = false;
+        } else {
+            timer->stop();
+            paused = true;
+        }
+    } else if(command == "9") {
+        World::Instance()->save(data.at(1));
     }
 }
 

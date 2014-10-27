@@ -11,7 +11,16 @@ World* World::world = NULL;
 World* World::Instance()
 {
     if(!world) {
-        world = new World();
+        world = new World("");
+    }
+    return world;
+}
+
+//same as above but loads from files
+World* World::Instance(QString filenames)
+{
+    if(!world) {
+        world = new World(filenames);
     }
     return world;
 }
@@ -96,24 +105,24 @@ void World::canDeployUnits()
     } else { --counter; }
 }
 
-//constructs the initial game state
-World::World() : counter(500)
+//constructs the initial game state from specified files if not specified uses default
+World::World(QString filenames) : counter(500)
 {
-    readMapFile("://textfiles/map.txt");
-    readTowerFile("://textfiles/buildings.txt");
-    readUnitFile("://textfiles/units.txt");
-    readPlayerFile("://textfiles/players.txt");
-    sendWorldStartInfotoClient();
-}
-
-//constructs the initial game state from nondefault files
-World::World(vector<QString> filenames)
-{
+    if (filenames == "") {
+        readMapFile("://textfiles/map.txt");
+        readTowerFile("://textfiles/buildings.txt");
+        readUnitFile("://textfiles/units.txt");
+        readPlayerFile("://textfiles/players.txt");
+        sendWorldStartInfotoClients();
+    }
+    /*
     readMapFile("://textfiles/" + filenames[0]);
     readTowerFile("://textfiles/" + filenames[1]);
     readUnitFile("://textfiles/" + filenames[2]);
     readPlayerFile("://textfiles/" + filenames[3]);
-    sendWorldStartInfotoClient();
+    sendWorldStartInfotoClients();
+    */
+    //not sure how to implement this yet
 }
 
 //reads the initial map state
@@ -251,7 +260,13 @@ void World::readPlayerFile(QString filename)
 }
 
 //self explanatory
-void World::sendWorldStartInfotoClient()
+void World::sendWorldStartInfotoClients()
+{
+
+}
+
+//this too
+void World::save(QString filename)
 {
 
 }

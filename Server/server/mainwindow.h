@@ -30,6 +30,11 @@ private:
     QTimer* timer;
 
     QTcpServer* server;
+
+    bool worldCreated;
+    bool paused;
+
+    void processClientMessage(QString&);
 };
 
 #endif // MAINWINDOW_H
