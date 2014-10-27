@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -25,5 +26,5 @@ void MainWindow::on_btnStart_clicked()
 
 void MainWindow::on_btnHelp_clicked()
 {
-
+    QMessageBox::information(this, "Help", "Press Start to start a game. Enter an IP address in the text box to connect to a remote game, otherwise leave blank. Press Exit to quit.");
 }
