@@ -15,7 +15,13 @@
         <file>Resources/Tiger-II_strip2.png</file>
         <file>Resources/VK.3601h_preview.png</file>
         <file>Resources/VK.3601h_strip2.png</file>
-        <file>Resources/pathtile.png</file>
-        <file>Resources/towertile.png</file>
+        <file>Resources/tile1.png</file>
+        <file>Resources/tile2.png</file>
+        <file>Resources/tile3.png</file>
+        <file>Resources/tile4.png</file>
+        <file>Resources/tower1.png</file>
+        <file>Resources/tower2.png</file>
+        <file>Resources/base.png</file>
+        <file>Resources/tower3.png</file>
     </qresource>
 </RCC>
