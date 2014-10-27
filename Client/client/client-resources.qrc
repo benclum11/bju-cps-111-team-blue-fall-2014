@@ -23,5 +23,6 @@
         <file>Resources/tower2.png</file>
         <file>Resources/base.png</file>
         <file>Resources/tower3.png</file>
+        <file>Resources/null.png</file>
     </qresource>
 </RCC>
