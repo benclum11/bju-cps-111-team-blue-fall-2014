@@ -35,6 +35,7 @@ private:
     bool paused;
 
     void processClientMessage(QString&);
+    void updateClient();
 };
 
 #endif // MAINWINDOW_H

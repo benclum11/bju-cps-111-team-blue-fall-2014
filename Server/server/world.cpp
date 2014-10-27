@@ -11,16 +11,7 @@ World* World::world = NULL;
 World* World::Instance()
 {
     if(!world) {
-        world = new World("");
-    }
-    return world;
-}
-
-//same as above but loads from files
-World* World::Instance(QString filenames)
-{
-    if(!world) {
-        world = new World(filenames);
+        world = new World();
     }
     return world;
 }
@@ -71,6 +62,11 @@ void World::deployUnit(int type, int team)
     livingUnits.push_back(unit);
 }
 
+void World::findTileAt(int xCoord, int yCoord)
+{
+
+}
+
 //runs every 20 milliseconds
 void World::updateWorld()
 {
@@ -105,24 +101,21 @@ void World::canDeployUnits()
     } else { --counter; }
 }
 
-//constructs the initial game state from specified files if not specified uses default
-World::World(QString filenames) : counter(500)
+//constructs the initial game state
+World::World() : counter(500)
 {
-    if (filenames == "") {
-        readMapFile("://textfiles/map.txt");
-        readTowerFile("://textfiles/buildings.txt");
-        readUnitFile("://textfiles/units.txt");
-        readPlayerFile("://textfiles/players.txt");
-        sendWorldStartInfotoClients();
-    }
-    /*
-    readMapFile("://textfiles/" + filenames[0]);
-    readTowerFile("://textfiles/" + filenames[1]);
-    readUnitFile("://textfiles/" + filenames[2]);
-    readPlayerFile("://textfiles/" + filenames[3]);
+    QFile worldFile("world.txt");
+    if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
+    QTextStream readWorld(&worldFile);
+    QString filetoRead = readWorld.readLine();
+    readMapFile("://textfiles/" + filetoRead);
+    filetoRead = readWorld.readLine();
+    readBuildingFile("://textfiles/" + filetoRead);
+    filetoRead = readWorld.readLine();
+    readUnitFile("://textfiles/" + filetoRead);
+    filetoRead = readWorld.readLine();
+    readPlayerFile("://textfiles/" + filetoRead);
     sendWorldStartInfotoClients();
-    */
-    //not sure how to implement this yet
 }
 
 //reads the initial map state
@@ -181,7 +174,7 @@ void World::readPaths(QTextStream& readMap)
 }
 
 //reads the stats of the types of towers
-void World::readTowerFile(QString filename)
+void World::readBuildingFile(QString filename)
 {
     QFile buildingFile(filename);
     if (!buildingFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -265,7 +258,31 @@ void World::sendWorldStartInfotoClients()
 
 }
 
-//this too
+void World::buyTower(QStringList& data)
+{
+    findTileAt(data.at(2).toInt(), data.at(3).toInt());
+}
+
+void World::buyUnit(QStringList& data)
+{
+
+}
+
+void World::destroy(QStringList& data)
+{
+
+}
+
+void World::upgrade(QStringList& data)
+{
+
+}
+
+void World::load(QString filename)
+{
+
+}
+
 void World::save(QString filename)
 {
 

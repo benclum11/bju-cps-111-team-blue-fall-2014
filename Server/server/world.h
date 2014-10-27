@@ -24,35 +24,40 @@ class World {
     int counter, rows, columns;
     vector<int> team1unitCues,team2unitCues;
 
-    World(QString);
+    World();
 
     void readMapFile(QString);
     void readTileInfo(QTextStream&, Tile*);
     void readPaths(QTextStream&);
-    void readTowerFile(QString);
+    void readBuildingFile(QString);
     void readTowerInfo(QTextStream&);
     void readBaseLocation(QTextStream&);
     void readUnitFile(QString);
     void readPlayerFile(QString);
 
+    void buildTower(int,Tile*);
+    void upgradeTower(Tile*);
+    void deployUnit(int,int);
+
+    void findTileAt(int, int);
 public:
 
     static World* Instance();
-    static World* Instance(QString);
     Building& getBuildingType(int, int);
     Unit& getUnitType(int, int);
 
     vector<Tile*>& getPath(int team);
 
-    void buildTower(int,Tile*);
-    void upgradeTower(Tile*);
-    void deployUnit(int,int);
-
     void updateWorld();
 
     void canDeployUnits();
     void sendWorldStartInfotoClients();
-    
+
+    void buyTower(QStringList&);
+    void buyUnit(QStringList&);
+    void destroy(QStringList&);
+    void upgrade(QStringList&);
+    void load(QString);
     void save(QString);
 };
 

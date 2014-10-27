@@ -4,5 +4,6 @@
         <file>textfiles/buildings.txt</file>
         <file>textfiles/units.txt</file>
         <file>textfiles/players.txt</file>
+        <file>textfiles/world.txt</file>
     </qresource>
 </RCC>

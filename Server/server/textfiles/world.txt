@@ -1,0 +1,4 @@
+map.txt
+buildings.txt
+units.txt
+players.txt

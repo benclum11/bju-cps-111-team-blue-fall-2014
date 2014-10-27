@@ -32,7 +32,7 @@ void MainWindow::timerHit()
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL)
-            anotherSock->write("");//send info to client fun stuff
+            updateClient();
     }
 }
 
@@ -60,7 +60,7 @@ void MainWindow::dataRecieved()
     while(sock->canReadLine()) {
          QString line = sock->readLine();
          if(!worldCreated) {
-             World::Instance(line);
+             World::Instance();
          } else {
              processClientMessage(line);
          }
@@ -79,9 +79,24 @@ void MainWindow::processClientMessage(QString& message)
             timer->stop();
             paused = true;
         }
-    } else if(command == "9") {
+    } else if(command == "6") {
         World::Instance()->save(data.at(1));
+    } else if (command == "7") {
+        World::Instance()->load(data.at(1));
+    } else if (command == "1") {
+        World::Instance()->buyTower(data);
+    } else if (command =="3") {
+        World::Instance()->buyUnit(data);
+    } else if (command == "0") {
+        World::Instance()->destroy(data);
+    } else if (command == "8") {
+        World::Instance()->upgrade(data);
     }
+}
+
+void MainWindow::updateClient()
+{
+
 }
 
 MainWindow::~MainWindow()
