@@ -51,13 +51,13 @@
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-image: url(:/Resources/null.png);</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="client-resources.qrc">:/Resources/graphic_sample.png</pixmap>
+     <pixmap resource="client-resources.qrc">:/Resources/titlescreen.PNG</pixmap>
     </property>
    </widget>
    <widget class="QPushButton" name="btnStart">

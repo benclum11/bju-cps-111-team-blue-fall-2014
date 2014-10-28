@@ -1,28 +1,23 @@
 <RCC>
     <qresource prefix="/">
-        <file>Resources/source.txt</file>
-        <file>Resources/tankBase.png</file>
-        <file>Resources/tankTurret.png</file>
-        <file>Resources/E-100_preview.png</file>
-        <file>Resources/E-100_strip2.png</file>
-        <file>Resources/KV-2_preview.png</file>
-        <file>Resources/KV-2_strip2.png</file>
-        <file>Resources/Pz.Kpfw.IV_preview.png</file>
-        <file>Resources/Pz.Kpfw.IV_strip2.png</file>
-        <file>Resources/T34_preview.png</file>
-        <file>Resources/T34_strip2.png</file>
-        <file>Resources/Tiger-II_preview.png</file>
-        <file>Resources/Tiger-II_strip2.png</file>
-        <file>Resources/VK.3601h_preview.png</file>
-        <file>Resources/VK.3601h_strip2.png</file>
-        <file>Resources/tile1.png</file>
-        <file>Resources/tile2.png</file>
-        <file>Resources/tile3.png</file>
-        <file>Resources/tile4.png</file>
-        <file>Resources/tower1.png</file>
-        <file>Resources/tower2.png</file>
-        <file>Resources/base.png</file>
-        <file>Resources/tower3.png</file>
-        <file>Resources/graphic_sample.png</file>
+        <file>Resources/Buildings/0.png</file>
+        <file>Resources/Buildings/1.png</file>
+        <file>Resources/Buildings/2.png</file>
+        <file>Resources/Buildings/3.png</file>
+        <file>Resources/Tiles/0.png</file>
+        <file>Resources/Tiles/1.png</file>
+        <file>Resources/Units/0_1.png</file>
+        <file>Resources/Units/0_2.png</file>
+        <file>Resources/Units/0_3.png</file>
+        <file>Resources/Units/0_4.png</file>
+        <file>Resources/Units/1_1.png</file>
+        <file>Resources/Units/1_2.png</file>
+        <file>Resources/Units/1_3.png</file>
+        <file>Resources/Units/1_4.png</file>
+        <file>Resources/Units/2_1.png</file>
+        <file>Resources/Units/2_2.png</file>
+        <file>Resources/Units/2_3.png</file>
+        <file>Resources/Units/2_4.png</file>
+        <file>Resources/titlescreen.PNG</file>
     </qresource>
 </RCC>
