@@ -29,11 +29,11 @@ void MainWindow::on_btnStart_clicked()
     //this->netAddress = ui->lnIPAddr->text();
     if (this->ui->lnIPAddr->text().size() == 0)
     {
-        socket->connectToHost("localhost", 5000); //Change port number.
+        socket->connectToHost("localhost", 10000);
     }
     else
     {
-    socket->connectToHost(ui->lnIPAddr->text(), 5000); //The port needs to be cnahged to whatever port we are actually using.
+    socket->connectToHost(ui->lnIPAddr->text(), 10000);
     }
 
     if (!socket->waitForConnected())

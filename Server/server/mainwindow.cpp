@@ -3,6 +3,7 @@
 #include "world.h"
 #include <QTcpSocket>
 #include <QMessageBox>
+#include <QDateTime>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     server = new QTcpServer(this);
     if(!server->listen(QHostAddress::Any, 10000)) {
-        QMessageBox::critical(this,"Error","Cannot start socket");
+        QMessageBox::critical(this,"Error","Cannot start socket. Is another instance already running?");
         exit(1);
     }
     connect(server, &QTcpServer::newConnection, this, &MainWindow::clientConnected);
@@ -41,6 +42,8 @@ void MainWindow::clientConnected()
     QTcpSocket* sock = server->nextPendingConnection();
     connect(sock, &QTcpSocket::disconnected, this, &MainWindow::clientDisconnected);
     connect(sock, &QTcpSocket::readyRead, this, &MainWindow::dataRecieved);
+    addToLog("Client connected.");
+
     if(server->children().size() == 2 && worldCreated)
     {
         timer->start();
@@ -52,6 +55,7 @@ void MainWindow::clientDisconnected()
 {
     QTcpSocket* sock = dynamic_cast<QTcpSocket*>(sender());
     sock->deleteLater();
+    addToLog("Client disconnected.");
 }
 
 void MainWindow::dataRecieved()
@@ -102,4 +106,10 @@ void MainWindow::updateClient()
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::addToLog(QString msg)
+{
+    QDateTime now = QDateTime::currentDateTime();
+    ui->txtLog->appendPlainText(now.toString("hh:mm:ss") + " " + msg);
 }
