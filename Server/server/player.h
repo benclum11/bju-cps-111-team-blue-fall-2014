@@ -11,8 +11,9 @@ using namespace std;
 class Player {
 
     int health, money, team;
-    vector<int> unlockedBuildings, unlockedUnits;
+    vector<int> unlockedBuildings, unlockedUnits, unitCues;
     vector<Tile*> towerSpots;
+    bool cheatMode;
 
 public:
     Player(int, int, int);
@@ -22,6 +23,14 @@ public:
     int checkLevelofUnit(int);
 
     void setInitialUnlocks(vector<Building>&, vector<Unit>&);
+
+    bool attempttoSpendMoney(int);
+
+    void addToUnitCue(int, int);
+
+    bool checkUnitCue(int);
+
+    int getUnitCuesSize();
 
 };
 

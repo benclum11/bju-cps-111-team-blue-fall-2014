@@ -1,7 +1,7 @@
 #include <QString>
 #include "player.h"
 
-Player::Player(int initHealth, int initMoney, int initTeam)
+Player::Player(int initHealth, int initMoney, int initTeam) : cheatMode(false)
 {
     health = initHealth;
     money = initMoney;
@@ -39,4 +39,36 @@ void Player::setInitialUnlocks(vector<Building>& buildingData, vector<Unit>& uni
             }
         }
     }
+}
+
+bool Player::attempttoSpendMoney(int amount)
+{
+    if (cheatMode) { return true; }
+    if (amount < money || money < 0) {
+        money -= amount;
+        return true;
+    }
+    return false;
+}
+
+void Player::addToUnitCue(int type, int cost)
+{
+    if (cost < money || money < 0) {
+        money -= cost;
+        ++unitCues[type];
+    }
+}
+
+bool Player::checkUnitCue(int type)
+{
+    if (unitCues[type] != 0) {
+        --unitCues[type];
+        return true;
+    }
+    return false;
+}
+
+int Player::getUnitCuesSize()
+{
+    return unitCues.size();
 }

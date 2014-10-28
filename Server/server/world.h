@@ -22,7 +22,6 @@ class World {
     vector<Player*> players;
     vector<Unit*> livingUnits;
     int counter, rows, columns;
-    vector<int> team1unitCues,team2unitCues;
 
     World();
 
@@ -35,11 +34,13 @@ class World {
     void readUnitFile(QString);
     void readPlayerFile(QString);
 
-    void buildTower(int,Tile*);
+    void buildTower(int, Tile*);
     void upgradeTower(Tile*);
     void deployUnit(int,int);
+    Player* getPlayer(int);
 
-    void findTileAt(int, int);
+    Tile* findTileAt(int, int);
+
 public:
 
     static World* Instance();

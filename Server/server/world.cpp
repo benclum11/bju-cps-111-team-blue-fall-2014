@@ -37,13 +37,6 @@ vector<Tile*>& World::getPath(int team)
     else {return team2path;}
 }
 
-//places a tower of specified type in the specified tile
-void World::buildTower(int type, Tile* tile)
-{
-    Building* building = new Building(getBuildingType(type, 1));
-    tile->placeBuilding(building);
-}
-
 //increases calls the upgrade method of the building and passes the info to use
 void World::upgradeTower(Tile* tile)
 {
@@ -62,9 +55,22 @@ void World::deployUnit(int type, int team)
     livingUnits.push_back(unit);
 }
 
-void World::findTileAt(int xCoord, int yCoord)
+Player* World::getPlayer(int team)
 {
+    return players[team-1];
+}
 
+Tile* World::findTileAt(int xCoord, int yCoord)
+{
+    bool found = false;
+    Tile* tile;
+    for (int i = 0; i < rows && !found; ++i) {
+        for (int j = 0; j < columns && !found; ++j) {
+            tile = map[i][j];
+            if(tile->getXCoord() == xCoord && tile->getYCoord() == yCoord) { found = true; }
+        }
+    }
+    return tile;
 }
 
 //runs every 20 milliseconds
@@ -88,14 +94,10 @@ void World::canDeployUnits()
 {
     if (counter == 0)
     {
-        for(unsigned int i = 0; i < team1unitCues.size(); ++i) {
-            deployUnit(i, 1);
-            --team1unitCues[i];
-        }
-
-        for(unsigned int i = 0; i < team2unitCues.size(); ++i) {
-            deployUnit(i, 2);
-            --team2unitCues[i];
+        for(int i = 1; i < players[0]->getUnitCuesSize(); ++i) {
+            if (players[0]->checkUnitCue(i)) {
+                deployUnit(i, 1);
+            }
         }
         counter = 150;
     } else { --counter; }
@@ -252,6 +254,12 @@ void World::readPlayerFile(QString filename)
     players.push_back(player);
 }
 
+void World::buildTower(int type, Tile* tile)
+{
+    Building* building = new Building(getBuildingType(type, 1));
+    tile->placeBuilding(building);
+}
+
 //self explanatory
 void World::sendWorldStartInfotoClients()
 {
@@ -260,30 +268,44 @@ void World::sendWorldStartInfotoClients()
 
 void World::buyTower(QStringList& data)
 {
-    findTileAt(data.at(2).toInt(), data.at(3).toInt());
+    Tile* tile = findTileAt(data.at(2).toInt(), data.at(3).toInt());
+    int cost = getBuildingType(data.at(1).toInt(), 1).getCost();
+    if (getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
+        buildTower(data.at(1).toInt(), tile);
+    }
+    tile->getBuilding()->addtoTotalCost();
+
+    //stub
 }
 
 void World::buyUnit(QStringList& data)
 {
-
+    int cost = getUnitType(data[1].toInt(), 1).getCost();
+    if (getPlayer(data[2].toInt())->attempttoSpendMoney(cost)) {
+        deployUnit(data.at(1).toInt(), data.at(2).toInt());
+    }
 }
 
 void World::destroy(QStringList& data)
 {
+    findTileAt(data.at(1).toInt(),data.at(2).toInt())->destroyBuilding();
 
+    //stub
 }
 
 void World::upgrade(QStringList& data)
 {
-
+    Tile* tile = findTileAt(data.at(1).toInt(),data.at(2).toInt());
+    Building upgrade = getBuildingType(tile->getBuilding()->getType(),tile->getBuilding()->getLevel() + 1);
+    tile->upgradeBuilding(upgrade);
 }
 
 void World::load(QString filename)
 {
-
+    (void)filename;//stub
 }
 
 void World::save(QString filename)
 {
-
+    (void)filename;//stub
 }

@@ -8,13 +8,13 @@ using namespace std;
 
 class Building : public Object {
 
-    int type, attack, production, range, lvl, speed;
+    int type, attack, production, range, lvl, speed, totalcost;
     vector<int> unlock;
 
     void ontick();
 
 public:
-    Building() {}
+    Building() { totalcost = 0; }
 
     void setType(int init) { type = init; }
     void setAttack(int init) { attack = init; }
@@ -23,6 +23,7 @@ public:
     void setLevel(int init) { lvl = init; }
     void setSpeed(int init) { speed = init; }
     void setUnlock(vector<int>& init) { unlock = init; }
+    void addtoTotalCost() { totalcost += cost; }
 
     int getType() {return type;}
     int getAttack() {return attack;}
@@ -31,6 +32,7 @@ public:
     int getLevel() {return lvl;}
     int getSpeed() {return speed;}
     vector<int> getUnlock() {return unlock;}
+    int getTotalCost() {return totalcost;}
 
     void updateState();
     void upgrade(Building& upgrade);

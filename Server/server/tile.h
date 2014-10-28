@@ -28,6 +28,9 @@ public:
     Building* getBuilding() { return building; }
     int getXCoord() { return xCoord; }
     int getYCoord() { return yCoord; }
+    int getTeam() { return team; }
+    void upgradeBuilding(Building& upgrade) { building->upgrade(upgrade);}
+    int destroyBuilding();
 
 };
 

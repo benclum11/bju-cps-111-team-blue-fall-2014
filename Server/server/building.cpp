@@ -19,5 +19,5 @@ void Building::upgrade(Building &upgrade)
     range = upgrade.getRange();
     speed = upgrade.getSpeed();
     unlock = upgrade.getUnlock();
-    cost += upgrade.getCost();
+    cost = upgrade.getCost();
 }

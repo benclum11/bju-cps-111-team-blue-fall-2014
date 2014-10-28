@@ -5,12 +5,14 @@
 
 class Unit : public Object {
 
-    int health, speed, damage, size;
+    static int nextID;
+
+    int ID, health, speed, damage, size;
 
     void ontick();
 
 public:
-    Unit() {}
+    Unit() {ID = nextID; ++nextID;}
 
     void updateState();
 
