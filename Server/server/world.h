@@ -21,18 +21,18 @@ class World {
     vector<Tile*> team1path, team2path;
     vector<Player*> players;
     vector<Unit*> livingUnits;
-    int counter, rows, columns;
+    int counter, rows, columns, tileWidth, tileHeight;
 
     World();
 
-    void readMapFile(QString);
-    void readTileInfo(QTextStream&, Tile*);
+    void readMapFile(QString, QString&);
+    void readTileInfo(QTextStream&, Tile*, QString&);
     void readPaths(QTextStream&);
-    void readBuildingFile(QString);
-    void readTowerInfo(QTextStream&);
-    void readBaseLocation(QTextStream&);
-    void readUnitFile(QString);
-    void readPlayerFile(QString);
+    void readBuildingFile(QString, QString&);
+    void readTowerInfo(QTextStream&, QString&);
+    void readBaseLocation(QTextStream&, QString&);
+    void readUnitFile(QString, QString&);
+    void readPlayerFile(QString, QString&);
 
     void buildTower(int, Tile*);
     void upgradeTower(Tile*);

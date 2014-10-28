@@ -41,7 +41,7 @@
       <x>0</x>
       <y>0</y>
       <width>500</width>
-      <height>350</height>
+      <height>351</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -53,11 +53,14 @@
     <property name="styleSheet">
      <string notr="true"/>
     </property>
+    <property name="locale">
+     <locale language="English" country="UnitedStates"/>
+    </property>
     <property name="text">
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="client-resources.qrc">:/Resources/titlescreen.PNG</pixmap>
+     <pixmap resource="client-resources.qrc">:/Resources/titlescreen.png</pixmap>
     </property>
    </widget>
    <widget class="QPushButton" name="btnStart">

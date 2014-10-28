@@ -106,22 +106,23 @@ void World::canDeployUnits()
 //constructs the initial game state
 World::World() : counter(500)
 {
+    QString sendToClient = "";
     QFile worldFile("world.txt");
     if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readWorld(&worldFile);
     QString filetoRead = readWorld.readLine();
-    readMapFile("://textfiles/" + filetoRead);
+    readMapFile("://textfiles/" + filetoRead, sendToClient);
     filetoRead = readWorld.readLine();
-    readBuildingFile("://textfiles/" + filetoRead);
+    readBuildingFile("://textfiles/" + filetoRead, sendToClient);
     filetoRead = readWorld.readLine();
-    readUnitFile("://textfiles/" + filetoRead);
+    readUnitFile("://textfiles/" + filetoRead, sendToClient);
     filetoRead = readWorld.readLine();
-    readPlayerFile("://textfiles/" + filetoRead);
+    readPlayerFile("://textfiles/" + filetoRead, sendToClient);
     sendWorldStartInfotoClients();
 }
 
 //reads the initial map state
-void World::readMapFile(QString filename)
+void World::readMapFile(QString filename, QString& sendtoClient)
 {
 
     QFile mapFile(filename);
@@ -131,13 +132,17 @@ void World::readMapFile(QString filename)
     rows = temp.toInt();
     temp = readMap.readLine();
     columns = temp.toInt();
+    temp = readMap.readLine();
+    QStringList dimensions = temp.split("x");
+    tileWidth = dimensions[0].toInt();
+    tileHeight = dimensions[1].toInt();
 
     map = new Tile**[rows];
     for (int i = 0; i < rows; ++i) {
         map[i] = new Tile*[columns];
         for (int j = 0; j < columns; ++j) {
             Tile* tempTile = new Tile();
-            readTileInfo(readMap, tempTile);
+            readTileInfo(readMap, tempTile, sendtoClient);
             map[i][j] = tempTile;
         }
     }
@@ -146,7 +151,7 @@ void World::readMapFile(QString filename)
 }
 
 //reads individual tile info
-void World::readTileInfo(QTextStream& readMap, Tile* tile)
+void World::readTileInfo(QTextStream& readMap, Tile* tile, QString& sendtoClient)
 {
     QString temp = readMap.readLine();
     QStringList data = temp.split(" ");
@@ -154,6 +159,11 @@ void World::readTileInfo(QTextStream& readMap, Tile* tile)
     tile->setXCoord(data[1].toInt());
     tile->setYCoord(data[2].toInt());
     tile->setTeam(data[3].toInt());
+
+    sendtoClient += "01 " + QString::number(tileWidth) + " " + QString::number(tileHeight) + " ";
+    sendtoClient += QString::number(tile->getXCoord()) + " " + QString::number(tile->getXCoord());
+    sendtoClient += " " + tile->isBuildable() ? "1 " : "0 ";
+    sendtoClient += QString::number(tile->getTeam()) + "/n";
 }
 
 //reads what paths the units will use
@@ -176,7 +186,7 @@ void World::readPaths(QTextStream& readMap)
 }
 
 //reads the stats of the types of towers
-void World::readBuildingFile(QString filename)
+void World::readBuildingFile(QString filename, QString& sendtoClient)
 {
     QFile buildingFile(filename);
     if (!buildingFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -184,14 +194,14 @@ void World::readBuildingFile(QString filename)
     QString temp = readBuildings.readLine();
     for (int i = 0; i < temp.toInt(); ++i) {
         for (int i = 0; i < 5; ++i) {
-            readTowerInfo(readBuildings);
+            readTowerInfo(readBuildings, sendtoClient);
         }
     }
-    readBaseLocation(readBuildings);
+    readBaseLocation(readBuildings, sendtoClient);
 }
 
 //reads individual tower stats
-void World::readTowerInfo(QTextStream& readBuildings)
+void World::readTowerInfo(QTextStream& readBuildings, QString& sendtoClient)
 {
     QString temp = readBuildings.readLine();
     QStringList data = temp.split(" ");
@@ -215,10 +225,15 @@ void World::readTowerInfo(QTextStream& readBuildings)
     }
     tempbuilding.setCost(data[7].toInt());
     buildingTypes.push_back(tempbuilding);
+
+    sendtoClient += "02 1_" + QString::number(tempbuilding.getType()) + "_" + QString::number(tempbuilding.getLevel());
+    sendtoClient += " " + QString::number(tempbuilding.getAttack()) + " " + QString::number(tempbuilding.getSpeed());
+    sendtoClient += " " + QString::number(tempbuilding.getRange()) + " " + QString::number(tempbuilding.getProduction());
+    sendtoClient += " " + QString::number(tempbuilding.getCost());
 }
 
 //reads the starting location for base and creates one there
-void World::readBaseLocation(QTextStream& readBuildings)
+void World::readBaseLocation(QTextStream& readBuildings, QString& sendtoClient)
 {
     QString temp = readBuildings.readLine();
     QStringList data = temp.split(" ");
@@ -227,7 +242,7 @@ void World::readBaseLocation(QTextStream& readBuildings)
 }
 
 //reads the stats of the types of units
-void World::readUnitFile(QString filename)
+void World::readUnitFile(QString filename, QString& sendtoClient)
 {
     QFile unitFile(filename);
     if (!unitFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -237,7 +252,7 @@ void World::readUnitFile(QString filename)
 }
 
 //reads the starting stats of the players
-void World::readPlayerFile(QString filename)
+void World::readPlayerFile(QString filename, QString& sendtoClient)
 {
     QFile playerFile(filename);
     if (!playerFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }

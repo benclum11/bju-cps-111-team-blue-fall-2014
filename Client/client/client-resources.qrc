@@ -6,7 +6,6 @@
         <file>Resources/Buildings/3.png</file>
         <file>Resources/Tiles/0.png</file>
         <file>Resources/Tiles/1.png</file>
-        <file>Resources/titlescreen.PNG</file>
         <file>Resources/Units/0/1.png</file>
         <file>Resources/Units/0/2.png</file>
         <file>Resources/Units/0/3.png</file>
@@ -19,5 +18,6 @@
         <file>Resources/Units/2/2.png</file>
         <file>Resources/Units/2/3.png</file>
         <file>Resources/Units/2/4.png</file>
+        <file>Resources/titlescreen.png</file>
     </qresource>
 </RCC>
