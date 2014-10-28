@@ -63,7 +63,7 @@
      <pixmap resource="client-resources.qrc">:/Resources/titlescreen.png</pixmap>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnStart">
+   <widget class="QPushButton" name="btnConnect">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -76,7 +76,7 @@
      <string notr="true"/>
     </property>
     <property name="text">
-     <string>Start Game</string>
+     <string>Connect</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnHelp">

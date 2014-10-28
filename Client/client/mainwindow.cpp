@@ -19,14 +19,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_btnExit_clicked()
+void MainWindow::on_btnConnect_clicked()
 {
-    this->close();
-}
-
-void MainWindow::on_btnStart_clicked()
-{
-    //this->netAddress = ui->lnIPAddr->text();
     if (this->ui->lnIPAddr->text().size() == 0)
     {
         socket->connectToHost("localhost", 10000);
@@ -41,11 +35,24 @@ void MainWindow::on_btnStart_clicked()
         QMessageBox::critical(this, "Error", "Unable to connect to server.");
         return;
     }
+
+    disConExpected = false;
+    ui->btnConnect->setEnabled(false);
+
+    QDialog *GameInitWin = new QDialog();
+    GameInitWin->show();
+    //GameInitWin->activateWindow(); // Do we need this?
 }
 
 void MainWindow::on_btnHelp_clicked()
 {
-    QMessageBox::information(this, "Help", "Press Start to start a game. Enter an IP address in the text box to connect to a remote game, otherwise leave blank. Press Exit to quit.");
+    QMessageBox::information(this, "Help", "Press Start to start a game. Enter an IP address in the text box to connect to a remote game, or leave blank to create a local server.");
+}
+
+void MainWindow::on_btnExit_clicked()
+{
+    disConExpected = true;
+    this->close();
 }
 
 void MainWindow::dataReceived()
@@ -55,5 +62,11 @@ void MainWindow::dataReceived()
 
 void MainWindow::serverDisconnected()
 {
-
+    socket->close();
+    ui->btnConnect->setEnabled(true);
+    if (!disConExpected)
+    {
+        QMessageBox::information(this, "Disconnect", "Connection to server lost!");
+        disConExpected = true; // Is this necessary to ensure future good behavior?
+    }
 }

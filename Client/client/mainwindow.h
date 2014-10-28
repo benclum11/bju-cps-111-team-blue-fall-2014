@@ -17,10 +17,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QString netAddress;
+    bool disConExpected;
     
 private slots:
     void on_btnExit_clicked();
-    void on_btnStart_clicked();
+    void on_btnConnect_clicked();
     void on_btnHelp_clicked();
     void dataReceived();
     void serverDisconnected();
