@@ -21,7 +21,7 @@ public:
     void setBuildable(int init) { buildable = init; }
     void setXCoord(int init) { xCoord = init; }
     void setYCoord(int init) { yCoord = init; }
-    void setTeam(bool init) { team = init; }
+    void setTeam(int init) { team = init; }
     void placeBuilding(Building* init) { building = init; }
 
     bool isBuildable() { return buildable; }

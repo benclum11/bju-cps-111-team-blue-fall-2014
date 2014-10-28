@@ -32,6 +32,13 @@ public:
 
     int getUnitCuesSize();
 
+    int getTeam() {return team;}
+    int getHealth() {return health;}
+    int getMoney() {return money;}
+
+    vector<int> getUnlockedBuildings() {return unlockedBuildings;}
+    vector<int> getUnlockedUnits() {return unlockedUnits;}
+
 };
 
 #endif // PLAYER_H

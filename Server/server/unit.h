@@ -12,9 +12,17 @@ class Unit : public Object {
     void ontick();
 
 public:
-    Unit() {ID = nextID; ++nextID;}
+    Unit(bool);
 
     void updateState();
+
+    void setHealth(int init) {health = init;}
+    void setSpeed(int init) {speed = init;}
+    void setDamage(int init) {damage = init;}
+
+    int getHealth() {return health;}
+    int getSpeed() {return speed;}
+    int getDamage() {return damage;}
 
 };
 

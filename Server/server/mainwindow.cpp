@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     worldCreated = false;
     paused = true;
-
     ui->setupUi(this);
 
     timer = new QTimer(this);
@@ -41,11 +40,12 @@ void MainWindow::clientConnected()
     QTcpSocket* sock = server->nextPendingConnection();
     connect(sock, &QTcpSocket::disconnected, this, &MainWindow::clientDisconnected);
     connect(sock, &QTcpSocket::readyRead, this, &MainWindow::dataRecieved);
-    if(server->children().size() == 2 && worldCreated)
-    {
+    QString clientMsg = World::Instance()->getSendToClient();
+    if(server->children().size() == 2 && worldCreated) {
         timer->start();
         paused = false;
     }
+    sock->write(clientMsg.toLocal8Bit());
 }
 
 void MainWindow::clientDisconnected()

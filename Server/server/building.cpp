@@ -13,7 +13,7 @@ void Building::updateState()
 
 void Building::upgrade(Building &upgrade)
 {
-    ++lvl;
+    type = upgrade.getType();
     attack = upgrade.getAttack();
     production = upgrade.getProduction();
     range = upgrade.getRange();

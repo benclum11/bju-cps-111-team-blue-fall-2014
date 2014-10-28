@@ -22,6 +22,7 @@ class World {
     vector<Player*> players;
     vector<Unit*> livingUnits;
     int counter, rows, columns, tileWidth, tileHeight;
+    QString sendToClient;
 
     World();
 
@@ -32,11 +33,12 @@ class World {
     void readTowerInfo(QTextStream&, QString&);
     void readBaseLocation(QTextStream&, QString&);
     void readUnitFile(QString, QString&);
+    void readUnitInfo(QTextStream&, QString&);
     void readPlayerFile(QString, QString&);
 
-    void buildTower(int, Tile*);
+    void buildTower(QString, Tile*, QString&);
     void upgradeTower(Tile*);
-    void deployUnit(int,int);
+    void deployUnit(QString,int);
     Player* getPlayer(int);
 
     Tile* findTileAt(int, int);
@@ -44,15 +46,14 @@ class World {
 public:
 
     static World* Instance();
-    Building& getBuildingType(int, int);
-    Unit& getUnitType(int, int);
-
+    Building& getBuildingType(QString);
+    Unit& getUnitType(QString);
     vector<Tile*>& getPath(int team);
+    QString getSendToClient() {return sendToClient;}
 
     void updateWorld();
 
     void canDeployUnits();
-    void sendWorldStartInfotoClients();
 
     void buyTower(QStringList&);
     void buyUnit(QStringList&);

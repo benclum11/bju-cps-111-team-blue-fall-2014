@@ -1,4 +1,3 @@
-#include <QString>
 #include "player.h"
 
 Player::Player(int initHealth, int initMoney, int initTeam) : cheatMode(false)
@@ -22,21 +21,16 @@ void Player::setInitialUnlocks(vector<Building>& buildingData, vector<Unit>& uni
         unlockedUnits.push_back(0);
     }
     unlockedBuildings[0] = 1;
-    vector<int> baseUnlocks = buildingData[0].getUnlock();
-    for (unsigned int i = 0; i < baseUnlocks.size(); ++i) {
-        QString type = QString::number(baseUnlocks[i]);
-        QString specificType = "";
-        int level = ((QString)(type.at(type.length() - 1))).toInt();
-        if(type.at(0) == '1') {
-            for(int i = 1; i < type.length() - 1; ++i) {
-                specificType = specificType + type.at(i);
-                unlockedBuildings[specificType.toInt()] = level;
-            }
-        } else if (type.at(0) == '2') {
-            for(int i = 1; i < type.length() - 1; ++i) {
-                specificType = specificType + type.at(i);
-                unlockedUnits[specificType.toInt()] = level;
-            }
+    QStringList baseUnlocks = buildingData[0].getUnlock();
+    for (int i = 0; i < baseUnlocks.size(); ++i) {
+        QStringList unlock = baseUnlocks[i].split("_");
+        int type = unlock.at(0).toInt();
+        int specificType = unlock.at(1).toInt();
+        int level = unlock.at(2).toInt();
+        if(type == 1) {
+            unlockedBuildings[specificType] = level;
+        } else if (type == 2) {
+            unlockedUnits[specificType] = level;
         }
     }
 }
@@ -51,18 +45,18 @@ bool Player::attempttoSpendMoney(int amount)
     return false;
 }
 
-void Player::addToUnitCue(int type, int cost)
+void Player::addToUnitCue(int specificType, int cost)
 {
     if (cost < money || money < 0) {
         money -= cost;
-        ++unitCues[type];
+        ++unitCues[specificType];
     }
 }
 
-bool Player::checkUnitCue(int type)
+bool Player::checkUnitCue(int specificType)
 {
-    if (unitCues[type] != 0) {
-        --unitCues[type];
+    if (unitCues[specificType] != 0) {
+        --unitCues[specificType];
         return true;
     }
     return false;
