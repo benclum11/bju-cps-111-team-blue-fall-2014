@@ -21,13 +21,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnConnect_clicked()
 {
+    // Decide to connect to supplied IP or to localhost.
     if (this->ui->lnIPAddr->text().size() == 0)
     {
+        QMessageBox::information(this, "Note", "Start the server and then close this window.");
         socket->connectToHost("localhost", 10000);
     }
     else
     {
-    socket->connectToHost(ui->lnIPAddr->text(), 10000);
+        socket->connectToHost(ui->lnIPAddr->text(), 10000);
     }
 
     if (!socket->waitForConnected())
@@ -39,9 +41,12 @@ void MainWindow::on_btnConnect_clicked()
     disConExpected = false;
     ui->btnConnect->setEnabled(false);
 
+    // This window should contain a "start" button and a "disconnect" button.
+    // If the start button is selected, the game window should be launched.
+    // If the disconnect is selected, this window and the socket should be closed.
     QDialog *GameInitWin = new QDialog();
     GameInitWin->show();
-    //GameInitWin->activateWindow(); // Do we need this?
+    GameInitWin->activateWindow(); // Do we need this?
 }
 
 void MainWindow::on_btnHelp_clicked()
@@ -66,7 +71,7 @@ void MainWindow::serverDisconnected()
     ui->btnConnect->setEnabled(true);
     if (!disConExpected)
     {
-        QMessageBox::information(this, "Disconnect", "Connection to server lost!");
+        QMessageBox::critical(this, "Disconnect", "Connection to server lost!");
         disConExpected = true; // Is this necessary to ensure future good behavior?
     }
 }
