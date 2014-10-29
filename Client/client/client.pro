@@ -14,11 +14,14 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    helpwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    helpwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    helpwindow.ui
 
 RESOURCES += \
     client-resources.qrc

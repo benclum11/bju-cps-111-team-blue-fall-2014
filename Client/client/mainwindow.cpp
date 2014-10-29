@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <string>
+#include "helpwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -51,6 +52,9 @@ void MainWindow::on_btnConnect_clicked()
 
 void MainWindow::on_btnHelp_clicked()
 {
+    helpWindow help;
+    help.setModal(true);
+    help.exec();
     QMessageBox::information(this, "Help", "Press Start to start a game. Enter an IP address in the text box to connect to a remote game, or leave blank to create a local server.");
 }
 
