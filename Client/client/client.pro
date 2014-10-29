@@ -14,9 +14,11 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    buildablelabel.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    buildablelabel.h
 
 FORMS    += mainwindow.ui
 

@@ -12,12 +12,24 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    Ui::MainWindow *ui;
+
+    QTcpSocket *socket;
+
+    void getTileInfo(QString);
+    void getBuildingInfo(QString);
+    void getUnitInfo(QString);
+    void getPlayerInfo(QString);
+    void createBuilding(QString);
     
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QString netAddress;
     bool disConExpected;
+
+    void updateGameState(QString);
     
 private slots:
     void on_btnExit_clicked();
@@ -26,10 +38,6 @@ private slots:
     void dataReceived();
     void serverDisconnected();
 
-private:
-    Ui::MainWindow *ui;
-
-    QTcpSocket *socket;
 };
 
 #endif // MAINWINDOW_H
