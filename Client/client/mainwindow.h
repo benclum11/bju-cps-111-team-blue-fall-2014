@@ -18,6 +18,7 @@ public:
     ~MainWindow();
     QString netAddress;
     bool disConExpected;
+    void networkDisconect();
     
 private slots:
     void on_btnExit_clicked();
@@ -25,6 +26,7 @@ private slots:
     void on_btnHelp_clicked();
     void dataReceived();
     void serverDisconnected();
+    void launchLobby();
 
 private:
     Ui::MainWindow *ui;

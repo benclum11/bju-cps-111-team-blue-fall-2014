@@ -15,13 +15,16 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    helpwindow.cpp
+    helpwindow.cpp \
+    gamelobby.cpp
 
 HEADERS  += mainwindow.h \
-    helpwindow.h
+    helpwindow.h \
+    gamelobby.h
 
 FORMS    += mainwindow.ui \
-    helpwindow.ui
+    helpwindow.ui \
+    gamelobby.ui
 
 RESOURCES += \
     client-resources.qrc
