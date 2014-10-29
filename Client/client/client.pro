@@ -14,19 +14,24 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     buildablelabel.cpp \
     helpwindow.cpp \
-    gamelobby.cpp
+    gamelobby.cpp \
+    titlewindow.cpp \
+    gamewindow.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     buildablelabel.h \
     helpwindow.h \
-    gamelobby.h
+    gamelobby.h \
+    titlewindow.h \
+    gamewindow.h
 
-FORMS    += mainwindow.ui \
+FORMS    += \
     helpwindow.ui \
-    gamelobby.ui
+    gamelobby.ui \
+    titlewindow.ui \
+    gamewindow.ui
 
 RESOURCES += \
     client-resources.qrc

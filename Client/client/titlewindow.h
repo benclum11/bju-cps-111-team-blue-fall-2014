@@ -1,19 +1,19 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef TitleWindow_H
+#define TitleWindow_H
 
 #include <QString>
 #include <QMainWindow>
 #include <QTcpSocket>
 
 namespace Ui {
-class MainWindow;
+class TitleWindow;
 }
 
-class MainWindow : public QMainWindow
+class TitleWindow : public QMainWindow
 {
     Q_OBJECT
 
-    Ui::MainWindow *ui;
+    Ui::TitleWindow *ui;
 
     QTcpSocket *socket;
 
@@ -22,12 +22,10 @@ class MainWindow : public QMainWindow
     void getUnitInfo(QString);
     void getPlayerInfo(QString);
     void createBuilding(QString);
-    int team, lblWidth, lblHeight;
-    bool windowSet;
     
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit TitleWindow(QWidget *parent = 0);
+    ~TitleWindow();
     QString netAddress;
 
     void updateGameState(QString);
@@ -42,4 +40,4 @@ private slots:
 
 };
 
-#endif // MAINWINDOW_H
+#endif // TitleWindow_H

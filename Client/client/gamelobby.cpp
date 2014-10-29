@@ -1,11 +1,11 @@
-#include <mainwindow.h>
+#include <titlewindow.h>
 #include "gamelobby.h"
 #include "ui_gamelobby.h"
 #include <QMessageBox>
 
 gameLobby::gameLobby(QWidget* parent, QTcpSocket* socket) :
-    QDialog(parent), socket(socket), unexpected(true),
-    ui(new Ui::gameLobby), parent(parent)
+     QDialog(parent), ui(new Ui::gameLobby), socket(socket),
+     parent(parent), unexpected(true)
 {
     ui->setupUi(this);
     parent->hide();
@@ -27,8 +27,6 @@ void gameLobby::on_btnDisconnect_clicked()
 {
     unexpected = false;
     socket->close();
-    parent->show();
-    this->close();
 }
 
 void gameLobby::serverDisconnected()
@@ -37,7 +35,7 @@ void gameLobby::serverDisconnected()
     {
         socket->close();
         QMessageBox::critical(this, "Disconnect", "Connection to server lost!");
-        parent->show();
-        this->close();
     }
+    parent->show();
+    this->close();
 }

@@ -2,7 +2,6 @@
 #define GAMELOBBY_H
 
 #include <QDialog>
-#include <mainwindow.h>
 #include <QTcpSocket>
 
 namespace Ui {
