@@ -4,6 +4,8 @@
 #include <QString>
 #include <QPixmap>
 #include "buildablelabel.h"
+#include "helpwindow.h"
+#include <gamelobby.h>
 
 void MainWindow::getTileInfo(QString command)
 {
@@ -127,6 +129,13 @@ void MainWindow::updateGameState(QString srvrMsg)
         }
     }
 }
+// Gracefully closes connection and re-enables connect button
+void MainWindow::networkDisconect()
+{
+    disConExpected = true;
+    socket->close();
+    ui->btnConnect->setEnabled(true);
+}
 
 void MainWindow::on_btnConnect_clicked()
 {
@@ -147,20 +156,14 @@ void MainWindow::on_btnConnect_clicked()
         return;
     }
 
-    disConExpected = false;
-    ui->btnConnect->setEnabled(false);
-
-    // This window should contain a "start" button and a "disconnect" button.
-    // If the start button is selected, the game window should be launched.
-    // If the disconnect is selected, this window and the socket should be closed.
-    QDialog *GameInitWin = new QDialog();
-    GameInitWin->show();
-    GameInitWin->activateWindow(); // Do we need this?
+    launchLobby();
 }
 
 void MainWindow::on_btnHelp_clicked()
 {
-    QMessageBox::information(this, "Help", "Press Start to start a game. Enter an IP address in the text box to connect to a remote game, or leave blank to create a local server.");
+    helpWindow help;
+    help.setModal(true);
+    help.exec();
 }
 
 void MainWindow::on_btnExit_clicked()
@@ -185,6 +188,18 @@ void MainWindow::serverDisconnected()
     if (!disConExpected)
     {
         QMessageBox::critical(this, "Disconnect", "Connection to server lost!");
-        disConExpected = true; // Is this necessary to ensure future good behavior?
+        //disConExpected = true; // Is this necessary to ensure future good behavior?
     }
+}
+
+// Disables connect button and opens the game lobby window
+void MainWindow::launchLobby()
+{
+    disConExpected = false;
+    ui->btnConnect->setEnabled(false);
+
+    gameLobby lobby(this);
+    lobby.setModal(true);
+    lobby.exec();
+    networkDisconect();
 }

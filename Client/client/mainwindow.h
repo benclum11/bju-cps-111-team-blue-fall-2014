@@ -30,6 +30,7 @@ public:
     bool disConExpected;
 
     void updateGameState(QString);
+    void networkDisconect();
     
 private slots:
     void on_btnExit_clicked();
@@ -37,6 +38,7 @@ private slots:
     void on_btnHelp_clicked();
     void dataReceived();
     void serverDisconnected();
+    void launchLobby();
 
 };
 
