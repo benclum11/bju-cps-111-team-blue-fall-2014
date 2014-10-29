@@ -63,6 +63,8 @@ public:
     void upgrade(QStringList&);
     void load(QString);
     void save(QString);
+
+    static void Reset();
 };
 
 

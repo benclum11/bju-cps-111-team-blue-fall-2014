@@ -13,7 +13,6 @@ TitleWindow::TitleWindow(QWidget *parent) :
     ui->setupUi(this);
 
     socket = new QTcpSocket(this);
-    connect(socket, &QTcpSocket::readyRead, this, &TitleWindow::dataReceived);
 }
 
 TitleWindow::~TitleWindow()
@@ -52,15 +51,6 @@ void TitleWindow::on_btnHelp_clicked()
 void TitleWindow::on_btnExit_clicked()
 {
     this->close();
-}
-
-void TitleWindow::dataReceived()
-{
-    QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
-    while (sock->canReadLine()) {
-        QString str = sock->readLine();
-        //updateGameState(str);
-    }
 }
 
 // Disables connect button and opens the game lobby window

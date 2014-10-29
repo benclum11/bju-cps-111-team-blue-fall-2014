@@ -40,14 +40,14 @@ void MainWindow::clientConnected()
     QTcpSocket* sock = server->nextPendingConnection();
     connect(sock, &QTcpSocket::disconnected, this, &MainWindow::clientDisconnected);
     connect(sock, &QTcpSocket::readyRead, this, &MainWindow::dataRecieved);
-    QString clientMsg = World::Instance()->getSendToClient();
+    QString clientMsg = (World::Instance()->getSendToClient()) + "\n";
     sock->write(clientMsg.toLocal8Bit());
     addToLog("Client connected.");
-    if(server->children().size() == 2)
+    if(false)
     {
         timer->start();
         paused = false;
-        clientMsg = "5";
+        clientMsg = "5\n";
         sock->write(clientMsg.toLocal8Bit());
     }
 }
@@ -57,6 +57,9 @@ void MainWindow::clientDisconnected()
     QTcpSocket* sock = dynamic_cast<QTcpSocket*>(sender());
     sock->deleteLater();
     addToLog("Client disconnected.");
+
+    //might wanna remove this after some debugging......
+    World::Reset();
 }
 
 void MainWindow::dataRecieved()

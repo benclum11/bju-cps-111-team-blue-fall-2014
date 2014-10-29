@@ -16,6 +16,7 @@ class gameLobby : public QDialog
     QTcpSocket* socket;
     QWidget* parent;
     bool unexpected;
+    QString initMsg;
 
 public:
     explicit gameLobby(QWidget *parent = 0, QTcpSocket* = 0);
@@ -27,6 +28,8 @@ private slots:
     void on_btnDisconnect_clicked();
 
     void serverDisconnected();
+
+    void dataReceived();
 };
 
 #endif // GAMELOBBY_H

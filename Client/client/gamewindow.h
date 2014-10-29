@@ -1,17 +1,17 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
-#include "ui_gamewindow.h"
-#include <QMainWindow>
 #include <QString>
 #include <QTcpSocket>
+#include <QDialog>
+#include <QWidget>
 #include "buildablelabel.h"
 
 namespace Ui {
 class GameWindow;
 }
 
-class GameWindow : public QMainWindow
+class GameWindow : public QDialog
 {
     Q_OBJECT
 
@@ -22,13 +22,13 @@ class GameWindow : public QMainWindow
     void createBuilding(QString);
 
     int team, lblWidth, lblHeight;
-    QWidget* gameDisplay, parent;
+    QWidget *parent, *gameDisplay;
     Ui::GameWindow* ui;
     QTcpSocket* socket;
     bool unexpected;
 
 public:
-    explicit GameWindow(QWidget* = 0,  QTcpSocket* = 0);
+    explicit GameWindow(QString&, QWidget* = 0,  QTcpSocket* = 0);
 
     void updateGameState(QString);
     ~GameWindow();
@@ -36,6 +36,7 @@ public:
 private slots:
     void serverDisconnected();
 
+    void dataReceived();
 };
 
 #endif // GAMEWINDOW_H

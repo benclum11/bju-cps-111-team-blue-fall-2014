@@ -1,14 +1,18 @@
+#include "ui_gamewindow.h"
 #include "gamewindow.h"
 #include <QLabel>
 #include <QPixmap>
 
-GameWindow::GameWindow(QWidget* parent, QTcpSocket* socket) :
-    QMainWindow(parent), parent(parent), ui(new Ui::GameWindow),
+GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
+    QDialog(parent), parent(parent), ui(new Ui::GameWindow),
     socket(socket), unexpected(true)
 {
-   ui->setupUi(this);
-   parent->hide();
-   connect(socket, &QTcpSocket::disconnected, this, &GameWindow::serverDisconnected);
+    ui->setupUi(this);
+    gameDisplay = new QWidget(this);
+    updateGameState(initMsg);
+    parent->hide();
+    connect(socket, &QTcpSocket::readyRead, this, &GameWindow::dataReceived);
+    connect(socket, &QTcpSocket::disconnected, this, &GameWindow::serverDisconnected);
 }
 
 GameWindow::~GameWindow()
@@ -19,33 +23,42 @@ GameWindow::~GameWindow()
 
 void GameWindow::serverDisconnected()
 {
+    this->close();
+}
 
+void GameWindow::dataReceived()
+{
+    QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
+    while (sock->canReadLine()) {
+        QString str = sock->readLine();
+        updateGameState(str);
+    }
 }
 
 void GameWindow::getTileInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
-    if (true) {
-        gameDisplay = new QWidget(this);
+    if (!!!!!!!!!!!!!!true) {
         int gameWidth = commandArgs.at(2).toInt() * commandArgs.at(4).toInt();
         int gameHeight = commandArgs.at(3).toInt() * commandArgs.at(5).toInt();
-        gameDisplay->resize(gameWidth,gameHeight);
+        resize(gameWidth + 500, gameHeight + 600);
+        gameDisplay->setGeometry(250, 250, gameWidth,gameHeight);
         gameDisplay->setMinimumWidth(gameWidth);
         gameDisplay->setMaximumWidth(gameWidth);
         gameDisplay->setMinimumHeight(gameHeight);
         gameDisplay->setMaximumHeight(gameHeight);
+        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     }
     if (true) {
         QLabel* lbl;
-        QPixmap pixmap;
         if (commandArgs.at(5) == "0") {
-            lbl = new QLabel(this);
+            lbl = new QLabel(gameDisplay);
             lbl->setPixmap(QPixmap("://Resources/Tiles/0.png"));
         } else if (commandArgs.at(5) == "1" && commandArgs.at(6).toInt() == team) {
-            lbl = new BuildableLabel(this);
+            lbl = new BuildableLabel(gameDisplay);
             lbl->setPixmap(QPixmap("://Resources/Tiles/1.png"));
         } else {
-            lbl = new QLabel(this);
+            lbl = new QLabel(gameDisplay);
             lbl->setPixmap(QPixmap("://Resources/Tiles/1.png"));
         }
         lbl->setScaledContents(true);
@@ -53,6 +66,7 @@ void GameWindow::getTileInfo(QString command)
         int y = commandArgs.at(4).toInt() - lblHeight/2;
         lbl->setGeometry(x,y,lblWidth,lblHeight);
     }
+    gameDisplay->show();
 }
 
 void GameWindow::getBuildingInfo(QString command)
@@ -78,6 +92,7 @@ void GameWindow::createBuilding(QString command)
 void GameWindow::updateGameState(QString srvrMsg)
 {
     QStringList commands = srvrMsg.split("%%");
+    commands.pop_back();
     for (int i = 0; i < commands.size(); ++i) {
         QStringList commandargs = commands.at(i).split(" ");
         int commandType = commandargs.at(0).toInt();

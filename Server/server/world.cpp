@@ -388,3 +388,24 @@ void World::save(QString filename)
 {
     (void)filename;//stub
 }
+
+void World::Reset()
+{
+    /*
+    World::currteam = 0;
+    for(int y = 0; y < world->rows; ++y)
+    {
+        for(int x = 0; x < world->columns; ++x)
+        {
+            delete world->map[y][x];
+        }
+    }
+    delete world->map;
+
+    delete world->players[0];
+    delete world->players[1];
+    world->players.clear();
+    */
+    delete world;
+    world = new World();
+}

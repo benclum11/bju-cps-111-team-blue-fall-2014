@@ -22,6 +22,8 @@ class TitleWindow : public QMainWindow
     void getUnitInfo(QString);
     void getPlayerInfo(QString);
     void createBuilding(QString);
+
+    void launchLobby();
     
 public:
     explicit TitleWindow(QWidget *parent = 0);
@@ -35,9 +37,6 @@ private slots:
     void on_btnExit_clicked();
     void on_btnConnect_clicked();
     void on_btnHelp_clicked();
-    void dataReceived();
-    void launchLobby();
-
 };
 
 #endif // TitleWindow_H
