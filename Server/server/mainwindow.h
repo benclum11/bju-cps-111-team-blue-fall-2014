@@ -32,10 +32,9 @@ private:
 
     QTcpServer* server;
 
-    bool worldCreated;
     bool paused;
 
-    void processClientMessage(QString&);
+    void processClientMessage(QString&, QTcpSocket*);
     void updateClient();
 };
 

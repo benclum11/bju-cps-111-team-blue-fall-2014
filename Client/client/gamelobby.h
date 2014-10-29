@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <mainwindow.h>
+#include <QTcpSocket>
 
 namespace Ui {
 class gameLobby;
@@ -12,8 +13,13 @@ class gameLobby : public QDialog
 {
     Q_OBJECT
 
+    Ui::gameLobby *ui;
+    QTcpSocket* socket;
+    QWidget* parent;
+    bool unexpected;
+
 public:
-    explicit gameLobby(QWidget *parent = 0);
+    explicit gameLobby(QWidget *parent = 0, QTcpSocket* = 0);
     ~gameLobby();
 
 private slots:
@@ -21,8 +27,7 @@ private slots:
 
     void on_btnDisconnect_clicked();
 
-private:
-    Ui::gameLobby *ui;
+    void serverDisconnected();
 };
 
 #endif // GAMELOBBY_H

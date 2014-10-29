@@ -23,6 +23,8 @@ class World {
     vector<Unit*> livingUnits;
     int counter, rows, columns, tileWidth, tileHeight;
     QString sendToClient;
+    static int currteam;
+    bool sentTeams;
 
     World();
 
@@ -49,7 +51,7 @@ public:
     Building& getBuildingType(QString);
     Unit& getUnitType(QString);
     vector<Tile*>& getPath(int team);
-    QString getSendToClient() {return sendToClient;}
+    QString getSendToClient();
 
     void updateWorld();
 

@@ -116,7 +116,7 @@
     </rect>
    </property>
    <property name="plainText">
-    <string>Press Start to start a game. Enter an IP address in the text box to connect to a remote game, or leave blank to create a local server.</string>
+    <string>Press Start to start a game. Enter an IP address in the text box to connect to a remote game, or leave blank to connect to localhost. Once in the Game Lobby press start to start immediately or automatically start when a secodn person connects</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">

@@ -10,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    worldCreated = false;
     paused = true;
     ui->setupUi(this);
 
@@ -42,14 +41,15 @@ void MainWindow::clientConnected()
     connect(sock, &QTcpSocket::disconnected, this, &MainWindow::clientDisconnected);
     connect(sock, &QTcpSocket::readyRead, this, &MainWindow::dataRecieved);
     QString clientMsg = World::Instance()->getSendToClient();
+    sock->write(clientMsg.toLocal8Bit());
     addToLog("Client connected.");
-
-    if(server->children().size() == 2 && worldCreated)
+    if(server->children().size() == 2)
     {
         timer->start();
         paused = false;
+        clientMsg = "5";
+        sock->write(clientMsg.toLocal8Bit());
     }
-    sock->write(clientMsg.toLocal8Bit());
 }
 
 void MainWindow::clientDisconnected()
@@ -63,16 +63,13 @@ void MainWindow::dataRecieved()
 {
     QTcpSocket* sock = dynamic_cast<QTcpSocket*>(sender());
     while(sock->canReadLine()) {
-         QString line = sock->readLine();
-         if(!worldCreated) {
-             World::Instance();
-         } else {
-             processClientMessage(line);
-         }
+        QString line = sock->readLine();
+        World::Instance();
+        processClientMessage(line, sock);
     }
 }
 
-void MainWindow::processClientMessage(QString& message)
+void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
 {
     QStringList data = message.split("");
     QString command = data.at(0);
@@ -80,9 +77,13 @@ void MainWindow::processClientMessage(QString& message)
         if (paused) {
             timer->start();
             paused = false;
+            QString clientMsg = "5";
+            sock->write(clientMsg.toLocal8Bit());
         } else {
             timer->stop();
             paused = true;
+            QString clientMsg = "5";
+            sock->write(clientMsg.toLocal8Bit());
         }
     } else if(command == "6") {
         World::Instance()->save(data.at(1));
