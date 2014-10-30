@@ -5,7 +5,11 @@
 #include <QTcpSocket>
 #include <QDialog>
 #include <QWidget>
+#include <vector>
 #include "buildablelabel.h"
+#include "stats.h"
+
+using namespace std;
 
 namespace Ui {
 class GameWindow;
@@ -25,10 +29,15 @@ class GameWindow : public QDialog
     QWidget *parent, *gameDisplay;
     Ui::GameWindow* ui;
     QTcpSocket* socket;
-    bool unexpected;
+    bool unexpected, windowSized;
+    vector<Stats> stats;
+
+    Stats getStatsByType(QString type);
 
 public:
     explicit GameWindow(QString&, QWidget* = 0,  QTcpSocket* = 0);
+
+    BuildableLabel *getClickedLabel();
 
     void updateGameState(QString);
     ~GameWindow();
@@ -37,6 +46,7 @@ private slots:
     void serverDisconnected();
 
     void dataReceived();
+    void on_pushButton_clicked();
 };
 
 #endif // GAMEWINDOW_H

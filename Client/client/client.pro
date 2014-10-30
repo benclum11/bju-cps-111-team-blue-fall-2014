@@ -18,14 +18,18 @@ SOURCES += main.cpp\
     helpwindow.cpp \
     gamelobby.cpp \
     titlewindow.cpp \
-    gamewindow.cpp
+    gamewindow.cpp \
+    stats.cpp \
+    displaybuilding.cpp
 
 HEADERS  += \
     buildablelabel.h \
     helpwindow.h \
     gamelobby.h \
     titlewindow.h \
-    gamewindow.h
+    gamewindow.h \
+    stats.h \
+    displaybuilding.h
 
 FORMS    += \
     helpwindow.ui \

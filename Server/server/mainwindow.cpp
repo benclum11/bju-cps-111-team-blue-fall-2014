@@ -101,6 +101,13 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
     } else if (command == "8") {
         World::Instance()->upgrade(data);
     }
+    for(QObject* obj : server->children()) {
+        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+        if (anotherSock != NULL) {
+            QString str = (World::Instance()->getSendToClient()) + "\n";
+            anotherSock->write(str.toLocal8Bit());
+        }
+    }
 }
 
 void MainWindow::updateClient()

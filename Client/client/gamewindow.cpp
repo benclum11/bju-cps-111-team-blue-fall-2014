@@ -1,11 +1,13 @@
 #include "ui_gamewindow.h"
 #include "gamewindow.h"
+#include "displaybuilding.h"
 #include <QLabel>
 #include <QPixmap>
+#include <QPushButton>
 
 GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     QDialog(parent), parent(parent), ui(new Ui::GameWindow),
-    socket(socket), unexpected(true)
+    socket(socket), unexpected(true), windowSized(false)
 {
     ui->setupUi(this);
     gameDisplay = new QWidget(this);
@@ -13,6 +15,17 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     parent->hide();
     connect(socket, &QTcpSocket::readyRead, this, &GameWindow::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &GameWindow::serverDisconnected);
+}
+
+BuildableLabel *GameWindow::getClickedLabel()
+{
+    for (QObject* obj : this->children()) {
+        BuildableLabel* lbl = dynamic_cast<BuildableLabel*>(obj);
+        if (lbl->getClicked()) {
+            return lbl;
+        }
+    }
+    return nullptr;
 }
 
 GameWindow::~GameWindow()
@@ -38,18 +51,21 @@ void GameWindow::dataReceived()
 void GameWindow::getTileInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
-    if (!!!!!!!!!!!!!!true) {
-        int gameWidth = commandArgs.at(2).toInt() * commandArgs.at(4).toInt();
-        int gameHeight = commandArgs.at(3).toInt() * commandArgs.at(5).toInt();
-        resize(gameWidth + 500, gameHeight + 600);
+    if (!windowSized) {
+        int gameWidth = commandArgs.at(1).toInt() * commandArgs.at(3).toInt();
+        int gameHeight = commandArgs.at(2).toInt() * commandArgs.at(4).toInt();
+        resize(gameWidth + 500, gameHeight + 300);
         gameDisplay->setGeometry(250, 250, gameWidth,gameHeight);
         gameDisplay->setMinimumWidth(gameWidth);
         gameDisplay->setMaximumWidth(gameWidth);
         gameDisplay->setMinimumHeight(gameHeight);
         gameDisplay->setMaximumHeight(gameHeight);
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        lblWidth = commandArgs.at(3).toInt();
+        lblHeight = commandArgs.at(4).toInt();
+        gameDisplay->show();
     }
-    if (true) {
+    if (windowSized) {
         QLabel* lbl;
         if (commandArgs.at(5) == "0") {
             lbl = new QLabel(gameDisplay);
@@ -65,18 +81,28 @@ void GameWindow::getTileInfo(QString command)
         int x = commandArgs.at(3).toInt() - lblWidth/2;
         int y = commandArgs.at(4).toInt() - lblHeight/2;
         lbl->setGeometry(x,y,lblWidth,lblHeight);
+        lbl->show();
     }
-    gameDisplay->show();
+    windowSized = true;
 }
 
 void GameWindow::getBuildingInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
+
+    QStringList unlocks = commandArgs.at(7).split(",");
+    Stats stat(commandArgs.at(1), commandArgs.at(2).toInt(), commandArgs.at(3).toInt(),
+               commandArgs.at(4).toInt(), commandArgs.at(5).toInt(), commandArgs.at(6).toInt(), unlocks);
+    stats.push_back(stat);
 }
 
 void GameWindow::getUnitInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
+
+    Stats stat(commandArgs.at(1), commandArgs.at(4).toInt(), commandArgs.at(3).toInt(),
+               commandArgs.at(2).toInt(), commandArgs.at(5).toInt());
+    stats.push_back(stat);
 }
 
 void GameWindow::getPlayerInfo(QString command)
@@ -87,6 +113,21 @@ void GameWindow::getPlayerInfo(QString command)
 void GameWindow::createBuilding(QString command)
 {
     QStringList commandArgs = command.split(" ");
+
+    QStringList unlocks = commandArgs.at(10).split(",");
+    DisplayBuilding* build = new DisplayBuilding(gameDisplay, getStatsByType(commandArgs.at(3)), commandArgs.at(5).toInt(),commandArgs.at(6).toInt(),
+                          commandArgs.at(7).toInt(), commandArgs.at(8).toInt(), commandArgs.at(9).toInt(), unlocks);
+
+    build->setGeometry(commandArgs.at(1).toInt() - lblWidth/2, commandArgs.at(2).toInt() - lblHeight/2, lblWidth, lblHeight);
+    build->setScaledContents(true);
+    build->show();
+}
+
+Stats GameWindow::getStatsByType(QString type)
+{
+    for(Stats info : stats) {
+        if(info.getType() == type) { return info; }
+    }
 }
 
 void GameWindow::updateGameState(QString srvrMsg)
@@ -160,3 +201,9 @@ void GameWindow::updateGameState(QString srvrMsg)
     }
 }
 
+
+void GameWindow::on_pushButton_clicked()
+{
+    BuildableLabel* lbl = getClickedLabel();
+    lbl->getXCoord();
+}

@@ -156,6 +156,8 @@ void World::readMapFile(QString filename, QString& sendtoClient)
     tileWidth = dimensions[0].toInt();
     tileHeight = dimensions[1].toInt();
 
+    sendtoClient += "01 " + QString::number(columns) + " " + QString::number(rows);
+    sendtoClient += " " + QString::number(tileWidth) + " " + QString::number(tileHeight) + "%%";
     map = new Tile**[rows];
     for (int i = 0; i < rows; ++i) {
         map[i] = new Tile*[columns];
@@ -348,13 +350,14 @@ void World::buildTower(QString type, Tile* tile, QString& sendtoClient)
 
 void World::buyTower(QStringList& data)
 {
-    QString sendtoClient = "";
+    sendToClient = "";
     Tile* tile = findTileAt(data.at(2).toInt(), data.at(3).toInt());
     int cost = getBuildingType(data.at(1)).getCost();
     if (getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
-        buildTower(data.at(1), tile, sendtoClient);
+        buildTower(data.at(1), tile, sendToClient);
     }
     tile->getBuilding()->addtoTotalCost();
+
 }
 
 void World::buyUnit(QStringList& data)
