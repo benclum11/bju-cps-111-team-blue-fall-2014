@@ -21,7 +21,7 @@ BuildableLabel *GameWindow::getClickedLabel()
 {
     for (QObject* obj : this->children()) {
         BuildableLabel* lbl = dynamic_cast<BuildableLabel*>(obj);
-        if (lbl->getClicked()) { //set fault HERE because BuildableLabel constructor is never initialized
+        if (lbl->getClicked()) {
             return lbl;
         }
     }
