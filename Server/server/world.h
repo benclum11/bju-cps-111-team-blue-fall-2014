@@ -51,7 +51,10 @@ public:
     Unit& getUnitType(QString);
     vector<Tile*>& getPath(int team);
     QString getSendToClient();
-    void removeOnePlayer();
+
+    bool hasSentTeams() { return sentTeams; }
+
+    bool removeOnePlayer();
 
     void updateWorld();
 

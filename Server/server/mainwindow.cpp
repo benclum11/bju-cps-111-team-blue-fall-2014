@@ -38,6 +38,11 @@ void MainWindow::timerHit()
 void MainWindow::clientConnected()
 {
     QTcpSocket* sock = server->nextPendingConnection();
+    if (World::Instance()->hasSentTeams()) {
+        sock->close();
+        sock->deleteLater();
+        return;
+    }
     connect(sock, &QTcpSocket::disconnected, this, &MainWindow::clientDisconnected);
     connect(sock, &QTcpSocket::readyRead, this, &MainWindow::dataRecieved);
     QString clientMsg = (World::Instance()->getSendToClient()) + "\n";
@@ -56,8 +61,9 @@ void MainWindow::clientDisconnected()
 {
     QTcpSocket* sock = dynamic_cast<QTcpSocket*>(sender());
     sock->deleteLater();
-    addToLog("Client disconnected.");
-    World.Instance()->removeOnePlayer();
+    if (World::Instance()->removeOnePlayer()) {
+        addToLog("Client disconnected.");
+    }
 }
 
 void MainWindow::dataRecieved()

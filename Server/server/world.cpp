@@ -55,10 +55,15 @@ QString World::getSendToClient()
     return sendToClient;
 }
 
-void World::removeOnePlayer()
+bool World::removeOnePlayer()
 {
-    --currteam;
-    sentTeams = false;
+    if (currteam <= 2) {
+        --currteam;
+        sentTeams = false;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 //increases calls the upgrade method of the building and passes the info to use
@@ -129,7 +134,7 @@ void World::canDeployUnits()
 }
 
 //constructs the initial game state
-World::World() : counter(500), sentTeams(false), currteam(0)
+World::World() : counter(500), currteam(0), sentTeams(false)
 {
     QFile worldFile("://textfiles/world.txt");
     if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
