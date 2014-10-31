@@ -46,7 +46,6 @@ private slots:
     void serverDisconnected();
 
     void dataReceived();
-    void on_pushButton_clicked();
 };
 
 #endif // GAMEWINDOW_H

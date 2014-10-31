@@ -200,10 +200,3 @@ void GameWindow::updateGameState(QString srvrMsg)
         }
     }
 }
-
-
-void GameWindow::on_pushButton_clicked()
-{
-    BuildableLabel* lbl = getClickedLabel();
-    lbl->getXCoord();
-}
