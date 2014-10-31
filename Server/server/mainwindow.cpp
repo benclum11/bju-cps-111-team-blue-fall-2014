@@ -57,9 +57,7 @@ void MainWindow::clientDisconnected()
     QTcpSocket* sock = dynamic_cast<QTcpSocket*>(sender());
     sock->deleteLater();
     addToLog("Client disconnected.");
-
-    //might wanna remove this after some debugging......
-    World::Reset();
+    World.Instance()->removeOnePlayer();
 }
 
 void MainWindow::dataRecieved()

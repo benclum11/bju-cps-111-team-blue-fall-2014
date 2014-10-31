@@ -4,8 +4,6 @@
 
 using namespace std;
 
-int World::currteam = 0;
-
 // Global static pointer used to ensure a single instance of the class.
 World* World::world = NULL;
 
@@ -55,6 +53,12 @@ QString World::getSendToClient()
         if(currteam == 2) {sentTeams = true;}
     }
     return sendToClient;
+}
+
+void World::removeOnePlayer()
+{
+    --currteam;
+    sentTeams = false;
 }
 
 //increases calls the upgrade method of the building and passes the info to use
@@ -125,7 +129,7 @@ void World::canDeployUnits()
 }
 
 //constructs the initial game state
-World::World() : counter(500), sentTeams(false)
+World::World() : counter(500), sentTeams(false), currteam(0)
 {
     QFile worldFile("://textfiles/world.txt");
     if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }

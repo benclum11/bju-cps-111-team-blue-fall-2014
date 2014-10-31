@@ -21,9 +21,8 @@ class World {
     vector<Tile*> team1path, team2path;
     vector<Player*> players;
     vector<Unit*> livingUnits;
-    int counter, rows, columns, tileWidth, tileHeight;
+    int counter, rows, columns, tileWidth, tileHeight, currteam;
     QString sendToClient;
-    static int currteam;
     bool sentTeams;
 
     World();
@@ -52,6 +51,7 @@ public:
     Unit& getUnitType(QString);
     vector<Tile*>& getPath(int team);
     QString getSendToClient();
+    void removeOnePlayer();
 
     void updateWorld();
 
