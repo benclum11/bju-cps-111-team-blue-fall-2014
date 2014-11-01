@@ -56,7 +56,7 @@ void GameWindow::getTileInfo(QString command)
         int gameWidth = commandArgs.at(1).toInt() * commandArgs.at(3).toInt();
         int gameHeight = commandArgs.at(2).toInt() * commandArgs.at(4).toInt();
         resize(gameWidth + 500, gameHeight + 300);
-        gameDisplay->setGeometry(250, 250, gameWidth,gameHeight);
+        gameDisplay->setGeometry(50, 250, gameWidth,gameHeight);
         gameDisplay->setMinimumWidth(gameWidth);
         gameDisplay->setMaximumWidth(gameWidth);
         gameDisplay->setMinimumHeight(gameHeight);
