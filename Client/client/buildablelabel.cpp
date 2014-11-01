@@ -1,6 +1,8 @@
 #include "buildablelabel.h"
 #include "highlightedlabel.h"
 
+int BuildableLabel::clientTeam = 0;
+
 void BuildableLabel::mouseReleaseEvent(QMouseEvent *ev)
 {
     (void)ev;
@@ -11,7 +13,11 @@ void BuildableLabel::mouseReleaseEvent(QMouseEvent *ev)
         }
         HighlightedLabel *label = dynamic_cast<HighlightedLabel*>(obj);
         if (label != NULL) {
+            if (BuildableLabel::clientTeam == team) {
             label->setPixmap(QPixmap(":/Resources/frameythingy.png"));
+            } else {
+                label->setPixmap(QPixmap(":/Resources/redframeythingy.png"));
+            }
             label->setScaledContents(true);
             label->setGeometry(this->geometry());
             label->show();

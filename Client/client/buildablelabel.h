@@ -7,15 +7,19 @@
 
 class BuildableLabel : public QLabel {
 
+    static int clientTeam;
+    int team;
     bool clicked;
     QWidget* parent;
 
 public:
-    BuildableLabel(QWidget* parent) : QLabel(parent), parent(parent)
+    BuildableLabel(QWidget* parent, int team) : QLabel(parent), team(team), parent(parent)
     {
         setMouseTracking(true);
         clicked = false;
     }
+
+    static void setClientTeam(int init) {BuildableLabel::clientTeam = init;}
 
     void mouseReleaseEvent(QMouseEvent *ev);
 

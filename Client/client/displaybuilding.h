@@ -18,7 +18,7 @@ class DisplayBuilding : public BuildableLabel {
 public:
 
     DisplayBuilding(QWidget *parent, Stats currentStats, int nextLvlAttack, int nextLvlSpeed,
-                    int nextLvlRange, int nextLvlProduction, int nextLvlCost, QStringList nextLvlUnlocks);
+                    int nextLvlRange, int nextLvlProduction, int nextLvlCost, QStringList nextLvlUnlocks, int team);
 
 };
 

@@ -3,7 +3,7 @@
 
 
 DisplayBuilding::DisplayBuilding(QWidget *parent, Stats currentStats, int nextLvlAttack1, int nextLvlSpeed1, int nextLvlRange1,
-                                 int nextLvlProduction1, int nextLvlCost1, QStringList nextLvlUnlocks1) : BuildableLabel(parent)
+                                 int nextLvlProduction1, int nextLvlCost1, QStringList nextLvlUnlocks1, int team) : BuildableLabel(parent, team)
 {
     QStringList type = currentStats.getType().split("_");
 
