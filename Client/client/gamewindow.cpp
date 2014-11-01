@@ -12,10 +12,11 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     ui->setupUi(this);
     gameDisplay = new QWidget(this);
     HighlightedLabel *label = new HighlightedLabel(gameDisplay);
-    updateGameState(initMsg);
-    parent->hide();
 
     actionDisplay = new QWidget(this);
+
+    updateGameState(initMsg);
+    parent->hide();
 
     connect(socket, &QTcpSocket::readyRead, this, &GameWindow::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &GameWindow::serverDisconnected);
@@ -59,22 +60,29 @@ void GameWindow::getTileInfo(QString command)
         int gameWidth = commandArgs.at(1).toInt() * commandArgs.at(3).toInt();
         int gameHeight = commandArgs.at(2).toInt() * commandArgs.at(4).toInt();
         resize(gameWidth + 500, gameHeight + 300);
+        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         gameDisplay->setGeometry(50, 250, gameWidth,gameHeight);
         gameDisplay->setMinimumWidth(gameWidth);
         gameDisplay->setMaximumWidth(gameWidth);
         gameDisplay->setMinimumHeight(gameHeight);
         gameDisplay->setMaximumHeight(gameHeight);
-        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         lblWidth = commandArgs.at(3).toInt();
         lblHeight = commandArgs.at(4).toInt();
         gameDisplay->show();
 
-//        actionDisplay->setGeometry(gameWidth + 100, 50, 350, gameHeight + 200);
-//        actionDisplay->setMinimumWidth(gameWidth);
-//        actionDisplay->setMinimumHeight(gameHeight);
-//        actionDisplay->setMaximumWidth(gameWidth + 100);
-//        actionDisplay->setMaximumHeight(gameHeight + 200);
-//        actionDisplay->show();
+        actionDisplay->setGeometry(gameWidth + 100, 50, 350, gameHeight + 200);
+        actionDisplay->setMinimumWidth(350);
+        actionDisplay->setMinimumHeight(gameHeight + 200);
+        actionDisplay->setMaximumWidth(350);
+        actionDisplay->setMaximumHeight(gameHeight + 200);
+
+//        QLabel* lbl = new QLabel(actionDisplay);
+//        lbl->setPixmap(QPixmap("://Resources/Buildings/1.png"));
+//        lbl->setGeometry(0,0,350,gameHeight+200);
+//        lbl->setScaledContents(true);
+//        lbl->show();
+
+        actionDisplay->show();
     }
     if (windowSized) {
         QLabel* lbl;
