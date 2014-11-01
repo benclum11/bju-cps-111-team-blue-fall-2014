@@ -20,5 +20,6 @@
         <file>Resources/Units/2/4.png</file>
         <file>Resources/titlescreen.png</file>
         <file>Resources/frameythingy.png</file>
+        <file>Resources/redframeythingy.png</file>
     </qresource>
 </RCC>

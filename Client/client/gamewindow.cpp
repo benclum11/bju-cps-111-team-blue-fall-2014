@@ -71,11 +71,8 @@ void GameWindow::getTileInfo(QString command)
         if (commandArgs.at(5) == "0") {
             lbl = new QLabel(gameDisplay);
             lbl->setPixmap(QPixmap("://Resources/Tiles/0.png"));
-        } else if (commandArgs.at(5) == "1" && commandArgs.at(6).toInt() == team) {
-            lbl = new BuildableLabel(gameDisplay);
-            lbl->setPixmap(QPixmap("://Resources/Tiles/1.png"));
         } else {
-            lbl = new QLabel(gameDisplay);
+            lbl = new BuildableLabel(gameDisplay, commandArgs.at(6).toInt());
             lbl->setPixmap(QPixmap("://Resources/Tiles/1.png"));
         }
         lbl->setScaledContents(true);
@@ -117,7 +114,7 @@ void GameWindow::createBuilding(QString command)
 
     QStringList unlocks = commandArgs.at(10).split(",");
     DisplayBuilding* build = new DisplayBuilding(gameDisplay, getStatsByType(commandArgs.at(3)), commandArgs.at(5).toInt(),commandArgs.at(6).toInt(),
-                          commandArgs.at(7).toInt(), commandArgs.at(8).toInt(), commandArgs.at(9).toInt(), unlocks);
+                          commandArgs.at(7).toInt(), commandArgs.at(8).toInt(), commandArgs.at(9).toInt(), unlocks, commandArgs.at(4).toInt());
 
     build->setGeometry(commandArgs.at(1).toInt() - lblWidth/2, commandArgs.at(2).toInt() - lblHeight/2, lblWidth, lblHeight);
     build->setScaledContents(true);
@@ -141,6 +138,7 @@ void GameWindow::updateGameState(QString srvrMsg)
         switch (commandType) {
         case 0:
             team = commands.at(i).split(" ").at(1).toInt();
+            BuildableLabel::setClientTeam(team);
             break;
         case 1:
             getTileInfo(commands.at(i));
