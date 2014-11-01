@@ -1,13 +1,13 @@
 #ifndef DISPLAYBUILDING_H
 #define DISPLAYBUILDING_H
 
-#include <QLabel>
 #include <QString>
 #include <QStringList>
 #include <QPixmap>
 #include "stats.h"
+#include "buildablelabel.h"
 
-class DisplayBuilding : public QLabel {
+class DisplayBuilding : public BuildableLabel {
 
     QString type;
     int attack, nextLvlAttack, speed, nextLvlSpeed, range, nextLvlRange, production,

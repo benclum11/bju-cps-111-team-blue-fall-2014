@@ -11,6 +11,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 {
     ui->setupUi(this);
     gameDisplay = new QWidget(this);
+    HighlightedLabel *label = new HighlightedLabel(gameDisplay);
     updateGameState(initMsg);
     parent->hide();
     connect(socket, &QTcpSocket::readyRead, this, &GameWindow::dataReceived);

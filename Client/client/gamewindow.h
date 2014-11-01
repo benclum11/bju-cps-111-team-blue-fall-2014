@@ -8,6 +8,7 @@
 #include <vector>
 #include "buildablelabel.h"
 #include "stats.h"
+#include "highlightedlabel.h"
 
 using namespace std;
 

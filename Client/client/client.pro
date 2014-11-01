@@ -29,7 +29,8 @@ HEADERS  += \
     titlewindow.h \
     gamewindow.h \
     stats.h \
-    displaybuilding.h
+    displaybuilding.h \
+    highlightedlabel.h
 
 FORMS    += \
     helpwindow.ui \
