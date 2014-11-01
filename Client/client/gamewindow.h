@@ -25,6 +25,19 @@ class GameWindow : public QDialog
     void getUnitInfo(QString);
     void getPlayerInfo(QString);
     void createBuilding(QString);
+    void getPlayerHealth(QString);
+    void getPlayerMoney(QString);
+    void getPlayerHealthMoney(QString);
+    void getBuildingUpgrade(QString);
+    void getBuildingDeath(QString);
+    void getUnitCreation(QString);
+    void getUnitMove(QString);
+    void getUnitMoveTurn(QString);
+    void getUnitMoveHealth(QString);
+    void getUnitMoveTurnHealth(QString);
+    void getUnitDeath(QString);
+    void getBulletInfo(QString);
+    void doGamePause();
 
     int team, lblWidth, lblHeight;
     QWidget *parent, *gameDisplay, *actionDisplay;
