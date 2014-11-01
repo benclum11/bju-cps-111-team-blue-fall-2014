@@ -53,6 +53,11 @@ void GameWindow::dataReceived()
     }
 }
 
+void GameWindow::on_btnExitGame_clicked()
+{
+    this->close();
+}
+
 void GameWindow::getTileInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -98,6 +103,13 @@ void GameWindow::getTileInfo(QString command)
         int y = commandArgs.at(4).toInt() - lblHeight/2;
         lbl->setGeometry(x,y,lblWidth,lblHeight);
         lbl->show();
+
+//        QPushButton* exitGame = new QPushButton(this);
+//        exitGame->setGeometry(250, 612, 99, 27);
+//        exitGame->setText("Quit Game");
+//        exitGame->show();
+
+
     }
     windowSized = true;
 }
@@ -139,6 +151,71 @@ void GameWindow::createBuilding(QString command)
     build->show();
 }
 
+void GameWindow::getPlayerHealth(QString)
+{
+
+}
+
+void GameWindow::getPlayerMoney(QString)
+{
+
+}
+
+void GameWindow::getPlayerHealthMoney(QString)
+{
+
+}
+
+void GameWindow::getBuildingUpgrade(QString)
+{
+
+}
+
+void GameWindow::getBuildingDeath(QString)
+{
+
+}
+
+void GameWindow::getUnitCreation(QString)
+{
+
+}
+
+void GameWindow::getUnitMove(QString)
+{
+
+}
+
+void GameWindow::getUnitMoveTurn(QString)
+{
+
+}
+
+void GameWindow::getUnitMoveHealth(QString)
+{
+
+}
+
+void GameWindow::getUnitMoveTurnHealth(QString)
+{
+
+}
+
+void GameWindow::getUnitDeath(QString)
+{
+
+}
+
+void GameWindow::getBulletInfo(QString)
+{
+
+}
+
+void GameWindow::doGamePause()
+{
+
+}
+
 Stats GameWindow::getStatsByType(QString type)
 {
     for(Stats info : stats) {
@@ -171,46 +248,46 @@ void GameWindow::updateGameState(QString srvrMsg)
             getPlayerInfo(commands.at(i));
             break;
         case 14:
-
+            getPlayerHealth(commands.at(i));
             break;
         case 16:
-
+            getPlayerMoney(commands.at(i));
             break;
         case 17:
-
+            getPlayerHealthMoney(commands.at(i));
             break;
         case 21:
             createBuilding(commands.at(i));
             break;
         case 28:
-
+            getBuildingUpgrade(commands.at(i));
             break;
         case 20:
-
+            getBuildingDeath(commands.at(i));
             break;
         case 31:
-
+            getUnitCreation(commands.at(i));
             break;
         case 32:
-
+            getUnitMove(commands.at(i));
             break;
         case 33:
-
+            getUnitMoveTurn(commands.at(i));
             break;
         case 34:
-
+            getUnitMoveHealth(commands.at(i));
             break;
         case 35:
-
+            getUnitMoveTurnHealth(commands.at(i));
             break;
         case 30:
-
+            getUnitDeath(commands.at(i));
             break;
         case 4:
-
+            getBulletInfo(commands.at(i));
             break;
         case 5:
-
+            doGamePause();
             break;
         default:
             break;
