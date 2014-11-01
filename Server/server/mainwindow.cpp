@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::timerHit()
 {
+    World::Instance()->deployUnit("2_0_" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
+    World::Instance()->deployUnit("2_0_" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL)
@@ -48,7 +50,7 @@ void MainWindow::clientConnected()
     QString clientMsg = (World::Instance()->getSendToClient()) + "\n";
     sock->write(clientMsg.toLocal8Bit());
     addToLog("Client connected.");
-    if(false)
+    if(World::Instance()->hasSentTeams())
     {
         timer->start();
         paused = false;
@@ -61,8 +63,12 @@ void MainWindow::clientDisconnected()
 {
     QTcpSocket* sock = dynamic_cast<QTcpSocket*>(sender());
     sock->deleteLater();
-    if (World::Instance()->removeOnePlayer()) {
-        addToLog("Client disconnected.");
+    addToLog("Client disconnected.");
+    for(QObject* obj : server->children()) {
+        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+        if (anotherSock != NULL){
+            //ask for the remaining clients team and do something with it
+        }
     }
 }
 

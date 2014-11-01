@@ -39,7 +39,7 @@ Unit& World::getUnitType(QString type)
 }
 
 //return the path the units must travel
-vector<Tile*>& World::getPath(int team)
+vector<Tile*> World::getPath(int team)
 {
     if(team == 1) {return team1path;}
     else {return team2path;}
@@ -47,23 +47,14 @@ vector<Tile*>& World::getPath(int team)
 
 QString World::getSendToClient()
 {
-    if (!sentTeams) {
-        ++currteam;
-        sendToClient = "00 " + QString::number(currteam) + "%%" + sendToClient;
-        if(currteam == 2) {sentTeams = true;}
+    if (!sentTeam1) {
+        sendToClient = "00 1%%" + sendToClient;
+        sentTeam1 = true;
+    } else if (!sentTeam2){
+        sendToClient = "00 2%%" + sendToClient;
+        sentTeam2 = true;
     }
     return sendToClient;
-}
-
-bool World::removeOnePlayer()
-{
-    if (currteam <= 2) {
-        --currteam;
-        sentTeams = false;
-        return true;
-    } else {
-        return false;
-    }
 }
 
 //increases calls the upgrade method of the building and passes the info to use
@@ -81,6 +72,7 @@ void World::deployUnit(QString type, int team)
     unit->setXCoord(path[0]->getXCoord());
     unit->setYCoord(path[0]->getYCoord());
     unit->setTeam(team);
+    calculateDirection(unit);
     livingUnits.push_back(unit);
 }
 
@@ -102,20 +94,140 @@ Tile* World::findTileAt(int xCoord, int yCoord)
     return tile;
 }
 
+World::~World()
+{
+    for(int y = 0; y < world->rows; ++y)
+    {
+        for(int x = 0; x < world->columns; ++x)
+        {
+            delete world->map[y][x];
+        }
+    }
+    delete world->map;
+
+    delete world->players[0];
+    delete world->players[1];
+    world->players.clear();
+
+    for (unsigned int i = 0; i < livingUnits.size(); ++i) {
+        delete world->livingUnits.at(i);
+    }
+    world->livingUnits.clear();
+
+    for (unsigned int i = 0; i < team1path.size(); ++i) {
+        delete world->team1path.at(i);
+    }
+    world->team1path.clear();
+
+    for (unsigned int i = 0; i < team2path.size(); ++i) {
+        delete world->team2path.at(i);
+    }
+    world->team2path.clear();
+}
+
 //runs every 20 milliseconds
 void World::updateWorld()
 {
+    sendToClient = "";
     for(unsigned int i = 0; i < livingUnits.size(); ++i)
     {
-        livingUnits[i]->updateState();
+        updateState(livingUnits[i]);
     }
     for(int i = 0; i < rows; ++i) {
         for(int j = 0; j < columns; ++j) {
             if (map[i][j]->isBuildable() && map[i][j]->getBuilding() != nullptr) {
-                map[i][j]->getBuilding()->updateState();
+                updateState(map[i][j]->getBuilding());
             }
         }
     }
+}
+
+void World::updateState(Unit* unit)
+{
+    int direction = unit->getDirection();
+    vector<Tile*> path = getPath(unit->getTeam());
+    if (direction == 1) {
+        moveNorth(unit, path);
+    } else if (direction == 2) {
+        moveEast(unit, path);
+    } else if (direction == 3) {
+        moveSouth(unit, path);
+    } else if (direction == 4) {
+        moveWest(unit, path);
+    }
+}
+
+void World::moveNorth(Unit* unit, vector<Tile*>& path)
+{
+    unit->setYCoord(unit->getYCoord() + unit->getSpeed());
+    if (unit->getYCoord() > path.at(unit->getIndexOfPath())->getYCoord()) {
+        if (calculateDirection(unit)) {
+            unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + " 1%%";
+        } else {
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + "%%";
+        }
+        unit->incrementIndexOfPath();
+        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    }
+}
+
+void World::moveEast(Unit* unit, vector<Tile*>& path)
+{
+    unit->setXCoord(unit->getXCoord() + unit->getSpeed());
+    if (unit->getXCoord() > path.at(unit->getIndexOfPath())->getXCoord()) {
+        if (calculateDirection(unit)) {
+            unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + " 2%%";
+        } else {
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + "%%";
+        }
+        unit->incrementIndexOfPath();
+        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    }
+}
+
+void World::moveSouth(Unit* unit, vector<Tile*>& path)
+{
+    unit->setYCoord(unit->getYCoord() - unit->getSpeed());
+    if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
+        if (calculateDirection(unit)) {
+            unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + " 3%%";
+        } else {
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + "%%";
+        }
+        unit->incrementIndexOfPath();
+        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    }
+}
+
+void World::moveWest(Unit* unit, vector<Tile*>& path)
+{
+    unit->setXCoord(unit->getXCoord() - unit->getSpeed());
+    if (unit->getXCoord() < path.at(unit->getIndexOfPath())->getXCoord()) {
+        if (calculateDirection(unit)) {
+            unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + " 4%%";
+        } else {
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += QString::number(unit->getYCoord()) + "%%";
+        }
+        unit->incrementIndexOfPath();
+        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    }
+}
+
+void World::updateState(Building* building)
+{
+    (void)building;//stub
 }
 
 //checks to see whether this interval is the one to deploy
@@ -133,8 +245,42 @@ void World::canDeployUnits()
     } else { --counter; }
 }
 
+bool World::calculateDirection(Unit* unit)
+{
+    Tile* tile;
+    if (unit->getTeam() == 1) {
+        tile = team1path.at(unit->getIndexOfPath());
+    } else if (unit->getTeam() == 2) {
+        tile = team2path.at(unit->getIndexOfPath());
+    }
+    int dy = tile->getYCoord()-unit->getYCoord();
+    int dx = tile->getXCoord()-unit->getXCoord();
+    if (dy > 0) {
+        if(unit->getDirection() != 1) {
+            unit->setDirection(1);
+            return true;
+        }
+    } else if (dx > 0) {
+        if(unit->getDirection() != 2) {
+            unit->setDirection(2);
+            return true;
+        }
+    } else if (dy < 0) {
+        if(unit->getDirection() != 3) {
+            unit->setDirection(3);
+            return true;
+        }
+    } else if (dx < 0) {
+        if(unit->getDirection() != 4) {
+            unit->setDirection(4);
+            return true;
+        }
+    }
+    return false;
+}
+
 //constructs the initial game state
-World::World() : counter(500), currteam(0), sentTeams(false)
+World::World() : counter(500), sentTeam1(false), sentTeam2(false)
 {
     QFile worldFile("://textfiles/world.txt");
     if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -403,21 +549,6 @@ void World::save(QString filename)
 
 void World::Reset()
 {
-    /*
-    World::currteam = 0;
-    for(int y = 0; y < world->rows; ++y)
-    {
-        for(int x = 0; x < world->columns; ++x)
-        {
-            delete world->map[y][x];
-        }
-    }
-    delete world->map;
-
-    delete world->players[0];
-    delete world->players[1];
-    world->players.clear();
-    */
     delete world;
     world = new World();
 }

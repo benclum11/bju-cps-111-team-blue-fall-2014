@@ -13,8 +13,6 @@ class Building : public Object {
     int attack, production, range, speed, totalcost;
     QStringList unlock;
 
-    void ontick();
-
 public:
     Building() { totalcost = 0; }
 
@@ -32,7 +30,6 @@ public:
     QStringList& getUnlock() {return unlock;}
     int getTotalCost() {return totalcost;}
 
-    void updateState();
     void upgrade(Building& upgrade);
 
 };

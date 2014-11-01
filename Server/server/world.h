@@ -17,13 +17,12 @@ class World {
     vector<Unit> unitTypes;
     vector<Building> buildingTypes;
     Tile*** map;
-    vector<Object*> object;
     vector<Tile*> team1path, team2path;
     vector<Player*> players;
     vector<Unit*> livingUnits;
-    int counter, rows, columns, tileWidth, tileHeight, currteam;
+    int counter, rows, columns, tileWidth, tileHeight;
     QString sendToClient;
-    bool sentTeams;
+    bool sentTeam1, sentTeam2;
 
     World();
 
@@ -39,29 +38,39 @@ class World {
 
     void buildTower(QString, Tile*, QString&);
     void upgradeTower(Tile*);
-    void deployUnit(QString,int);
-    Player* getPlayer(int);
-
     Tile* findTileAt(int, int);
+
+    ~World();
 
 public:
 
     static World* Instance();
     Building& getBuildingType(QString);
     Unit& getUnitType(QString);
-    vector<Tile*>& getPath(int team);
+    vector<Tile*> getPath(int team);
     QString getSendToClient();
+    Tile* getNextPathTile(unsigned int, int);
 
-    bool hasSentTeams() { return sentTeams; }
+    bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
 
-    bool removeOnePlayer();
+    Player* getPlayer(int);
 
     void updateWorld();
+    void updateState(Unit*);
+    void moveNorth(Unit*, vector<Tile*>&);
+    void moveEast(Unit*, vector<Tile*>&);
+    void moveSouth(Unit*, vector<Tile*>&);
+    void moveWest(Unit*, vector<Tile*>&);
+
+    void updateState(Building*);
 
     void canDeployUnits();
 
+    bool calculateDirection(Unit*);
+
     void buyTower(QStringList&);
     void buyUnit(QStringList&);
+    void deployUnit(QString,int);
     void destroy(QStringList&);
     void upgrade(QStringList&);
     void load(QString);

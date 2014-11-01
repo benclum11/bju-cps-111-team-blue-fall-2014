@@ -1,16 +1,5 @@
 #include "building.h"
 
-
-void Building::ontick()
-{
-
-}
-
-void Building::updateState()
-{
-
-}
-
 void Building::upgrade(Building &upgrade)
 {
     type = upgrade.getType();
