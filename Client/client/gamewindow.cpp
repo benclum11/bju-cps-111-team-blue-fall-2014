@@ -53,6 +53,11 @@ void GameWindow::dataReceived()
     }
 }
 
+void GameWindow::on_btnExitGame_clicked()
+{
+    this->close();
+}
+
 void GameWindow::getTileInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -98,6 +103,13 @@ void GameWindow::getTileInfo(QString command)
         int y = commandArgs.at(4).toInt() - lblHeight/2;
         lbl->setGeometry(x,y,lblWidth,lblHeight);
         lbl->show();
+
+//        QPushButton* exitGame = new QPushButton(this);
+//        exitGame->setGeometry(250, 612, 99, 27);
+//        exitGame->setText("Quit Game");
+//        exitGame->show();
+
+
     }
     windowSized = true;
 }

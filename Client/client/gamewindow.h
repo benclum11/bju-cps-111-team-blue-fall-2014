@@ -60,6 +60,8 @@ private slots:
     void serverDisconnected();
 
     void dataReceived();
+
+    void on_btnExitGame_clicked();
 };
 
 #endif // GAMEWINDOW_H
