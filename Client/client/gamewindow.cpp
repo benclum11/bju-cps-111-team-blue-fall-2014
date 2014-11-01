@@ -14,6 +14,9 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     HighlightedLabel *label = new HighlightedLabel(gameDisplay);
     updateGameState(initMsg);
     parent->hide();
+
+    actionDisplay = new QWidget(this);
+
     connect(socket, &QTcpSocket::readyRead, this, &GameWindow::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &GameWindow::serverDisconnected);
 }
@@ -65,6 +68,13 @@ void GameWindow::getTileInfo(QString command)
         lblWidth = commandArgs.at(3).toInt();
         lblHeight = commandArgs.at(4).toInt();
         gameDisplay->show();
+
+//        actionDisplay->setGeometry(gameWidth + 100, 50, 350, gameHeight + 200);
+//        actionDisplay->setMinimumWidth(gameWidth);
+//        actionDisplay->setMinimumHeight(gameHeight);
+//        actionDisplay->setMaximumWidth(gameWidth + 100);
+//        actionDisplay->setMaximumHeight(gameHeight + 200);
+//        actionDisplay->show();
     }
     if (windowSized) {
         QLabel* lbl;
