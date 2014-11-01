@@ -47,7 +47,7 @@ void MainWindow::clientConnected()
     }
     connect(sock, &QTcpSocket::disconnected, this, &MainWindow::clientDisconnected);
     connect(sock, &QTcpSocket::readyRead, this, &MainWindow::dataRecieved);
-    QString clientMsg = (World::Instance()->getSendToClient()) + "\n";
+    QString clientMsg = (World::Instance()->getBeginWorld());
     sock->write(clientMsg.toLocal8Bit());
     addToLog("Client connected.");
     if(World::Instance()->hasSentTeams())
@@ -114,7 +114,7 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL) {
-            QString str = (World::Instance()->getSendToClient()) + "\n";
+            QString str = (World::Instance()->getSendToClient());
             anotherSock->write(str.toLocal8Bit());
         }
     }

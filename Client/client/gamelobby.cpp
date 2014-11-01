@@ -45,8 +45,11 @@ void gameLobby::serverDisconnected()
 
 void gameLobby::dataReceived()
 {
-    QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
-    while (sock->canReadLine()) {
-        initMsg = sock->readLine();
+    if (initMsg != "")
+    {
+        QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
+        while (sock->canReadLine()) {
+            initMsg = sock->readLine();
+        }
     }
 }

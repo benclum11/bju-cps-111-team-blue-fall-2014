@@ -47,14 +47,20 @@ vector<Tile*> World::getPath(int team)
 
 QString World::getSendToClient()
 {
+    return sendToClient +"\n";
+}
+
+QString World::getBeginWorld()
+{
+
     if (!sentTeam1) {
-        sendToClient = "00 1%%" + sendToClient;
         sentTeam1 = true;
+        return "00 1%%" + worldBegin + "\n";
     } else if (!sentTeam2){
-        sendToClient = "00 2%%" + sendToClient;
         sentTeam2 = true;
+        return "00 2%%" + worldBegin + "\n";
     }
-    return sendToClient;
+    return worldBegin;
 }
 
 //increases calls the upgrade method of the building and passes the info to use
@@ -67,6 +73,7 @@ void World::upgradeTower(Tile* tile)
 //deploys a unit of specified type on specified team
 void World::deployUnit(QString type, int team)
 {
+    /*
     Unit* unit = new Unit(getUnitType(type));
     vector<Tile*> path = getPath(team);
     unit->setXCoord(path[0]->getXCoord());
@@ -74,6 +81,7 @@ void World::deployUnit(QString type, int team)
     unit->setTeam(team);
     calculateDirection(unit);
     livingUnits.push_back(unit);
+    */
 }
 
 Player* World::getPlayer(int team)
@@ -286,17 +294,17 @@ World::World() : counter(500), sentTeam1(false), sentTeam2(false)
     if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
     QTextStream readWorld(&worldFile);
     QString filetoRead = readWorld.readLine();
-    readMapFile("://textfiles/" + filetoRead, sendToClient);
+    readMapFile("://textfiles/" + filetoRead);
     filetoRead = readWorld.readLine();
-    readBuildingFile("://textfiles/" + filetoRead, sendToClient);
+    readBuildingFile("://textfiles/" + filetoRead);
     filetoRead = readWorld.readLine();
-    readUnitFile("://textfiles/" + filetoRead, sendToClient);
+    readUnitFile("://textfiles/" + filetoRead);
     filetoRead = readWorld.readLine();
-    readPlayerFile("://textfiles/" + filetoRead, sendToClient);
+    readPlayerFile("://textfiles/" + filetoRead);
 }
 
 //reads the initial map state
-void World::readMapFile(QString filename, QString& sendtoClient)
+void World::readMapFile(QString filename)
 {
 
     QFile mapFile(filename);
@@ -311,14 +319,14 @@ void World::readMapFile(QString filename, QString& sendtoClient)
     tileWidth = dimensions[0].toInt();
     tileHeight = dimensions[1].toInt();
 
-    sendtoClient += "01 " + QString::number(columns) + " " + QString::number(rows);
-    sendtoClient += " " + QString::number(tileWidth) + " " + QString::number(tileHeight) + "%%";
+    worldBegin += "01 " + QString::number(columns) + " " + QString::number(rows);
+    worldBegin += " " + QString::number(tileWidth) + " " + QString::number(tileHeight) + "%%";
     map = new Tile**[rows];
     for (int i = 0; i < rows; ++i) {
         map[i] = new Tile*[columns];
         for (int j = 0; j < columns; ++j) {
             Tile* tempTile = new Tile();
-            readTileInfo(readMap, tempTile, sendtoClient);
+            readTileInfo(readMap, tempTile);
             map[i][j] = tempTile;
         }
     }
@@ -327,7 +335,7 @@ void World::readMapFile(QString filename, QString& sendtoClient)
 }
 
 //reads individual tile info
-void World::readTileInfo(QTextStream& readMap, Tile* tile, QString& sendtoClient)
+void World::readTileInfo(QTextStream& readMap, Tile* tile)
 {
     QString temp = readMap.readLine();
     QStringList data = temp.split(" ");
@@ -336,10 +344,10 @@ void World::readTileInfo(QTextStream& readMap, Tile* tile, QString& sendtoClient
     tile->setYCoord(data.at(2).toInt());
     tile->setTeam(data.at(3).toInt());
 
-    sendtoClient += "01 " + QString::number(tileWidth) + " " + QString::number(tileHeight) + " ";
-    sendtoClient += QString::number(tile->getXCoord()) + " " + QString::number(tile->getYCoord());
-    sendtoClient += tile->isBuildable() ? " 1 " : " 0 ";
-    sendtoClient += QString::number(tile->getTeam()) + "%%";
+    worldBegin += "01 " + QString::number(tileWidth) + " " + QString::number(tileHeight) + " ";
+    worldBegin += QString::number(tile->getXCoord()) + " " + QString::number(tile->getYCoord());
+    worldBegin += tile->isBuildable() ? " 1 " : " 0 ";
+    worldBegin += QString::number(tile->getTeam()) + "%%";
 }
 
 //reads what paths the units will use
@@ -362,7 +370,7 @@ void World::readPaths(QTextStream& readMap)
 }
 
 //reads the stats of the types of towers
-void World::readBuildingFile(QString filename, QString& sendtoClient)
+void World::readBuildingFile(QString filename)
 {
     QFile buildingFile(filename);
     if (!buildingFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -370,14 +378,14 @@ void World::readBuildingFile(QString filename, QString& sendtoClient)
     QString temp = readBuildings.readLine();
     for (int i = 0; i < temp.toInt(); ++i) {
         for (int i = 0; i < 5; ++i) {
-            readTowerInfo(readBuildings, sendtoClient);
+            readTowerInfo(readBuildings);
         }
     }
-    readBaseLocation(readBuildings, sendtoClient);
+    readBaseLocation(readBuildings);
 }
 
 //reads individual tower stats
-void World::readTowerInfo(QTextStream& readBuildings, QString& sendtoClient)
+void World::readTowerInfo(QTextStream& readBuildings)
 {
     QString temp = readBuildings.readLine();
     QStringList data = temp.split(" ");
@@ -399,31 +407,33 @@ void World::readTowerInfo(QTextStream& readBuildings, QString& sendtoClient)
     buildingTypes.push_back(tempbuilding);
 
     if (tempbuilding.getType().split("_").at(2) == "1") {
-        sendtoClient += "02 " + tempbuilding.getType() + " " + QString::number(tempbuilding.getAttack()) + " ";
-        sendtoClient += QString::number(tempbuilding.getSpeed()) + " " + QString::number(tempbuilding.getRange()) + " ";
-        sendtoClient += QString::number(tempbuilding.getProduction()) + " " + QString::number(tempbuilding.getCost()) + " ";
+        worldBegin += "02 " + tempbuilding.getType() + " " + QString::number(tempbuilding.getAttack()) + " ";
+        worldBegin += QString::number(tempbuilding.getSpeed()) + " " + QString::number(tempbuilding.getRange()) + " ";
+        worldBegin += QString::number(tempbuilding.getProduction()) + " " + QString::number(tempbuilding.getCost()) + " ";
         for (int i = 0; i < unlock.size(); ++i) {
-            if (i != 0) { sendtoClient += ","; }
-            sendtoClient += unlock.at(i);
+            if (i != 0) { worldBegin += ","; }
+            worldBegin += unlock.at(i);
         }
-        sendtoClient += "%%";
+        worldBegin += "%%";
     }
 }
 
 //reads the starting location for base and creates one there
-void World::readBaseLocation(QTextStream& readBuildings, QString& sendtoClient)
+void World::readBaseLocation(QTextStream& readBuildings)
 {
+    sendToClient = "";
     QString temp = readBuildings.readLine();
     QStringList data = temp.split(" ");
     QStringList basePoint = data[0].split(",");
-    buildTower("1_0_1", map[basePoint[1].toInt()][basePoint[0].toInt()], sendtoClient);
+    buildTower("1_0_1", map[basePoint[1].toInt()][basePoint[0].toInt()]);
     basePoint = data[1].split(",");
-    buildTower("1_0_1", map[basePoint[1].toInt()][basePoint[0].toInt()], sendtoClient);
+    buildTower("1_0_1", map[basePoint[1].toInt()][basePoint[0].toInt()]);
+    worldBegin += sendToClient;
     return;
 }
 
 //reads the stats of the types of units
-void World::readUnitFile(QString filename, QString& sendtoClient)
+void World::readUnitFile(QString filename)
 {
     QFile unitFile(filename);
     if (!unitFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -431,12 +441,12 @@ void World::readUnitFile(QString filename, QString& sendtoClient)
     QString temp = readUnits.readLine();
     for (int i = 0; i < temp.toInt(); ++i) {
         for (int i = 0; i < 5; ++i) {
-            readUnitInfo(readUnits, sendtoClient);
+            readUnitInfo(readUnits);
         }
     }
 }
 
-void World::readUnitInfo(QTextStream& readUnits, QString& sendtoClient)
+void World::readUnitInfo(QTextStream& readUnits)
 {
     QString temp = readUnits.readLine();
     QStringList data =  temp.split(" ");
@@ -450,13 +460,13 @@ void World::readUnitInfo(QTextStream& readUnits, QString& sendtoClient)
 
     unitTypes.push_back(tempUnit);
 
-    sendtoClient += "03 " + tempUnit.getType() + " " + QString::number(tempUnit.getHealth());
-    sendtoClient += " " + QString::number(tempUnit.getSpeed()) + " " + QString::number(tempUnit.getDamage());
-    sendtoClient += " " + QString::number(tempUnit.getCost()) + "%%";
+    worldBegin += "03 " + tempUnit.getType() + " " + QString::number(tempUnit.getHealth());
+    worldBegin += " " + QString::number(tempUnit.getSpeed()) + " " + QString::number(tempUnit.getDamage());
+    worldBegin += " " + QString::number(tempUnit.getCost()) + "%%";
 }
 
 //reads the starting stats of the players
-void World::readPlayerFile(QString filename, QString& sendtoClient)
+void World::readPlayerFile(QString filename)
 {
     QFile playerFile(filename);
     if (!playerFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -468,22 +478,22 @@ void World::readPlayerFile(QString filename, QString& sendtoClient)
         player->setInitialUnlocks(buildingTypes, unitTypes);
         players.push_back(player);
 
-        sendtoClient += "11 " + QString::number(player->getTeam()) + " " + QString::number((player->getHealth()));
-        sendtoClient += " " + QString::number(player->getMoney()) + " ";
+        worldBegin += "11 " + QString::number(player->getTeam()) + " " + QString::number((player->getHealth()));
+        worldBegin += " " + QString::number(player->getMoney()) + " ";
         for (unsigned int i = 0; i < player->getUnlockedBuildings().size(); ++i) {
             int lvl = player->getUnlockedBuildings().at(i);
-            if (i != 0) {sendtoClient += ",";}
-            sendtoClient += "1_" + QString::number(i) + "_" + QString::number(lvl);
+            if (i != 0) {worldBegin += ",";}
+            worldBegin += "1_" + QString::number(i) + "_" + QString::number(lvl);
         }
         for (unsigned int i = 0; i < player->getUnlockedUnits().size(); ++i) {
             int lvl = player->getUnlockedUnits().at(i);
-            sendtoClient += ",2_" + QString::number(i) + "_" + QString::number(lvl);
+            worldBegin += ",2_" + QString::number(i) + "_" + QString::number(lvl);
         }
-        sendtoClient += "%%";
+        worldBegin += "%%";
     }
 }
 
-void World::buildTower(QString type, Tile* tile, QString& sendtoClient)
+void World::buildTower(QString type, Tile* tile)
 {
     Building* building = new Building(getBuildingType(type));
     tile->placeBuilding(building);
@@ -491,16 +501,16 @@ void World::buildTower(QString type, Tile* tile, QString& sendtoClient)
     type.replace(type.length() - 1, 1, type[type.length() - 1].digitValue() + 49);
     Building nextLvlBuilding = Building(getBuildingType(type));
 
-    sendtoClient += "21 " + QString::number(tile->getXCoord()) + " " + QString::number(tile->getYCoord());
-    sendtoClient += " " + building->getType() + " " + QString::number(tile->getTeam()) + " ";
-    sendtoClient += QString::number(nextLvlBuilding.getAttack()) + " " + QString::number(nextLvlBuilding.getSpeed()) + " ";
-    sendtoClient += QString::number(nextLvlBuilding.getRange()) + " " + QString::number(nextLvlBuilding.getProduction());
-    sendtoClient += " " + QString::number(nextLvlBuilding.getCost()) + " ";
+    sendToClient += "21 " + QString::number(tile->getXCoord()) + " " + QString::number(tile->getYCoord());
+    sendToClient += " " + building->getType() + " " + QString::number(tile->getTeam()) + " ";
+    sendToClient += QString::number(nextLvlBuilding.getAttack()) + " " + QString::number(nextLvlBuilding.getSpeed()) + " ";
+    sendToClient += QString::number(nextLvlBuilding.getRange()) + " " + QString::number(nextLvlBuilding.getProduction());
+    sendToClient += " " + QString::number(nextLvlBuilding.getCost()) + " ";
     for (int i = 0; i < nextLvlBuilding.getUnlock().size(); ++i) {
-        if (i != 0) { sendtoClient += ","; }
-        sendtoClient += nextLvlBuilding.getUnlock().at(i);
+        if (i != 0) { sendToClient += ","; }
+        sendToClient += nextLvlBuilding.getUnlock().at(i);
     }
-    sendtoClient += "%%";
+    sendToClient += "%%";
 }
 
 void World::buyTower(QStringList& data)
@@ -509,7 +519,7 @@ void World::buyTower(QStringList& data)
     Tile* tile = findTileAt(data.at(2).toInt(), data.at(3).toInt());
     int cost = getBuildingType(data.at(1)).getCost();
     if (getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
-        buildTower(data.at(1), tile, sendToClient);
+        buildTower(data.at(1), tile);
     }
     tile->getBuilding()->addtoTotalCost();
 

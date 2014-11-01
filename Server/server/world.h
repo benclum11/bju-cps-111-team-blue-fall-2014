@@ -21,22 +21,22 @@ class World {
     vector<Player*> players;
     vector<Unit*> livingUnits;
     int counter, rows, columns, tileWidth, tileHeight;
-    QString sendToClient;
+    QString sendToClient, worldBegin;
     bool sentTeam1, sentTeam2;
 
     World();
 
-    void readMapFile(QString, QString&);
-    void readTileInfo(QTextStream&, Tile*, QString&);
+    void readMapFile(QString);
+    void readTileInfo(QTextStream&, Tile*);
     void readPaths(QTextStream&);
-    void readBuildingFile(QString, QString&);
-    void readTowerInfo(QTextStream&, QString&);
-    void readBaseLocation(QTextStream&, QString&);
-    void readUnitFile(QString, QString&);
-    void readUnitInfo(QTextStream&, QString&);
-    void readPlayerFile(QString, QString&);
+    void readBuildingFile(QString);
+    void readTowerInfo(QTextStream&);
+    void readBaseLocation(QTextStream&);
+    void readUnitFile(QString);
+    void readUnitInfo(QTextStream&);
+    void readPlayerFile(QString);
 
-    void buildTower(QString, Tile*, QString&);
+    void buildTower(QString, Tile*);
     void upgradeTower(Tile*);
     Tile* findTileAt(int, int);
 
@@ -49,6 +49,7 @@ public:
     Unit& getUnitType(QString);
     vector<Tile*> getPath(int team);
     QString getSendToClient();
+    QString getBeginWorld();
     Tile* getNextPathTile(unsigned int, int);
 
     bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
