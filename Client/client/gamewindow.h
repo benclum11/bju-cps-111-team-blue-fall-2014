@@ -27,7 +27,7 @@ class GameWindow : public QDialog
     void createBuilding(QString);
 
     int team, lblWidth, lblHeight;
-    QWidget *parent, *gameDisplay;
+    QWidget *parent, *gameDisplay, *actionDisplay;
     Ui::GameWindow* ui;
     QTcpSocket* socket;
     bool unexpected, windowSized;
