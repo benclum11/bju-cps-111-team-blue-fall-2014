@@ -151,64 +151,164 @@ void GameWindow::createBuilding(QString command)
     build->show();
 }
 
-void GameWindow::getPlayerHealth(QString)
+void GameWindow::getPlayerHealth(QString command)
 {
 
 }
 
-void GameWindow::getPlayerMoney(QString)
+void GameWindow::getPlayerMoney(QString command)
 {
 
 }
 
-void GameWindow::getPlayerHealthMoney(QString)
+void GameWindow::getPlayerHealthMoney(QString command)
 {
 
 }
 
-void GameWindow::getBuildingUpgrade(QString)
+void GameWindow::getBuildingUpgrade(QString command)
 {
 
 }
 
-void GameWindow::getBuildingDeath(QString)
+void GameWindow::getBuildingDeath(QString command)
 {
 
 }
 
-void GameWindow::getUnitCreation(QString)
+void GameWindow::getUnitCreation(QString command)
 {
+        QStringList commandArgs = command.split(" ");
+        bool ok;
 
+        QString unitType = commandArgs.at(0);
+        int teamNum = commandArgs.at(1).toInt(&ok, 10);
+        QString unitHealth = commandArgs.at(2);
+        int x, y;
+        if (ok) x = commandArgs.at(3).toInt(&ok, 10);
+        if (ok) y = commandArgs.at(4).toInt(&ok, 10);
+
+        QString unitFacing = commandArgs.at(5);
+
+        if (ok)
+        {
+            //call create unit
+        } else
+        {
+            //what happens if it fails?
+        }
 }
 
-void GameWindow::getUnitMove(QString)
+void GameWindow::getUnitMove(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int id = commandArgs.at(0).toInt(&ok, 10);
+    int x, y;
+    if (ok) x = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(2).toInt(&ok, 10);
+
+    if (ok)
+    {
+        //call move unit
+    } else
+    {
+        //what happens if it fails?
+    }
 }
 
-void GameWindow::getUnitMoveTurn(QString)
+void GameWindow::getUnitMoveTurn(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int id = commandArgs.at(0).toInt(&ok, 10);
+    int x, y;
+    if (ok) x = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(2).toInt(&ok, 10);
+    QString facing = commandArgs.at(3);
+
+    if (ok)
+    {
+
+    } else
+    {
+
+    }
 }
 
-void GameWindow::getUnitMoveHealth(QString)
+void GameWindow::getUnitMoveHealth(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int id = commandArgs.at(0).toInt(&ok, 10);
+    int x, y, health;
+    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
+
+    if (ok)
+    {
+        //call unit commands
+    } else
+    {
+        //what happens if it fails?
+    }
 }
 
-void GameWindow::getUnitMoveTurnHealth(QString)
+void GameWindow::getUnitMoveTurnHealth(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int id = commandArgs.at(0).toInt(&ok, 10);
+    int x, y, health;
+    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
+    QString facing = commandArgs.at(4);
+
+    if (ok)
+    {
+        //call unit commands
+    } else
+    {
+        //what happens if it fails?
+    }
 }
 
-void GameWindow::getUnitDeath(QString)
+void GameWindow::getUnitDeath(QString command)
 {
+    bool ok;
+    int id = command.toInt(&ok, 10);
 
+    if (ok)
+    {
+        //call unit destroy
+    } else
+    {
+
+    }
 }
 
-void GameWindow::getBulletInfo(QString)
+void GameWindow::getBulletInfo(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int x, y;
+    x = commandArgs.at(0).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
+
+    if (ok)
+    {
+
+    } else
+    {
+
+    }
 }
 
 void GameWindow::doGamePause()
