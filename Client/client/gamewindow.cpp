@@ -188,8 +188,8 @@ void GameWindow::getPlayerHealth(QString command)
     QStringList commandArgs = command.split(" ");
 
     bool ok;
-    int id, health;
-    id = commandArgs.at(0).toInt(&ok, 10);
+    int team, health;
+    team = commandArgs.at(0).toInt(&ok, 10);
     if (ok) health = commandArgs.at(1).toInt(&ok, 10);
 
     if (ok)
@@ -207,8 +207,8 @@ void GameWindow::getPlayerMoney(QString command)
 
 /*
     bool ok;
-    int id, moneyh;
-    id = commandArgs.at(0).toInt(&ok, 10);
+    int team, money;
+    team = commandArgs.at(0).toInt(&ok, 10);
     if (ok) money = commandArgs.at(1).toInt(&ok, 10);
 
     if (ok)
@@ -275,7 +275,7 @@ void GameWindow::getUnitCreation(QString command)
         bool ok;
         int type, team, health, x, y, facing;
 
-        type = commandArgs.at(0).toInt(&ok, 10);
+        type = commandArgs.at(0).toInt(&ok, 10); //this needs to be changed to comply with the documentation
         if (ok) team = commandArgs.at(1).toInt(&ok, 10);
         if (ok) health = commandArgs.at(2).toInt(&ok, 10);
         if (ok) x = commandArgs.at(3).toInt(&ok, 10);
@@ -356,12 +356,13 @@ void GameWindow::getUnitMoveTurnHealth(QString command)
     QStringList commandArgs = command.split(" ");
 
     bool ok;
-    int id = commandArgs.at(0).toInt(&ok, 10);
-    int x, y, health;
+    int id, health, x, y, facing;
+
+    id = commandArgs.at(0).toInt(&ok, 10);
     if (ok) health = commandArgs.at(1).toInt(&ok, 10);
     if (ok) x = commandArgs.at(2).toInt(&ok, 10);
     if (ok) y = commandArgs.at(3).toInt(&ok, 10);
-    QString facing = commandArgs.at(4);
+    if (ok) facing = commandArgs.at(4);
 
     if (ok)
     {
