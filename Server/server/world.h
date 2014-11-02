@@ -53,6 +53,7 @@ public:
     Tile* getNextPathTile(unsigned int, int);
 
     bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
+    void removeTeam(int);
 
     Player* getPlayer(int);
 

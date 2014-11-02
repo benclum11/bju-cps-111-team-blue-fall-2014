@@ -40,7 +40,7 @@ void MainWindow::timerHit()
 void MainWindow::clientConnected()
 {
     QTcpSocket* sock = server->nextPendingConnection();
-    if (World::Instance()->hasSentTeams()) {
+    if (World::Instance()->hasSentTeams() && paused) {
         sock->close();
         sock->deleteLater();
         return;
@@ -52,10 +52,7 @@ void MainWindow::clientConnected()
     addToLog("Client connected.");
     if(World::Instance()->hasSentTeams())
     {
-        timer->start();
-        paused = false;
-        clientMsg = "5\n";
-        sock->write(clientMsg.toLocal8Bit());
+        //Start game or not?
     }
 }
 
@@ -67,7 +64,7 @@ void MainWindow::clientDisconnected()
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL){
-            //ask for the remaining clients team and do something with it
+            //Pause Game maybe or just quit?
         }
     }
 }
@@ -90,12 +87,12 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
         if (paused) {
             timer->start();
             paused = false;
-            QString clientMsg = "5";
+            QString clientMsg = "5\n";
             sock->write(clientMsg.toLocal8Bit());
         } else {
             timer->stop();
             paused = true;
-            QString clientMsg = "5";
+            QString clientMsg = "5\n";
             sock->write(clientMsg.toLocal8Bit());
         }
     } else if(command == "6") {
@@ -110,6 +107,8 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
         World::Instance()->destroy(data);
     } else if (command == "8") {
         World::Instance()->upgrade(data);
+    } else if (command == "9") {
+        World::Instance()->removeTeam(data.at(1).toInt());
     }
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);

@@ -36,7 +36,7 @@ BuildableLabel *GameWindow::getClickedLabel()
 GameWindow::~GameWindow()
 {
     delete ui;
-    socket->close();
+    parent->close();
 }
 
 void GameWindow::serverDisconnected()

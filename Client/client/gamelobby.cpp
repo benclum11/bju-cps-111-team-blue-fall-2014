@@ -45,11 +45,22 @@ void gameLobby::serverDisconnected()
 
 void gameLobby::dataReceived()
 {
-    if (initMsg != "")
+    if (initMsg == "")
     {
         QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
         while (sock->canReadLine()) {
             initMsg = sock->readLine();
         }
     }
+}
+
+void gameLobby::closeEvent(QCloseEvent *event)
+{
+    QString teamCommand = initMsg.split("%%").at(0);
+    QString team = teamCommand.split(" ").at(1);
+    QString closeMessage = "9 " + team + "\n";
+    socket->write(closeMessage.toLocal8Bit());
+    unexpected = false;
+    socket->close();
+    event->accept();
 }

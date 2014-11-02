@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTcpSocket>
+#include <QCloseEvent>
 
 namespace Ui {
 class gameLobby;
@@ -30,6 +31,8 @@ private slots:
     void serverDisconnected();
 
     void dataReceived();
+
+    void closeEvent(QCloseEvent*);
 };
 
 #endif // GAMELOBBY_H

@@ -63,6 +63,15 @@ QString World::getBeginWorld()
     return worldBegin;
 }
 
+void World::removeTeam(int team)
+{
+    if (team == 1) {
+        sentTeam1 = false;
+    } else if (team == 2){
+        sentTeam2 = false;
+    }
+}
+
 //increases calls the upgrade method of the building and passes the info to use
 void World::upgradeTower(Tile* tile)
 {
