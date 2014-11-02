@@ -4,6 +4,8 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QPushButton>
+#include <QString>
+#include <QDebug>
 
 GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     QDialog(parent), parent(parent), ui(new Ui::GameWindow),
@@ -24,7 +26,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
     btn = new QPushButton("Create Tower", this->actionDisplay);
     connect(btn, SIGNAL(clicked()), this, SLOT(on_btn_clicked()));
-    btn->setGeometry(0,0,50,10);
+    //btn->setGeometry(0,0,50,30);
     btn->raise();
     btn->show();
 }
@@ -33,8 +35,10 @@ BuildableLabel* GameWindow::getClickedLabel()
 {
     for (QObject* obj : this->children()) {
         BuildableLabel* lbl = dynamic_cast<BuildableLabel*>(obj);
-        if (lbl->getClicked()) {
-            return lbl;
+        if (lbl != NULL) {
+            if (lbl->getClicked()) {
+                return lbl;
+            }
         }
     }
     return nullptr;
@@ -62,11 +66,19 @@ void GameWindow::dataReceived()
 
 
 void GameWindow::on_btn_clicked() {
-    BuildableLabel* lbl = getClickedLabel();
 
-    //createBuilding();
-
-
+    if(btn->text() == "Create Tower") {
+        BuildableLabel* lbl;
+        for (QObject* obj : this->children()) {
+            lbl = dynamic_cast<BuildableLabel*>(obj);
+            if (lbl != NULL) {
+                QString serverMsg = "";
+                serverMsg += QString("1") + QString(" 1_0_1 ") + QString::number(lbl->getXCoord()) + " " + QString::number(lbl->getYCoord());
+                socket->write(serverMsg.toLocal8Bit());
+                qDebug() << serverMsg << endl;
+            }
+        }
+    }
 }
 
 void GameWindow::on_btnExitGame_clicked()
@@ -164,6 +176,8 @@ void GameWindow::createBuilding(QString command)
 
     build->setGeometry(commandArgs.at(1).toInt() - lblWidth/2, commandArgs.at(2).toInt() - lblHeight/2, lblWidth, lblHeight);
     build->setScaledContents(true);
+    build->raise();
+    build->raise();
     build->show();
 }
 

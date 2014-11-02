@@ -20,6 +20,14 @@ class GameWindow : public QDialog
 {
     Q_OBJECT
 
+    int team, lblWidth, lblHeight;
+    QWidget *parent, *gameDisplay, *actionDisplay;
+    QPushButton *btn;
+    Ui::GameWindow* ui;
+    QTcpSocket* socket;
+    bool unexpected, windowSized;
+    vector<Stats> stats;
+
     void getTileInfo(QString);
     void getBuildingInfo(QString);
     void getUnitInfo(QString);
@@ -40,14 +48,6 @@ class GameWindow : public QDialog
     void doGamePause();
 
     void displayBuildingInfo();
-
-    int team, lblWidth, lblHeight;
-    QWidget *parent, *gameDisplay, *actionDisplay;
-    QPushButton *btn;
-    Ui::GameWindow* ui;
-    QTcpSocket* socket;
-    bool unexpected, windowSized;
-    vector<Stats> stats;
 
     Stats getStatsByType(QString type);
 
