@@ -153,27 +153,68 @@ void GameWindow::createBuilding(QString command)
 
 void GameWindow::getPlayerHealth(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int id, health;
+    id = commandArgs.at(0).toInt(&ok, 10);
+    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
+
+    if (ok)
+    {
+
+    } else
+    {
+
+    }
 }
 
 void GameWindow::getPlayerMoney(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int id, moneyh;
+    id = commandArgs.at(0).toInt(&ok, 10);
+    if (ok) money = commandArgs.at(1).toInt(&ok, 10);
+
+    if (ok)
+    {
+
+    } else
+    {
+
+    }
 }
 
 void GameWindow::getPlayerHealthMoney(QString command)
 {
-
+    QStringList commandArgs = command.split(" ");
 }
 
 void GameWindow::getBuildingUpgrade(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    //I don't know which thing should be strings and which should be ints...
 }
 
 void GameWindow::getBuildingDeath(QString command)
 {
+    QStringList commandArgs = command.split(" ");
 
+    bool ok;
+    int x, y;
+    x = commandArgs.at(0).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
+
+    if (ok)
+    {
+
+    } else
+    {
+
+    }
 }
 
 void GameWindow::getUnitCreation(QString command)
