@@ -1,5 +1,6 @@
 #include "buildablelabel.h"
 #include "highlightedlabel.h"
+#include <QPushButton>
 
 int BuildableLabel::clientTeam = 0;
 

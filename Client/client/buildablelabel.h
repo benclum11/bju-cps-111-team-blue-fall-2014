@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QMouseEvent>
 
+#include "gamewindow.h"
+
 class BuildableLabel : public QLabel {
 
     static int clientTeam;

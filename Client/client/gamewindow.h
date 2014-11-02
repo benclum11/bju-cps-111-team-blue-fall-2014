@@ -39,8 +39,11 @@ class GameWindow : public QDialog
     void getBulletInfo(QString);
     void doGamePause();
 
+    void displayBuildingInfo();
+
     int team, lblWidth, lblHeight;
     QWidget *parent, *gameDisplay, *actionDisplay;
+    QPushButton *btn;
     Ui::GameWindow* ui;
     QTcpSocket* socket;
     bool unexpected, windowSized;
@@ -51,7 +54,9 @@ class GameWindow : public QDialog
 public:
     explicit GameWindow(QString&, QWidget* = 0,  QTcpSocket* = 0);
 
-    BuildableLabel *getClickedLabel();
+    BuildableLabel* getClickedLabel();
+
+    void createButton();
 
     void updateGameState(QString);
     ~GameWindow();
@@ -62,6 +67,8 @@ private slots:
     void dataReceived();
 
     void on_btnExitGame_clicked();
+
+    void on_btn_clicked();
 };
 
 #endif // GAMEWINDOW_H

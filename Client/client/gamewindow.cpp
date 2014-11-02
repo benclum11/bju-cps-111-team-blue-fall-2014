@@ -20,9 +20,16 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
     connect(socket, &QTcpSocket::readyRead, this, &GameWindow::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &GameWindow::serverDisconnected);
+
+    //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
+    btn = new QPushButton("Create Tower", this->actionDisplay);
+    connect(btn, SIGNAL(clicked()), this, SLOT(on_btn_clicked()));
+    btn->setGeometry(0,0,50,10);
+    btn->raise();
+    btn->show();
 }
 
-BuildableLabel *GameWindow::getClickedLabel()
+BuildableLabel* GameWindow::getClickedLabel()
 {
     for (QObject* obj : this->children()) {
         BuildableLabel* lbl = dynamic_cast<BuildableLabel*>(obj);
@@ -51,6 +58,15 @@ void GameWindow::dataReceived()
         QString str = sock->readLine();
         updateGameState(str);
     }
+}
+
+
+void GameWindow::on_btn_clicked() {
+    BuildableLabel* lbl = getClickedLabel();
+
+    //createBuilding();
+
+
 }
 
 void GameWindow::on_btnExitGame_clicked()
@@ -173,6 +189,7 @@ void GameWindow::getPlayerMoney(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
+/*
     bool ok;
     int id, moneyh;
     id = commandArgs.at(0).toInt(&ok, 10);
@@ -185,6 +202,7 @@ void GameWindow::getPlayerMoney(QString command)
     {
 
     }
+*/
 }
 
 void GameWindow::getPlayerHealthMoney(QString command)
