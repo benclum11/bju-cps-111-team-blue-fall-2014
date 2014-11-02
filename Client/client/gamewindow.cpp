@@ -196,7 +196,25 @@ void GameWindow::getBuildingUpgrade(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
-    //I don't know which thing should be strings and which should be ints...
+    bool ok;
+    int x, y, type, nxtLvlAttack, nxtLvlSpeed, nxtLvlRange, nxtLvlProd, nxtLvlCost;
+    x = commandArgs.at(0).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) type = commandArgs.at(2).toInt(&ok, 10);
+    if (ok) nxtLvlAttack = commandArgs.at(3).toInt(&ok, 10);
+    if (ok) nxtLvlSpeed = commandArgs.at(4).toInt(&ok, 10);
+    if (ok) nxtLvlRange = commandArgs.at(5).toInt(&ok, 10);
+    if (ok) nxtLvlProd = commandArgs.at(6).toInt(&ok, 10);
+    if (ok) nxtLvlCost = commandArgs.at(7).toInt(&ok, 10);
+    QString unlock = commandArgs.at(8);
+
+    if (ok)
+    {
+
+    } else
+    {
+
+    }
 }
 
 void GameWindow::getBuildingDeath(QString command)
@@ -221,15 +239,14 @@ void GameWindow::getUnitCreation(QString command)
 {
         QStringList commandArgs = command.split(" ");
         bool ok;
+        int type, team, health, x, y, facing;
 
-        QString unitType = commandArgs.at(0);
-        int teamNum = commandArgs.at(1).toInt(&ok, 10);
-        QString unitHealth = commandArgs.at(2);
-        int x, y;
+        type = commandArgs.at(0).toInt(&ok, 10);
+        if (ok) team = commandArgs.at(1).toInt(&ok, 10);
+        if (ok) health = commandArgs.at(2).toInt(&ok, 10);
         if (ok) x = commandArgs.at(3).toInt(&ok, 10);
         if (ok) y = commandArgs.at(4).toInt(&ok, 10);
-
-        QString unitFacing = commandArgs.at(5);
+        if (ok) facing = commandArgs.at(5).toInt(&ok, 10);
 
         if (ok)
         {
@@ -264,11 +281,12 @@ void GameWindow::getUnitMoveTurn(QString command)
     QStringList commandArgs = command.split(" ");
 
     bool ok;
-    int id = commandArgs.at(0).toInt(&ok, 10);
-    int x, y;
+    int id, x, y, facing;
+
+    id = commandArgs.at(0).toInt(&ok, 10);
     if (ok) x = commandArgs.at(1).toInt(&ok, 10);
     if (ok) y = commandArgs.at(2).toInt(&ok, 10);
-    QString facing = commandArgs.at(3);
+    if (ok) facing = commandArgs.at(3).toInt(&ok, 10);
 
     if (ok)
     {
