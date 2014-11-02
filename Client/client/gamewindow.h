@@ -27,6 +27,7 @@ class GameWindow : public QDialog
     QTcpSocket* socket;
     bool unexpected, windowSized;
     vector<Stats> stats;
+    vector<BuildableLabel*> labels;
 
     void getTileInfo(QString);
     void getBuildingInfo(QString);

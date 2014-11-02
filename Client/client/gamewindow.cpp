@@ -3,7 +3,6 @@
 #include "displaybuilding.h"
 #include <QLabel>
 #include <QPixmap>
-#include <QPushButton>
 #include <QString>
 #include <QDebug>
 
@@ -33,15 +32,14 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
 BuildableLabel* GameWindow::getClickedLabel()
 {
-    for (QObject* obj : this->children()) {
-        BuildableLabel* lbl = dynamic_cast<BuildableLabel*>(obj);
+    for (BuildableLabel *lbl : labels) {
         if (lbl != NULL) {
             if (lbl->getClicked()) {
                 return lbl;
             }
         }
     }
-    return nullptr;
+    return NULL;
 }
 
 GameWindow::~GameWindow()
@@ -68,17 +66,14 @@ void GameWindow::dataReceived()
 void GameWindow::on_btn_clicked() {
 
     if(btn->text() == "Create Tower") {
-        BuildableLabel* lbl;
-        for (QObject* obj : this->children()) {
-            lbl = dynamic_cast<BuildableLabel*>(obj);
-            if (lbl != NULL) {
-                QString serverMsg = "";
-                serverMsg += QString("1") + QString(" 1_0_1 ") + QString::number(lbl->getXCoord()) + " " + QString::number(lbl->getYCoord());
+        BuildableLabel* lbl = getClickedLabel();
+        if (lbl != NULL) {
+            if (lbl->getClientTeam() == team)
+                QString serverMsg = QString("1") + QString(" 1_0_1 ") + QString::number(lbl->pos().x()) + " " + QString::number(lbl->pos().y());
                 socket->write(serverMsg.toLocal8Bit());
                 qDebug() << serverMsg << endl;
             }
         }
-    }
 }
 
 void GameWindow::on_btnExitGame_clicked()
@@ -122,15 +117,22 @@ void GameWindow::getTileInfo(QString command)
         if (commandArgs.at(5) == "0") {
             lbl = new QLabel(gameDisplay);
             lbl->setPixmap(QPixmap("://Resources/Tiles/0.png"));
+            lbl->setScaledContents(true);
+            int x = commandArgs.at(3).toInt() - lblWidth/2;
+            int y = commandArgs.at(4).toInt() - lblHeight/2;
+            lbl->setGeometry(x,y,lblWidth,lblHeight);
+            lbl->show();
         } else {
-            lbl = new BuildableLabel(gameDisplay, commandArgs.at(6).toInt());
+            BuildableLabel *lbl = new BuildableLabel(gameDisplay, commandArgs.at(6).toInt());
             lbl->setPixmap(QPixmap("://Resources/Tiles/1.png"));
+            labels.push_back(lbl);
+            lbl->setScaledContents(true);
+            int x = commandArgs.at(3).toInt() - lblWidth/2;
+            int y = commandArgs.at(4).toInt() - lblHeight/2;
+            lbl->setGeometry(x,y,lblWidth,lblHeight);
+            lbl->show();
         }
-        lbl->setScaledContents(true);
-        int x = commandArgs.at(3).toInt() - lblWidth/2;
-        int y = commandArgs.at(4).toInt() - lblHeight/2;
-        lbl->setGeometry(x,y,lblWidth,lblHeight);
-        lbl->show();
+
 
 //        QPushButton* exitGame = new QPushButton(this);
 //        exitGame->setGeometry(250, 612, 99, 27);

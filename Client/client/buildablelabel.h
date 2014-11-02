@@ -5,29 +5,32 @@
 #include <QWidget>
 #include <QMouseEvent>
 
-#include "gamewindow.h"
+//#include "gamewindow.h"
 
 class BuildableLabel : public QLabel {
 
-    static int clientTeam;
     int team;
+    static int clientTeam;
     bool clicked;
     QWidget* parent;
 
 public:
+
     BuildableLabel(QWidget* parent, int team) : QLabel(parent), team(team), parent(parent)
     {
         setMouseTracking(true);
         clicked = false;
     }
 
-    static void setClientTeam(int init) {BuildableLabel::clientTeam = init;}
+    static void setClientTeam(int init) { BuildableLabel::clientTeam = init;}
 
     void mouseReleaseEvent(QMouseEvent *ev);
 
-    void setClicked(bool init) { clicked = init; }
+    QWidget* getParent() { return parent; }
 
     bool getClicked() { return clicked; }
+    int getTeam() {return team; }
+    int getClientTeam() { return clientTeam; }
 
     int getXCoord() { return this->getXCoord(); }
     int getYCoord() { return this->getYCoord(); }
