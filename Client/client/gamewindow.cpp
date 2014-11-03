@@ -123,6 +123,9 @@ void GameWindow::on_btn_clicked() {
                 qDebug() << serverMsg << endl;
             }
         }
+
+    //This tests if unit creation is happening properly
+    //units* unit = new units("2_1_1", 1, 5, 50, 50, 1, gameDisplay);
 }
 
 void GameWindow::on_btnExitGame_clicked()
@@ -325,7 +328,7 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            units* unit = new units(type, team, health, x, y, facing, actionDisplay);
+            units* unit = new units(type, team, health, x, y, facing, gameDisplay);
 
         } else
         {
