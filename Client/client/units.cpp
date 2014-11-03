@@ -1,5 +1,40 @@
 #include "units.h"
 
+// Creates a QString containing the needed resource address
+QString createImageString(int unitType, int direction)
+{
+    QString picture;
+
+    //Chooses image set for the unit
+    if (unitType == 1) //basic
+    {
+        picture = "://Resources/Units/0/";
+    } else if (unitType == 2) //fast
+    {
+        picture = "://Resources/Units/1/";
+    } else if (unitType == 3) //heavy
+    {
+        picture = "://Resources/Units/2/";
+    }
+
+    //Adds remaining text of an actual image
+    if (direction == 1) //north
+    {
+        picture = picture + "1.png";
+    } else if (direction == 2) //east
+    {
+        picture = picture + "2.png";
+    } else if (direction == 3) //south
+    {
+        picture = picture + "3.png";
+    } else if (direction == 4)//west
+    {
+        picture = picture + "4.png";
+    }
+
+    return picture;
+}
+
 bool units::processType(QString unitType, units *instance)
 {
     QStringList typeArgs = unitType.split("_");
@@ -30,38 +65,14 @@ units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, 
         facing = direction;
         QString picture;
 
-        //Chooses image set for the unit
-        if (type == 1) //basic
-        {
-            picture = "://Resources/Units/0/";
-        } else if (type == 2) //fast
-        {
-            picture = "://Resources/Units/1/";
-        } else if (type == 3) //heavy
-        {
-            picture = "://Resources/Units/2/";
-        }
+        picture = createImageString(type, facing);
 
-        //Adds remaining text of an actual image
-        if (facing == 1) //north
-        {
-            picture = picture + "1.png";
-        } else if (facing == 2) //east
-        {
-            picture = picture + "2.png";
-        } else if (facing == 3) //south
-        {
-            picture = picture + "3.png";
-        } else if (facing == 4)//west
-        {
-            picture = picture + "4.png";
-        }
-
-        image = new QLabel(display);
-        image->setPixmap(QPixmap(picture));
-        image->setGeometry(x,y,15,15);
-        image->setScaledContents(true);
-        image->show();
+        //image = new QLabel(display);
+        this->setParent(display);
+        this->setPixmap(QPixmap(picture));
+        this->setGeometry(x,y,15,15);
+        this->setScaledContents(true);
+        this->show();
     }
 }
 
@@ -73,7 +84,9 @@ void units::setXY(int xCoord, int yCoord)
 
 void units::setFacing(int direction)
 {
-    facing = direction;
+    QString picture = createImageString(type, direction);
+    this->setPixmap(QPixmap(picture));
+    // Do I need to do more? this->show(); perhaps?
 }
 
 void units::setCurHealth(int health)

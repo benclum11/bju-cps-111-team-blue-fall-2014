@@ -3,10 +3,10 @@
 #ifndef UNITS_H
 #define UNITS_H
 
-class units
+class units : public QLabel
 {
     int id, team, curHealth, maxHealth, x, y, facing, type, level;
-    QLabel* image;
+    //QLabel* image; //This is depricated now
 
 public:
     units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction, QWidget *display);
