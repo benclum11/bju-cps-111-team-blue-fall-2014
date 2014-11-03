@@ -16,6 +16,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     HighlightedLabel *label = new HighlightedLabel(gameDisplay);
 
     actionDisplay = new QWidget(this);
+    HighlightedLabel *towerLabel = new HighlightedLabel(actionDisplay);
 
     updateGameState(initMsg);
     parent->hide();
@@ -30,21 +31,21 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     btn->raise();
     btn->show();
 
-    tower1 = new ChooseTower(this->actionDisplay, 1);
+    tower1 = new ChooseTower(actionDisplay, 1);
     tower1->setPixmap(QPixmap(":/Resources/Buildings/1.png"));
     tower1->setGeometry(50, 50, 50, 50);
     tower1->setScaledContents(true);
     tower1->raise();
     tower1->show();
 
-    tower2 = new ChooseTower(this->actionDisplay, 2);
+    tower2 = new ChooseTower(actionDisplay, 2);
     tower2->setPixmap(QPixmap(":/Resources/Buildings/2.png"));
     tower2->setGeometry(110, 50, 50, 50);
     tower2->setScaledContents(true);
     tower2->raise();
     tower2->show();
 
-    tower3 = new ChooseTower(this->actionDisplay, 3);
+    tower3 = new ChooseTower(actionDisplay, 3);
     tower3->setPixmap(QPixmap(":/Resources/Buildings/3.png"));
     tower3->setGeometry(170, 50, 50, 50);
     tower3->setScaledContents(true);
@@ -105,14 +106,14 @@ void GameWindow::dataReceived()
 void GameWindow::on_btn_clicked() {
     QString serverMsg = "";
     ChooseTower* tower = getTowerChosen();
-
-    if(btn->text() == "Create Tower") {
-        BuildableLabel* lbl = getClickedLabel();
-        if (lbl != NULL) {
-            if (lbl->getClientTeam() == team)
-                if (tower->getTowerNumber() == 1) {
-                    serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
-                }
+    if (tower != nullptr) {
+        if(btn->text() == "Create Tower") {
+            BuildableLabel* lbl = getClickedLabel();
+            if (lbl != NULL) {
+                if (lbl->getClientTeam() == team)
+                    if (tower->getTowerNumber() == 1) {
+                        serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
+                    }
                 if (tower->getTowerNumber() == 2) {
                     serverMsg = QString("1") + QString(" 1_2_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
                 }
@@ -123,6 +124,7 @@ void GameWindow::on_btn_clicked() {
                 qDebug() << serverMsg << endl;
             }
         }
+    }
 
     //This tests if unit creation is happening properly
     //units* unit = new units("2_1_1", 1, 5, 50, 50, 1, gameDisplay);

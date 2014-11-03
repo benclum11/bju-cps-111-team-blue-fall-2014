@@ -11,7 +11,7 @@ class ChooseTower : public QLabel {
     int towerNumber;
 
 public:
-    ChooseTower(QWidget* parent, int init) : QLabel(parent), towerNumber(init) { clicked = false; }
+    ChooseTower(QWidget* parent, int init) : QLabel(parent), towerNumber(init), parent(parent) { clicked = false; }
 
     bool getClicked() { return clicked; }
     bool getTowerNumber() { return towerNumber; }
