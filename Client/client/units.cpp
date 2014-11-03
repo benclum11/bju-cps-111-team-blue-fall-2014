@@ -2,7 +2,7 @@
 
 units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction)
 {
-    type = unitType; //this does not currently match the documentation and should fail
+    type = unitType; //this needs more processing to work. See documentation
     team = loyalty;
     curHealth = maxHealth = health;
     x = xCoord;
@@ -42,4 +42,25 @@ units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, 
     image->setGeometry(x,y,15,15);
     image->setScaledContents(true);
     image->show();
+}
+
+void units::setXY(int xCoord, int yCoord)
+{
+    x = xCoord;
+    y = yCoord;
+}
+
+void units::setFacing(int direction)
+{
+    facing = direction;
+}
+
+void units::setCurHealth(int health)
+{
+    curHealth = health;
+}
+
+void units::killUnit()
+{
+
 }

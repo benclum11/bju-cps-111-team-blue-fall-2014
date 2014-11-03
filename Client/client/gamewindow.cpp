@@ -1,6 +1,7 @@
 #include "ui_gamewindow.h"
 #include "gamewindow.h"
 #include "displaybuilding.h"
+#include <units.h>
 #include <QLabel>
 #include <QPixmap>
 #include <QString>
@@ -273,10 +274,11 @@ void GameWindow::getUnitCreation(QString command)
 {
         QStringList commandArgs = command.split(" ");
         bool ok;
-        int type, team, health, x, y, facing;
+        QString type;
+        int team, health, x, y, facing;
 
-        type = commandArgs.at(0).toInt(&ok, 10); //this needs to be changed to comply with the documentation
-        if (ok) team = commandArgs.at(1).toInt(&ok, 10);
+        type = commandArgs.at(0); //this needs to be changed to comply with the documentation
+        team = commandArgs.at(1).toInt(&ok, 10);
         if (ok) health = commandArgs.at(2).toInt(&ok, 10);
         if (ok) x = commandArgs.at(3).toInt(&ok, 10);
         if (ok) y = commandArgs.at(4).toInt(&ok, 10);
@@ -284,7 +286,7 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            //call create unit
+            units unit = new units(type, team, health, x, y, facing);
         } else
         {
             //what happens if it fails?

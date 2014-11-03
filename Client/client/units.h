@@ -11,6 +11,11 @@ class units
 
 public:
     units();
+
+    void setXY (int xCoord, int yCoord);
+    void setFacing(int direction);
+    void setCurHealth(int health);
+    void killUnit();
 };
 
 #endif // UNITS_H
