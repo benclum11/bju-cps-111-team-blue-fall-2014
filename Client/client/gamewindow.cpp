@@ -26,9 +26,31 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
     btn = new QPushButton("Create Tower", this->actionDisplay);
     connect(btn, SIGNAL(clicked()), this, SLOT(on_btn_clicked()));
-    //btn->setGeometry(0,0,50,30);
+    btn->setGeometry(actionDisplay->width() - 100, actionDisplay->height()- 26 ,100, 25);
     btn->raise();
     btn->show();
+
+    tower1 = new ChooseTower(this->actionDisplay, 1);
+    tower1->setPixmap(QPixmap(":/Resources/Buildings/1.png"));
+    tower1->setGeometry(50, 50, 50, 50);
+    tower1->setScaledContents(true);
+    tower1->raise();
+    tower1->show();
+
+    tower2 = new ChooseTower(this->actionDisplay, 2);
+    tower2->setPixmap(QPixmap(":/Resources/Buildings/2.png"));
+    tower2->setGeometry(110, 50, 50, 50);
+    tower2->setScaledContents(true);
+    tower2->raise();
+    tower2->show();
+
+    tower3 = new ChooseTower(this->actionDisplay, 3);
+    tower3->setPixmap(QPixmap(":/Resources/Buildings/3.png"));
+    tower3->setGeometry(170, 50, 50, 50);
+    tower3->setScaledContents(true);
+    tower3->raise();
+    tower3->show();
+
 }
 
 BuildableLabel* GameWindow::getClickedLabel()
@@ -36,6 +58,20 @@ BuildableLabel* GameWindow::getClickedLabel()
     for (QObject *obj : gameDisplay->children())
     {
         BuildableLabel *lbl = dynamic_cast<BuildableLabel*>(obj);
+        if (lbl != nullptr) {
+            if (lbl->getClicked()) {
+                return lbl;
+            }
+        }
+    }
+    return NULL;
+}
+
+ChooseTower* GameWindow::getTowerChosen()
+{
+    for (QObject *obj : gameDisplay->children())
+    {
+        ChooseTower *lbl = dynamic_cast<ChooseTower*>(obj);
         if (lbl != nullptr) {
             if (lbl->getClicked()) {
                 return lbl;
@@ -68,11 +104,21 @@ void GameWindow::dataReceived()
 
 void GameWindow::on_btn_clicked() {
     QString serverMsg = "";
+    ChooseTower* tower = getTowerChosen();
+
     if(btn->text() == "Create Tower") {
         BuildableLabel* lbl = getClickedLabel();
         if (lbl != NULL) {
             if (lbl->getClientTeam() == team)
-                serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
+                if (tower->getTowerNumber() == 1) {
+                    serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
+                }
+                if (tower->getTowerNumber() == 2) {
+                    serverMsg = QString("1") + QString(" 1_2_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
+                }
+                if (tower->getTowerNumber() == 3) {
+                    serverMsg = QString("1") + QString(" 1_3_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
+                }
                 socket->write(serverMsg.toLocal8Bit());
                 qDebug() << serverMsg << endl;
             }
@@ -134,14 +180,6 @@ void GameWindow::getTileInfo(QString command)
             lbl->setGeometry(x,y,lblWidth,lblHeight);
             lbl->show();
         }
-
-
-//        QPushButton* exitGame = new QPushButton(this);
-//        exitGame->setGeometry(250, 612, 99, 27);
-//        exitGame->setText("Quit Game");
-//        exitGame->show();
-
-
     }
     windowSized = true;
 }

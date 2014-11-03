@@ -23,7 +23,8 @@ HEADERS += buildablelabel.h \
            highlightedlabel.h \
            stats.h \
            titlewindow.h \
-           units.h
+           units.h \
+    choosetower.h
 FORMS += gamelobby.ui gamewindow.ui helpwindow.ui titlewindow.ui
 SOURCES += buildablelabel.cpp \
            displaybuilding.cpp \
@@ -33,5 +34,6 @@ SOURCES += buildablelabel.cpp \
            main.cpp \
            stats.cpp \
            titlewindow.cpp \
-           units.cpp
+           units.cpp \
+    choosetower.cpp
 RESOURCES += client-resources.qrc

@@ -9,6 +9,7 @@
 #include "buildablelabel.h"
 #include "stats.h"
 #include "highlightedlabel.h"
+#include "choosetower.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ class GameWindow : public QDialog
     Q_OBJECT
 
     int team, lblWidth, lblHeight;
+    ChooseTower *tower1, *tower2, *tower3;
     QWidget *parent, *gameDisplay, *actionDisplay;
     QPushButton *btn;
     Ui::GameWindow* ui;
@@ -55,6 +57,7 @@ public:
     explicit GameWindow(QString&, QWidget* = 0,  QTcpSocket* = 0);
 
     BuildableLabel* getClickedLabel();
+    ChooseTower* getTowerChosen();
 
     void createButton();
 
