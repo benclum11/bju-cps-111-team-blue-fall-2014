@@ -77,6 +77,9 @@ void GameWindow::on_btn_clicked() {
                 qDebug() << serverMsg << endl;
             }
         }
+
+    //This tests if unit creation is happening properly
+    //units* unit = new units("2_1_1", 1, 5, 50, 50, 1, gameDisplay);
 }
 
 void GameWindow::on_btnExitGame_clicked()
@@ -134,14 +137,6 @@ void GameWindow::getTileInfo(QString command)
             lbl->setGeometry(x,y,lblWidth,lblHeight);
             lbl->show();
         }
-
-
-//        QPushButton* exitGame = new QPushButton(this);
-//        exitGame->setGeometry(250, 612, 99, 27);
-//        exitGame->setText("Quit Game");
-//        exitGame->show();
-
-
     }
     windowSized = true;
 }

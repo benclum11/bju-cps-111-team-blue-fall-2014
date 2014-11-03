@@ -70,7 +70,7 @@ units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, 
         //image = new QLabel(display);
         this->setParent(display);
         this->setPixmap(QPixmap(picture));
-        this->setGeometry(x,y,15,15);
+        this->setGeometry(x,y,35,35);
         this->setScaledContents(true);
         this->show();
     }
