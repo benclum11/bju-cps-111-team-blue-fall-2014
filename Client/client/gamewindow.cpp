@@ -286,7 +286,7 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            units unit = new units(type, team, health, x, y, facing);
+            units* unit = new units(type, team, health, x, y, facing);
         } else
         {
             //what happens if it fails?
@@ -364,7 +364,7 @@ void GameWindow::getUnitMoveTurnHealth(QString command)
     if (ok) health = commandArgs.at(1).toInt(&ok, 10);
     if (ok) x = commandArgs.at(2).toInt(&ok, 10);
     if (ok) y = commandArgs.at(3).toInt(&ok, 10);
-    if (ok) facing = commandArgs.at(4);
+    if (ok) facing = commandArgs.at(4).toInt(&ok, 10);
 
     if (ok)
     {

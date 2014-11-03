@@ -10,7 +10,7 @@ class units
     QLabel* image;
 
 public:
-    units();
+    units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction);
 
     void setXY (int xCoord, int yCoord);
     void setFacing(int direction);

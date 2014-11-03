@@ -1,6 +1,6 @@
 #include "units.h"
 
-units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction)
+units::units(unitType, loyalty, health, xCoord, yCoord, direction)
 {
     type = unitType; //this needs more processing to work. See documentation
     team = loyalty;
