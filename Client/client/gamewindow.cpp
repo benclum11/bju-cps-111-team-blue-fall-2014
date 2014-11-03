@@ -33,8 +33,10 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
 BuildableLabel* GameWindow::getClickedLabel()
 {
-    for (BuildableLabel *lbl : labels) {
-        if (lbl != NULL) {
+    for (QObject *obj : gameDisplay->children())
+    {
+        BuildableLabel *lbl = dynamic_cast<BuildableLabel*>(obj);
+        if (lbl != nullptr) {
             if (lbl->getClicked()) {
                 return lbl;
             }
@@ -70,7 +72,7 @@ void GameWindow::on_btn_clicked() {
         BuildableLabel* lbl = getClickedLabel();
         if (lbl != NULL) {
             if (lbl->getClientTeam() == team)
-                serverMsg = QString("1") + QString(" 1_0_1 ") + QString::number(lbl->pos().x()) + " " + QString::number(lbl->pos().y());
+                serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
                 socket->write(serverMsg.toLocal8Bit());
                 qDebug() << serverMsg << endl;
             }
@@ -126,7 +128,6 @@ void GameWindow::getTileInfo(QString command)
         } else {
             BuildableLabel *lbl = new BuildableLabel(gameDisplay, commandArgs.at(6).toInt());
             lbl->setPixmap(QPixmap("://Resources/Tiles/1.png"));
-            labels.push_back(lbl);
             lbl->setScaledContents(true);
             int x = commandArgs.at(3).toInt() - lblWidth/2;
             int y = commandArgs.at(4).toInt() - lblHeight/2;
