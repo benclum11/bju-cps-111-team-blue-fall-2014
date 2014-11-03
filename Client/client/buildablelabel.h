@@ -34,8 +34,8 @@ public:
     int getTeam() {return team; }
     int getClientTeam() { return clientTeam; }
 
-    int getXCoord() { return this->getXCoord(); }
-    int getYCoord() { return this->getYCoord(); }
+    int getXCenter() { return this->pos().x() + 25; }
+    int getYCenter() { return this->pos().y() + 25; }
 
 };
 
