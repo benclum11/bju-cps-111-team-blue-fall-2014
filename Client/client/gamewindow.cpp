@@ -277,7 +277,7 @@ void GameWindow::getUnitCreation(QString command)
         QString type;
         int team, health, x, y, facing;
 
-        type = commandArgs.at(0); //this needs to be changed to comply with the documentation
+        type = commandArgs.at(0);
         team = commandArgs.at(1).toInt(&ok, 10);
         if (ok) health = commandArgs.at(2).toInt(&ok, 10);
         if (ok) x = commandArgs.at(3).toInt(&ok, 10);
@@ -286,7 +286,7 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            units* unit = new units(type, team, health, x, y, facing);
+            units* unit = new units(type, team, health, x, y, facing, actionDisplay);
         } else
         {
             //what happens if it fails?
