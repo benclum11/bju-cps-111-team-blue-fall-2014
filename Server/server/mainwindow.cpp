@@ -81,7 +81,7 @@ void MainWindow::dataRecieved()
 
 void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
 {
-    QStringList data = message.split("");
+    QStringList data = message.split(" ");
     QString command = data.at(0);
     if(command == "5") {
         if (paused) {

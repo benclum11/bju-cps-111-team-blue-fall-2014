@@ -82,7 +82,6 @@ void World::upgradeTower(Tile* tile)
 //deploys a unit of specified type on specified team
 void World::deployUnit(QString type, int team)
 {
-    /*
     Unit* unit = new Unit(getUnitType(type));
     vector<Tile*> path = getPath(team);
     unit->setXCoord(path[0]->getXCoord());
@@ -90,7 +89,6 @@ void World::deployUnit(QString type, int team)
     unit->setTeam(team);
     calculateDirection(unit);
     livingUnits.push_back(unit);
-    */
 }
 
 Player* World::getPlayer(int team)
@@ -529,9 +527,8 @@ void World::buyTower(QStringList& data)
     int cost = getBuildingType(data.at(1)).getCost();
     if (getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
         buildTower(data.at(1), tile);
+        tile->getBuilding()->addtoTotalCost();
     }
-    tile->getBuilding()->addtoTotalCost();
-
 }
 
 void World::buyUnit(QStringList& data)
