@@ -28,6 +28,8 @@ public:
 
     QWidget* getParent() { return parent; }
 
+    void setClicked(bool init) { clicked = init; }
+
     bool getClicked() { return clicked; }
     int getTeam() {return team; }
     int getClientTeam() { return clientTeam; }

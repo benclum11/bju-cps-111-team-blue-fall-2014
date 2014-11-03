@@ -9,12 +9,13 @@ class units
     QLabel* image;
 
 public:
-    units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction, QWidget display);
+    units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction, QWidget *display);
 
     void setXY (int xCoord, int yCoord);
     void setFacing(int direction);
     void setCurHealth(int health);
     void killUnit();
+    bool processType(QString unitType, units *instance);
 };
 
 #endif // UNITS_H

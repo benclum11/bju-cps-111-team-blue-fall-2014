@@ -65,12 +65,12 @@ void GameWindow::dataReceived()
 
 
 void GameWindow::on_btn_clicked() {
-
+    QString serverMsg = "";
     if(btn->text() == "Create Tower") {
         BuildableLabel* lbl = getClickedLabel();
         if (lbl != NULL) {
             if (lbl->getClientTeam() == team)
-                QString serverMsg = QString("1") + QString(" 1_0_1 ") + QString::number(lbl->pos().x()) + " " + QString::number(lbl->pos().y());
+                serverMsg = QString("1") + QString(" 1_0_1 ") + QString::number(lbl->pos().x()) + " " + QString::number(lbl->pos().y());
                 socket->write(serverMsg.toLocal8Bit());
                 qDebug() << serverMsg << endl;
             }
@@ -287,6 +287,7 @@ void GameWindow::getUnitCreation(QString command)
         if (ok)
         {
             units* unit = new units(type, team, health, x, y, facing, actionDisplay);
+
         } else
         {
             //what happens if it fails?

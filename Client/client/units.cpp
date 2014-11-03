@@ -1,8 +1,25 @@
 #include "units.h"
 
+bool units::processType(QString unitType, units *instance)
+{
+    QStringList typeArgs = unitType.split("_");
+
+    bool ok;
+    int firstVal = typeArgs.at(0).toInt(&ok, 10);
+    if (ok) instance->type = typeArgs.at(1).toInt(&ok, 10);
+    if (ok) instance->level = typeArgs.at(2).toInt(&ok, 10);
+
+    if (ok && firstVal == 2)
+    {
+        return true;
+    } else
+    {
+        return false;
+    }
+}
 
 //Note that this constructor currently does nothing with the level variable.
-units::units(unitType, loyalty, health, xCoord, yCoord, direction, display)
+units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction, QWidget *display)
 {
     if (processType(unitType, this))
     {
@@ -11,7 +28,7 @@ units::units(unitType, loyalty, health, xCoord, yCoord, direction, display)
         x = xCoord;
         y = yCoord;
         facing = direction;
-        std::string picture;
+        QString picture;
 
         //Chooses image set for the unit
         if (type == 1) //basic
@@ -69,20 +86,4 @@ void units::killUnit()
 
 }
 
-bool processType(QString unitType, units instance)
-{
-    QStringList typeArgs = unitType.split("_");
 
-    bool ok;
-    int firstVal = typeArgs.at(0).toInt(&ok, 10);
-    if (ok) instance.type = typeArgs.at(1).toInt(&ok, 10);
-    if (ok) instance.level = typeArgs.at(2).toInt(&ok, 10);
-
-    if (ok && firstVal == 2)
-    {
-        return true;
-    } else
-    {
-        return false;
-    }
-}
