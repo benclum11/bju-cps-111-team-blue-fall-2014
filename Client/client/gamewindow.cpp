@@ -286,7 +286,7 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            units* unit = new units(type, team, health, x, y, facing, actionDisplay);
+            units* unit = new units(type, team, health, x, y, facing, gameDisplay);
 
         } else
         {
