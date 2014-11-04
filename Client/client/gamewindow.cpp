@@ -70,7 +70,7 @@ BuildableLabel* GameWindow::getClickedLabel()
 
 ChooseTower* GameWindow::getTowerChosen()
 {
-    for (QObject *obj : gameDisplay->children())
+    for (QObject *obj : actionDisplay->children())
     {
         ChooseTower *lbl = dynamic_cast<ChooseTower*>(obj);
         if (lbl != nullptr) {
@@ -110,15 +110,14 @@ void GameWindow::on_btn_clicked() {
         if(btn->text() == "Create Tower") {
             BuildableLabel* lbl = getClickedLabel();
             if (lbl != NULL) {
-                if (lbl->getClientTeam() == team)
+                if (lbl->getClientTeam() == team) {
                     if (tower->getTowerNumber() == 1) {
-                        serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
+                        serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
+                    } else if (tower->getTowerNumber() == 2) {
+                        serverMsg = QString("1") + QString(" 1_2_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
+                    } else if (tower->getTowerNumber() == 3) {
+                        serverMsg = QString("1") + QString(" 1_3_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
                     }
-                if (tower->getTowerNumber() == 2) {
-                    serverMsg = QString("1") + QString(" 1_2_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
-                }
-                if (tower->getTowerNumber() == 3) {
-                    serverMsg = QString("1") + QString(" 1_3_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + "\n";
                 }
                 socket->write(serverMsg.toLocal8Bit());
                 qDebug() << serverMsg << endl;
@@ -127,7 +126,7 @@ void GameWindow::on_btn_clicked() {
     }
 
     //This tests if unit creation is happening properly
-    //units* unit = new units("2_1_1", 1, 5, 50, 50, 1, gameDisplay);
+    units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
 }
 
 void GameWindow::on_btnExitGame_clicked()
@@ -330,7 +329,7 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            units* unit = new units(type, team, health, x, y, facing, gameDisplay);
+            units* unit = new units(type, x, y, facing, gameDisplay);
 
         } else
         {

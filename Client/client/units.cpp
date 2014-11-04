@@ -1,4 +1,5 @@
 #include "units.h"
+#include <QProgressBar>
 
 // Creates a QString containing the needed resource address
 QString createImageString(int unitType, int direction)
@@ -54,14 +55,12 @@ bool units::processType(QString unitType, units *instance)
 }
 
 //Note that this constructor currently does nothing with the level variable.
-units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, int direction, QWidget *display)
+units::units(QString unitType,int xCoord, int yCoord, int direction, QWidget *display)
 {
     if (processType(unitType, this))
     {
-        team = loyalty;
-        curHealth = maxHealth = health;
-        x = xCoord;
-        y = yCoord;
+        x = xCoord-25;
+        y = yCoord-25;
         facing = direction;
         QString picture;
 
@@ -70,16 +69,22 @@ units::units(QString unitType, int loyalty, int health, int xCoord, int yCoord, 
         //image = new QLabel(display);
         this->setParent(display);
         this->setPixmap(QPixmap(picture));
-        this->setGeometry(x,y,35,35);
+        this->setGeometry(x,y,50,50);
         this->setScaledContents(true);
         this->show();
+
+        QProgressBar* healthbar = new QProgressBar(this);
+        healthbar->setGeometry(10,0,30,10);
+        healthbar->setValue(100);
+        healthbar->setTextVisible(false);
+        healthbar->show();
     }
 }
 
 void units::setXY(int xCoord, int yCoord)
 {
-    x = xCoord;
-    y = yCoord;
+    x = xCoord-25;
+    y = yCoord-25;
 }
 
 void units::setFacing(int direction)
@@ -91,7 +96,12 @@ void units::setFacing(int direction)
 
 void units::setCurHealth(int health)
 {
-    curHealth = health;
+    for(QObject* obj : this->children()) {
+        QProgressBar* bar = dynamic_cast<QProgressBar*>(obj);
+        if(bar != nullptr) {
+            bar->setValue(health);
+        }
+    }
 }
 
 void units::killUnit()

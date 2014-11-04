@@ -14,7 +14,7 @@ public:
     ChooseTower(QWidget* parent, int init) : QLabel(parent), towerNumber(init), parent(parent) { clicked = false; }
 
     bool getClicked() { return clicked; }
-    bool getTowerNumber() { return towerNumber; }
+    int getTowerNumber() { return towerNumber; }
 
     void setClicked(bool init) { clicked = init; }
 
