@@ -20,3 +20,12 @@ void ChooseTower::mouseReleaseEvent(QMouseEvent *ev) {
     }
     clicked = true;
 }
+
+void ChooseTower::make(QString resource, int x, int y, int w, int h, bool scaled)
+{
+    this->setPixmap(QPixmap(resource));
+    this->setGeometry(x, y, w, h);
+    this->setScaledContents(scaled);
+    this->raise();
+    this->show();
+}

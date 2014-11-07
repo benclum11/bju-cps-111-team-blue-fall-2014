@@ -19,6 +19,8 @@ public:
     void setClicked(bool init) { clicked = init; }
 
     void mouseReleaseEvent(QMouseEvent *ev);
+
+    void make(QString resource,  int x, int y, int w, int h, bool scaled);
 };
 
 

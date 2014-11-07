@@ -32,26 +32,13 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     btn->show();
 
     tower1 = new ChooseTower(actionDisplay, 1);
-    tower1->setPixmap(QPixmap(":/Resources/Buildings/1.png"));
-    tower1->setGeometry(50, 50, 50, 50);
-    tower1->setScaledContents(true);
-    tower1->raise();
-    tower1->show();
+    tower1->make(":/Resources/Buildings/1.png", 50, 50, 50, 50, true);
 
     tower2 = new ChooseTower(actionDisplay, 2);
-    tower2->setPixmap(QPixmap(":/Resources/Buildings/2.png"));
-    tower2->setGeometry(110, 50, 50, 50);
-    tower2->setScaledContents(true);
-    tower2->raise();
-    tower2->show();
+    tower2->make(":/Resources/Buildings/2.png", 110, 50, 50, 50, true);
 
     tower3 = new ChooseTower(actionDisplay, 3);
-    tower3->setPixmap(QPixmap(":/Resources/Buildings/3.png"));
-    tower3->setGeometry(170, 50, 50, 50);
-    tower3->setScaledContents(true);
-    tower3->raise();
-    tower3->show();
-
+    tower3->make(":/Resources/Buildings/3.png", 170, 50, 50, 50, true);
 }
 
 BuildableLabel* GameWindow::getClickedLabel()
