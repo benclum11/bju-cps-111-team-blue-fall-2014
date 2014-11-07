@@ -39,6 +39,12 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
     tower3 = new ChooseTower(actionDisplay, 3);
     tower3->make(":/Resources/Buildings/3.png", 170, 50, 50, 50, true);
+
+    btnUnits = new QPushButton("Create Unit", this->actionDisplay);
+    btnUnits->setGeometry(actionDisplay->width() - 215, actionDisplay->height() -26, 100, 25);
+    btnUnits->raise();
+    btnUnits->show();
+    connect(btnUnits, SIGNAL(clicked()), this, SLOT(on_btnUnits_clicked()));
 }
 
 BuildableLabel* GameWindow::getClickedLabel()
@@ -110,9 +116,11 @@ void GameWindow::on_btn_clicked() {
                 qDebug() << serverMsg << endl;
             }
         }
-    }
+    }    
+}
 
-    //This tests if unit creation is happening properly
+void GameWindow::on_btnUnits_clicked()
+{
     units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
 }
 
