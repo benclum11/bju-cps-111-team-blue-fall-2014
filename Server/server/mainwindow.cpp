@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     server = new QTcpServer(this);
     if(!server->listen(QHostAddress::Any, 10000)) {
-        QMessageBox::critical(this,"Error","Cannot start socket. Is another instance already running?");
+        QMessageBox::critical(this,"Error", "Cannot start server. Is another instance already running?");
         exit(1);
     }
     connect(server, &QTcpServer::newConnection, this, &MainWindow::clientConnected);

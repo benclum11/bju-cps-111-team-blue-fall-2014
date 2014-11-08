@@ -42,6 +42,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
     btnUnits = new QPushButton("Create Unit", this->actionDisplay);
     btnUnits->setGeometry(actionDisplay->width() - 215, actionDisplay->height() -26, 100, 25);
+    btnUnits->setObjectName(QString::fromUtf8("btnUnits"));
     btnUnits->raise();
     btnUnits->show();
     connect(btnUnits, SIGNAL(clicked()), this, SLOT(on_btnUnits_clicked()));
@@ -121,7 +122,9 @@ void GameWindow::on_btn_clicked() {
 
 void GameWindow::on_btnUnits_clicked()
 {
-    units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
+    QString unitCreate = "3_1_1";
+    socket->write(unitCreate.toLocal8Bit());
+    //units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
 }
 
 void GameWindow::on_btnExitGame_clicked()
@@ -151,12 +154,6 @@ void GameWindow::getTileInfo(QString command)
         actionDisplay->setMinimumHeight(gameHeight + 200);
         actionDisplay->setMaximumWidth(350);
         actionDisplay->setMaximumHeight(gameHeight + 200);
-
-//        QLabel* lbl = new QLabel(actionDisplay);
-//        lbl->setPixmap(QPixmap("://Resources/Buildings/1.png"));
-//        lbl->setGeometry(0,0,350,gameHeight+200);
-//        lbl->setScaledContents(true);
-//        lbl->show();
 
         actionDisplay->show();
     }
