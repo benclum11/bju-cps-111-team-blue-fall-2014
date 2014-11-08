@@ -6,6 +6,8 @@
 #include <QDialog>
 #include <QWidget>
 #include <vector>
+#include <QTextEdit>
+#include <QMessageBox>
 #include "buildablelabel.h"
 #include "stats.h"
 #include "highlightedlabel.h"
@@ -24,7 +26,8 @@ class GameWindow : public QDialog
     int team, lblWidth, lblHeight;
     ChooseTower *tower1, *tower2, *tower3;
     QWidget *parent, *gameDisplay, *actionDisplay;
-    QPushButton *btn, *btnUnits;
+    QPushButton *btn, *btnUnits, *saveGame;
+    QTextEdit *filename;
     Ui::GameWindow* ui;
     QTcpSocket* socket;
     bool unexpected, windowSized;
@@ -74,6 +77,8 @@ private slots:
     void on_btn_clicked();
 
     void on_btnUnits_clicked();
+
+    void on_saveGame_clicked();
 };
 
 #endif // GAMEWINDOW_H

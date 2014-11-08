@@ -560,7 +560,7 @@ void World::load(QString filename)
 
 void World::save(QString filename)
 {
-    (void)filename;//stub
+    Save *file = new Save(filename);
 }
 
 void World::Reset()

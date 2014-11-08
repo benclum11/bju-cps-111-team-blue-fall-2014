@@ -1,16 +1,20 @@
 #ifndef SAVE_H
 #define SAVE_H
 
-#include <string>
-#include <iostream>
+#include <QString>
+#include <QFile>
+#include <QCoreApplication>
+#include <QTextStream>
 
 using namespace std;
 
 class Save {
 
-    Save(string filename);
+public:
+    Save(QString filename);
 
-    void saveFile(ifstream &infile);
+private:
+    void saveFile(QFile &file);
 };
 
 #endif // SAVE_H

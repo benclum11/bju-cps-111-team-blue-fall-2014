@@ -4,6 +4,7 @@
 #include <vector>
 #include <QString>
 #include <QTextStream>
+#include "save.h"
 #include "building.h"
 #include "unit.h"
 #include "tile.h"
@@ -77,6 +78,11 @@ public:
     void upgrade(QStringList&);
     void load(QString);
     void save(QString);
+    int getRows() {return rows;}
+    int getColumns() {return columns;}
+    Tile* getTile(int y, int x) {return map[y][x];}
+    int getCounter() {return counter;}
+    vector<Unit*> getLivingUnits() {return livingUnits;}
 
     static void Reset();
 };

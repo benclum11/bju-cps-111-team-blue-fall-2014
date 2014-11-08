@@ -26,11 +26,24 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
     //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
     btn = new QPushButton("Create Tower", this->actionDisplay);
-    connect(btn, SIGNAL(clicked()), this, SLOT(on_btn_clicked()));
+    connect(btn, &QPushButton::clicked, this, &GameWindow::on_btn_clicked);
     btn->setGeometry(actionDisplay->width() - 100, actionDisplay->height()- 26 ,100, 25);
     btn->raise();
     btn->show();
 
+    //button to save game
+    saveGame = new QPushButton("Save Game", this);
+    connect(saveGame, &QPushButton::clicked, this, &GameWindow::on_saveGame_clicked);
+    saveGame->setGeometry(this->width() - 265, this->height()- 40 ,100, 25);
+    saveGame->raise();
+    saveGame->show();
+
+    filename = new QTextEdit(this);
+    filename->setGeometry(this->width() - 150, this->height()- 40 ,100, 25);
+    filename->raise();
+    filename->show();
+
+    //3 labels that can be selected to choose which tower to create
     tower1 = new ChooseTower(actionDisplay, 1);
     tower1->make(":/Resources/Buildings/1.png", 50, 50, 50, 50, true);
 
@@ -45,7 +58,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     btnUnits->setObjectName(QString::fromUtf8("btnUnits"));
     btnUnits->raise();
     btnUnits->show();
-    connect(btnUnits, SIGNAL(clicked()), this, SLOT(on_btnUnits_clicked()));
+    connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
 }
 
 BuildableLabel* GameWindow::getClickedLabel()
@@ -124,7 +137,19 @@ void GameWindow::on_btnUnits_clicked()
 {
     QString unitCreate = "3_1_1";
     socket->write(unitCreate.toLocal8Bit());
-    //units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
+    units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
+}
+
+void GameWindow::on_saveGame_clicked()
+{
+    QString serverMsg;
+    if ((filename->toPlainText() == "") || (filename->toPlainText() == " ")) {
+        QMessageBox::critical(this, "Error!", "Please Enter a Vaid Filename");
+        return;
+    } else {
+        serverMsg = QString("6 ") + filename->toPlainText() + "\n";
+        socket->write(serverMsg.toLocal8Bit());
+    }
 }
 
 void GameWindow::on_btnExitGame_clicked()
