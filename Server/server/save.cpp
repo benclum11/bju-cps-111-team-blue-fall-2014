@@ -33,8 +33,9 @@ void Save::saveFile(QFile &file) {
             }
         }
     }
-    for (unsigned int x = 0; x < World::Instance()->getLivingUnits().size(); ++x) {
-        Unit* unit = World::Instance()->getLivingUnits()[x];
+    vector<Unit*> livingUnits = World::Instance()->getLivingUnits();
+    for (unsigned int x = 0; x < livingUnits.size(); ++x) {
+        Unit* unit = livingUnits.at(x);
         QString writeToFile = QString::number(unit->getID()) + " " + unit->getType() + " " + QString::number(unit->getXCoord()) + " " +
                 QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection());
         out << writeToFile << endl;

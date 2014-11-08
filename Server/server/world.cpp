@@ -30,7 +30,7 @@ Building& World::getBuildingType(QString type)
 //returns a copy of the unit type
 Unit& World::getUnitType(QString type)
 {
-    for (unsigned int i = 0; i < buildingTypes.size(); ++i) {
+    for (unsigned int i = 0; i < unitTypes.size(); ++i) {
         if(unitTypes.at(i).getType() == type) {
             return unitTypes[i];
         }
@@ -89,6 +89,10 @@ void World::deployUnit(QString type, int team)
     unit->setTeam(team);
     calculateDirection(unit);
     livingUnits.push_back(unit);
+    sendToClient = QString("31 ") + QString::number(unit->getID()) + " "
+            + unit->getType() + " " + QString::number(unit->getXCoord()) + " "
+            + QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%91";
+
 }
 
 Player* World::getPlayer(int team)
@@ -533,10 +537,13 @@ void World::buyTower(QStringList& data)
 
 void World::buyUnit(QStringList& data)
 {
-    int cost = getUnitType(data[1]).getCost();
-    if (getPlayer(data[2].toInt())->attempttoSpendMoney(cost)) {
-        deployUnit(data.at(1), data.at(2).toInt());
-    }
+    //int cost = getUnitType(data[1]).getCost();
+    //if (getPlayer(data[2].toInt())->attempttoSpendMoney(cost)) {
+    QString type = QString(data.at(1));
+    int team = data.at(2).toInt();
+        deployUnit(type, team);
+
+   // }
 }
 
 void World::destroy(QStringList& data)
@@ -555,7 +562,7 @@ void World::upgrade(QStringList& data)
 
 void World::load(QString filename)
 {
-    (void)filename;//stub
+    Load *load = new Load(filename);
 }
 
 void World::save(QString filename)

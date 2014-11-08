@@ -135,9 +135,10 @@ void GameWindow::on_btn_clicked() {
 
 void GameWindow::on_btnUnits_clicked()
 {
-    QString unitCreate = "3_1_1";
+
+    //units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
+    QString unitCreate = QString("3") + " 3_1_1 " + "1\n";
     socket->write(unitCreate.toLocal8Bit());
-    units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
 }
 
 void GameWindow::on_saveGame_clicked()
@@ -149,6 +150,7 @@ void GameWindow::on_saveGame_clicked()
     } else {
         serverMsg = QString("6 ") + filename->toPlainText() + "\n";
         socket->write(serverMsg.toLocal8Bit());
+        QMessageBox::warning(this, "Saved", "Your game was saved");
     }
 }
 
@@ -337,9 +339,9 @@ void GameWindow::getUnitCreation(QString command)
         QString type;
         int team, health, x, y, facing;
 
-        type = commandArgs.at(0);
-        team = commandArgs.at(1).toInt(&ok, 10);
-        if (ok) health = commandArgs.at(2).toInt(&ok, 10);
+        type = commandArgs.at(2);
+        //team = commandArgs.at(1).toInt(&ok, 10);
+        //if (ok) health = commandArgs.at(2).toInt(&ok, 10);
         if (ok) x = commandArgs.at(3).toInt(&ok, 10);
         if (ok) y = commandArgs.at(4).toInt(&ok, 10);
         if (ok) facing = commandArgs.at(5).toInt(&ok, 10);

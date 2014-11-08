@@ -5,6 +5,7 @@
 #include <QString>
 #include <QTextStream>
 #include "save.h"
+#include "load.h"
 #include "building.h"
 #include "unit.h"
 #include "tile.h"
@@ -36,15 +37,16 @@ class World {
     void readUnitFile(QString);
     void readUnitInfo(QTextStream&);
     void readPlayerFile(QString);
-
-    void buildTower(QString, Tile*);
     void upgradeTower(Tile*);
-    Tile* findTileAt(int, int);
+
 
     ~World();
 
 public:
 
+    void setCounter(int init) { counter = init; }
+    void buildTower(QString, Tile*);
+    Tile* findTileAt(int, int);
     static World* Instance();
     Building& getBuildingType(QString);
     Unit& getUnitType(QString);

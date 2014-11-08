@@ -33,6 +33,7 @@ private slots:
     void dataReceived();
 
     void closeEvent(QCloseEvent*);
+    void on_loadBtn_clicked();
 };
 
 #endif // GAMELOBBY_H

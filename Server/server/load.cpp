@@ -1,45 +1,38 @@
 #include "load.h"
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <sstream>
 
 using namespace std;
-Load::Load(string filename) {
-    ifstream infile;
-    infile.open(filename);
-    loadFile(infile);
-    infile.close();
+Load::Load(QString filename) {
+    QFile file(filename + ".txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    loadFile(file);
+    file.close();
 }
 
-void Load::createTower(stringstream &sstrm) {
-    //initialze new tower with proper instance variables
-}
 
-void Load::createUnit(stringstream &sstrm) {
-    //initialze new unit with proper instance variables
-}
+//Build every tower, base, unit, from new file
+void Load::loadFile(QFile &file) {
+    QTextStream in(&file);
 
-void Load::createBase(stringstream &sstrm) {
-    //initialze new base with proper instance variables
-}
 
-void Load::loadFile(ifstream &infile) {
-    //write type and x y coordinates, health, of every tower, unit, and base to new file
-    while (infile) {
-        string line;
-        getline(infile, line);
-        stringstream sstrm(line);
+    while(!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList data = line.split(" ");
 
-        //string currentString;
-        //sstrm >> currentString;
+        if (data.size() == 1) {
+            World::Instance()->setCounter(data.at(0).toInt());
+        } else {
+            QStringList typeList = data.at(2).split("_");
 
-        if (line.find("tower") == 0) {
-            createTower(sstrm);
-        } else if (line.find("unit") == 0) {
-            createUnit(sstrm);
-        } else if (line.find("base") == 0) {
-            createBase(sstrm);
+            if (typeList.at(0).toInt() == 1) { //create building
+                Tile* tile = World::Instance()->findTileAt(data.at(0).toInt(), data.at(1).toInt());
+                int cost = World::Instance()->getBuildingType(data.at(2)).getCost();
+                if (World::Instance()->getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
+                    World::Instance()->buildTower(data.at(2), tile);
+                    tile->getBuilding()->addtoTotalCost();
+                }
+            } else if (typeList.at(0).toInt() == 2) { //create unit
+
+            }
         }
     }
 }

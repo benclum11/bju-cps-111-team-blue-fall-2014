@@ -1,24 +1,22 @@
 #ifndef LOAD_H
 #define LOAD_H
 
-#include <string>
-#include <iostream>
+#include <QString>
+#include <QStringList>
+#include <QFile>
+#include "world.h"
 
 using namespace std;
 
 class Load {
 
-    Load(string filename);
-
 public:
 
-    void loadFile(ifstream &infile);
+    Load(QString filename);
 
-    void createTower(stringstream &sstrm);
+private:
 
-    void createUnit(stringstream &sstrm);
-
-    void createBase(stringstream &sstrm);
+    void loadFile(QFile &file);
 };
 
 #endif // LOAD_H

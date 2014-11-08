@@ -64,3 +64,17 @@ void gameLobby::closeEvent(QCloseEvent *event)
     socket->close();
     event->accept();
 }
+
+void gameLobby::on_loadBtn_clicked()
+{
+    if (ui->loadBox->text() == "") {
+        QMessageBox::critical(this, "Error!", "Please Enter a Filename");
+    } else if (ui->loadBox->text().contains(".txt")) {
+         QMessageBox::critical(this, "Error!", "Please Enter a Filename");
+    } else {
+        QString serverMsg = QString("7 ") + ui->loadBox->text() + "\n";
+        socket->write(serverMsg.toLocal8Bit());
+        GameWindow game(initMsg, this, socket);
+        game.exec();
+    }
+}
