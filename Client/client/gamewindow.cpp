@@ -59,6 +59,12 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     btnUnits->raise();
     btnUnits->show();
     connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
+
+    startBtn = new QPushButton("Start Timer", this);
+    connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
+    startBtn->setGeometry(100, 100 ,100, 25);
+    startBtn->raise();
+    startBtn->show();
 }
 
 BuildableLabel* GameWindow::getClickedLabel()
@@ -152,6 +158,12 @@ void GameWindow::on_saveGame_clicked()
         socket->write(serverMsg.toLocal8Bit());
         QMessageBox::warning(this, "Saved", "Your game was saved");
     }
+}
+
+void GameWindow::on_start_clicked()
+{
+    QString serverMsg = "10 10\n";
+    socket->write(serverMsg.toLocal8Bit());
 }
 
 void GameWindow::on_btnExitGame_clicked()

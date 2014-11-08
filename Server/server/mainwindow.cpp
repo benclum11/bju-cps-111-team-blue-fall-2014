@@ -23,18 +23,18 @@ MainWindow::MainWindow(QWidget *parent) :
         exit(1);
     }
     connect(server, &QTcpServer::newConnection, this, &MainWindow::clientConnected);
-
 }
 
 void MainWindow::timerHit()
 {
-    World::Instance()->deployUnit("2_0_" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
-    World::Instance()->deployUnit("2_0_" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
+    World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
+    World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL)
             updateClient();
     }
+    World::Instance()->updateWorld();
 }
 
 void MainWindow::clientConnected()
@@ -63,7 +63,7 @@ void MainWindow::clientDisconnected()
     addToLog("Client disconnected.");
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
-        if (anotherSock != NULL){
+        if (anotherSock != NULL) {
             //Pause Game maybe or just quit?
         }
     }
@@ -113,7 +113,7 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
         World::Instance()->upgrade(data);
     } else if (command == "9") {
         World::Instance()->removeTeam(data.at(1).toInt());
-    }
+    } else if (command == "10") { timer->start(); }
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL) {

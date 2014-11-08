@@ -26,7 +26,7 @@ class GameWindow : public QDialog
     int team, lblWidth, lblHeight;
     ChooseTower *tower1, *tower2, *tower3;
     QWidget *parent, *gameDisplay, *actionDisplay;
-    QPushButton *btn, *btnUnits, *saveGame;
+    QPushButton *btn, *btnUnits, *saveGame, *startBtn;
     QTextEdit *filename;
     Ui::GameWindow* ui;
     QTcpSocket* socket;
@@ -79,6 +79,8 @@ private slots:
     void on_btnUnits_clicked();
 
     void on_saveGame_clicked();
+
+    void on_start_clicked();
 };
 
 #endif // GAMEWINDOW_H
