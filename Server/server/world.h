@@ -54,6 +54,7 @@ public:
     QString getSendToClient();
     QString getBeginWorld();
     Tile* getNextPathTile(unsigned int, int);
+    void loadUnit(QString type, int team, int x, int y, int direction);
 
     bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
     void removeTeam(int);
@@ -85,6 +86,7 @@ public:
     Tile* getTile(int y, int x) {return map[y][x];}
     int getCounter() {return counter;}
     vector<Unit*> getLivingUnits() {return livingUnits;}
+    void setSendToClient(QString init) { sendToClient = init; }
 
     static void Reset();
 };

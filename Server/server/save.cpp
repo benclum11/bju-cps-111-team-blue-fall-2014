@@ -5,8 +5,9 @@ using namespace std;
 
 
 Save::Save(QString filename) {
+    filename.replace(QString("\n"), QString(""));
     QFile file;
-    file.setFileName(filename + ".txt");
+    file.setFileName(QString("../server/saved/") + filename + ".txt");
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     saveFile(file);
     file.close();

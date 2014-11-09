@@ -98,7 +98,6 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
     } else if(command == "6") {
         World::Instance()->save(data.at(1));
     } else if (command == "7") {
-        timer->start();
         paused = false;
         QString clientMsg = "5\n";
         sock->write(clientMsg.toLocal8Bit());

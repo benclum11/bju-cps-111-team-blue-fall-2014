@@ -95,6 +95,19 @@ void World::deployUnit(QString type, int team)
 
 }
 
+void World::loadUnit(QString type, int team, int x, int y, int direction)
+{
+    Unit* unit = new Unit(getUnitType(type));
+    unit->setXCoord(x);
+    unit->setYCoord(y);
+    unit->setTeam(team);
+    unit->setDirection(direction);
+    livingUnits.push_back(unit);
+    sendToClient += QString("31 ") + QString::number(unit->getID()) + " "
+            + unit->getType() + " " + QString::number(unit->getXCoord()) + " "
+            + QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+}
+
 Player* World::getPlayer(int team)
 {
     return players[team-1];
@@ -108,9 +121,10 @@ Tile* World::findTileAt(int xCoord, int yCoord)
         for (int j = 0; j < columns && !found; ++j) {
             tile = map[i][j];
             if(tile->getXCoord() == xCoord && tile->getYCoord() == yCoord) { found = true; }
+            if (found == true) { return tile; }
         }
     }
-    return tile;
+    return NULL;
 }
 
 World::~World()
@@ -567,7 +581,7 @@ void World::load(QString filename)
 
 void World::save(QString filename)
 {
-    Save *file = new Save(filename);
+    Save *save = new Save(filename);
 }
 
 void World::Reset()

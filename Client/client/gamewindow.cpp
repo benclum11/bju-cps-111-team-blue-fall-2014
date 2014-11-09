@@ -153,6 +153,9 @@ void GameWindow::on_saveGame_clicked()
     if ((filename->toPlainText() == "") || (filename->toPlainText() == " ")) {
         QMessageBox::critical(this, "Error!", "Please Enter a Vaid Filename");
         return;
+    } else if (filename->toPlainText().contains(".txt")) {
+        QMessageBox::critical(this, "Error!", "Please Do Not Include The File Extension");
+        return;
     } else {
         serverMsg = QString("6 ") + filename->toPlainText() + "\n";
         socket->write(serverMsg.toLocal8Bit());

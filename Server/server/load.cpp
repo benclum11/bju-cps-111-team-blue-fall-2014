@@ -1,8 +1,11 @@
 #include "load.h"
+#include <QDir>
+#include <QDebug>
 
 using namespace std;
 Load::Load(QString filename) {
-    QFile file(filename + ".txt");
+    filename.replace(QString("\n"), QString(""));
+    QFile file(QString("../server/saved/") + filename + ".txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     loadFile(file);
     file.close();
@@ -11,8 +14,8 @@ Load::Load(QString filename) {
 
 //Build every tower, base, unit, from new file
 void Load::loadFile(QFile &file) {
+    World::Instance()->setSendToClient("");
     QTextStream in(&file);
-
 
     while(!in.atEnd()) {
         QString line = in.readLine();
@@ -21,7 +24,10 @@ void Load::loadFile(QFile &file) {
         if (data.size() == 1) {
             World::Instance()->setCounter(data.at(0).toInt());
         } else {
-            QStringList typeList = data.at(2).split("_");
+            QStringList typeList;
+            for (int i = 0; i < data.size(); ++i) {
+                if (data.at(i).contains("_")) { typeList = data.at(i).split("_"); }
+            }
 
             if (typeList.at(0).toInt() == 1) { //create building
                 Tile* tile = World::Instance()->findTileAt(data.at(0).toInt(), data.at(1).toInt());
@@ -31,10 +37,12 @@ void Load::loadFile(QFile &file) {
                     tile->getBuilding()->addtoTotalCost();
                 }
             } else if (typeList.at(0).toInt() == 2) { //create unit
+                int team = 1;
+                if (data.at(2).toInt() < 250) { team = 1; }
+                if (data.at(2).toInt() > 250) { team = 2; }
+                World::Instance()->loadUnit(data.at(1), team, data.at(2).toInt(), data.at(3).toInt(), data.at(4).toInt());
 
             }
         }
     }
 }
-
-

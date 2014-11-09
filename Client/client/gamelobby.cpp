@@ -68,9 +68,11 @@ void gameLobby::closeEvent(QCloseEvent *event)
 void gameLobby::on_loadBtn_clicked()
 {
     if (ui->loadBox->text() == "") {
-        QMessageBox::critical(this, "Error!", "Please Enter a Filename");
+        QMessageBox::critical(this, "Error!", "Please Enter A File Name");
+        return;
     } else if (ui->loadBox->text().contains(".txt")) {
-         QMessageBox::critical(this, "Error!", "Please Enter a Filename");
+        QMessageBox::critical(this, "Error!", "Please Do Not Include The File Extension");
+        return;
     } else {
         QString serverMsg = QString("7 ") + ui->loadBox->text() + "\n";
         socket->write(serverMsg.toLocal8Bit());
