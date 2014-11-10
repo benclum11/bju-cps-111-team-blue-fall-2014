@@ -22,8 +22,7 @@ public:
         clicked = false;
     }
 
-    static void setClientTeam(int init) { BuildableLabel::clientTeam = init;}
-
+    static void setClientTeam(int init) { BuildableLabel::clientTeam = init; }
     void mouseReleaseEvent(QMouseEvent *ev);
 
     QWidget* getParent() { return parent; }
@@ -32,7 +31,7 @@ public:
 
     bool getClicked() { return clicked; }
     int getTeam() {return team; }
-    int getClientTeam() { return clientTeam; }
+    static int getClientTeam() { return clientTeam; }
 
     int getXCenter() { return this->pos().x() + 25; }
     int getYCenter() { return this->pos().y() + 25; }

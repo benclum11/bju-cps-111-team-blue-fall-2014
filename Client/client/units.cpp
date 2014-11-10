@@ -4,16 +4,16 @@
 // Creates a QString containing the needed resource address
 QString createImageString(int unitType, int direction)
 {
-    QString picture;
+    QString picture = "";
 
     //Chooses image set for the unit
-    if (unitType == 1) //basic
+    if (unitType == 0) //basic
     {
         picture = "://Resources/Units/0/";
-    } else if (unitType == 2) //fast
+    } else if (unitType == 1) //fast
     {
         picture = "://Resources/Units/1/";
-    } else if (unitType == 3) //heavy
+    } else if (unitType == 2) //heavy
     {
         picture = "://Resources/Units/2/";
     }
@@ -63,6 +63,7 @@ units::units(QString unitType,int xCoord, int yCoord, int direction, QWidget *di
         y = yCoord-25;
         facing = direction;
         QString picture;
+        int type = unitType.split("_").at(1).toInt();
 
         picture = createImageString(type, facing);
 
@@ -71,6 +72,8 @@ units::units(QString unitType,int xCoord, int yCoord, int direction, QWidget *di
         this->setPixmap(QPixmap(picture));
         this->setGeometry(x,y,50,50);
         this->setScaledContents(true);
+        this->raise();
+        this->raise();
         this->show();
 
         QProgressBar* healthbar = new QProgressBar(this);

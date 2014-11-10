@@ -53,6 +53,17 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     tower3 = new ChooseTower(actionDisplay, 3);
     tower3->make(":/Resources/Buildings/3.png", 170, 50, 50, 50, true);
 
+    //3 labels to choose which unit to create
+    unit1 = new ChooseTower(actionDisplay, 4);
+    unit1->make(":/Resources/Units/0/1.png", 50, 110, 50, 50, true);
+
+    unit2 = new ChooseTower(actionDisplay, 5);
+    unit2->make(":/Resources/Units/1/1.png", 110, 110, 50, 50, true);
+
+    unit3 = new ChooseTower(actionDisplay, 6);
+    unit3->make(":/Resources/Units/2/2.png", 170, 110, 50, 50, true);
+
+    //button to create units
     btnUnits = new QPushButton("Create Unit", this->actionDisplay);
     btnUnits->setGeometry(actionDisplay->width() - 215, actionDisplay->height() -26, 100, 25);
     btnUnits->setObjectName(QString::fromUtf8("btnUnits"));
@@ -60,11 +71,20 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     btnUnits->show();
     connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
 
+    //button to start the timer
     startBtn = new QPushButton("Start Timer", this);
     connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
-    startBtn->setGeometry(100, 100 ,100, 25);
+    startBtn->setGeometry(100, 210 ,100, 25);
     startBtn->raise();
     startBtn->show();
+
+    //label that displays the users money
+    money = new QLabel(this->actionDisplay);
+    money->setGeometry(50,200,200,50);
+    money->setText("Current Money: 100");
+    money->raise();
+    money->show();
+
 }
 
 BuildableLabel* GameWindow::getClickedLabel()
@@ -120,31 +140,49 @@ void GameWindow::on_btn_clicked() {
     QString serverMsg = "";
     ChooseTower* tower = getTowerChosen();
     if (tower != nullptr) {
-        if(btn->text() == "Create Tower") {
-            BuildableLabel* lbl = getClickedLabel();
-            if (lbl != NULL) {
-                if (lbl->getClientTeam() == team) {
-                    if (tower->getTowerNumber() == 1) {
-                        serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
-                    } else if (tower->getTowerNumber() == 2) {
-                        serverMsg = QString("1") + QString(" 1_2_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
-                    } else if (tower->getTowerNumber() == 3) {
-                        serverMsg = QString("1") + QString(" 1_3_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
-                    }
+        BuildableLabel* lbl = getClickedLabel();
+        if (lbl != NULL) {
+            if (BuildableLabel::getClientTeam() == lbl->getTeam()) {
+                if (tower->getTowerNumber() == 1) {
+                    serverMsg = QString("1") + QString(" 1_1_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
+                } else if (tower->getTowerNumber() == 2) {
+                    serverMsg = QString("1") + QString(" 1_2_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
+                } else if (tower->getTowerNumber() == 3) {
+                    serverMsg = QString("1") + QString(" 1_3_1 ") + QString::number(lbl->getXCenter()) + " " + QString::number(lbl->getYCenter()) + " \n";
                 }
-                socket->write(serverMsg.toLocal8Bit());
-                qDebug() << serverMsg << endl;
             }
+            socket->write(serverMsg.toLocal8Bit());
+            qDebug() << serverMsg << endl;
         }
-    }    
+    }
 }
 
 void GameWindow::on_btnUnits_clicked()
 {
-
-    //units* unit = new units("2_1_1", 175, 25, 2, gameDisplay);
-    QString unitCreate = QString("3") + " 3_1_1 " + "1\n";
-    socket->write(unitCreate.toLocal8Bit());
+    QString unitCreate = "";
+    ChooseTower* tower = getTowerChosen();
+    if (tower != nullptr) {
+        if (BuildableLabel::getClientTeam() == 1) {
+            if (tower->getTowerNumber() == 4) {
+                 unitCreate = QString("3") + " 2_0_1 " + "1\n";
+            } else if (tower->getTowerNumber() == 5) {
+                 unitCreate = QString("3") + " 2_1_1 " + "1\n";
+            } else if (tower->getTowerNumber() == 6) {
+                 unitCreate = QString("3") + " 2_2_1 " + "1\n";
+            }
+            socket->write(unitCreate.toLocal8Bit());
+        }
+        if (BuildableLabel::getClientTeam() == 2) {
+            if (tower->getTowerNumber() == 4) {
+                 unitCreate = QString("3") + " 2_0_1 " + "2\n";
+            } else if (tower->getTowerNumber() == 5) {
+                 unitCreate = QString("3") + " 2_1_1 " + "2\n";
+            } else if (tower->getTowerNumber() == 6) {
+                 unitCreate = QString("3") + " 2_2_1 " + "2\n";
+            }
+            socket->write(unitCreate.toLocal8Bit());
+        }
+    }
 }
 
 void GameWindow::on_saveGame_clicked()
@@ -283,20 +321,9 @@ void GameWindow::getPlayerMoney(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
-/*
-    bool ok;
-    int team, money;
-    team = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) money = commandArgs.at(1).toInt(&ok, 10);
-
-    if (ok)
-    {
-
-    } else
-    {
-
+    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
+        money->setText(QString("Current Money: ") + commandArgs.at(2));
     }
-*/
 }
 
 void GameWindow::getPlayerHealthMoney(QString command)

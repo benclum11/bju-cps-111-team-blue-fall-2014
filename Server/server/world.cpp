@@ -108,6 +108,12 @@ void World::loadUnit(QString type, int team, int x, int y, int direction)
             + QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
 }
 
+void World::updateMoney(int team, int money)
+{
+    sendToClient = "";
+    sendToClient = QString("16 ") + QString::number(team) + " " + QString::number(money) + "%%";
+}
+
 Player* World::getPlayer(int team)
 {
     return players[team-1];

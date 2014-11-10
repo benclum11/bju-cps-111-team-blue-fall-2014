@@ -1,4 +1,5 @@
 #include "player.h"
+#include "world.h"
 
 Player::Player(int initHealth, int initMoney, int initTeam) : cheatMode(false)
 {
@@ -40,6 +41,7 @@ bool Player::attempttoSpendMoney(int amount)
     if (cheatMode) { return true; }
     if (amount <= money || money < 0) {
         money -= amount;
+        World::Instance()->updateMoney(team, money);
         return true;
     }
     return false;

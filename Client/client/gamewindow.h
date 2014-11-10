@@ -25,9 +25,11 @@ class GameWindow : public QDialog
 
     int team, lblWidth, lblHeight;
     ChooseTower *tower1, *tower2, *tower3;
+    ChooseTower *unit1, *unit2, *unit3;
     QWidget *parent, *gameDisplay, *actionDisplay;
     QPushButton *btn, *btnUnits, *saveGame, *startBtn;
     QTextEdit *filename;
+    QLabel *money; //label that displays money
     Ui::GameWindow* ui;
     QTcpSocket* socket;
     bool unexpected, windowSized;
@@ -57,6 +59,7 @@ class GameWindow : public QDialog
     Stats getStatsByType(QString type);
 
 public:
+
     explicit GameWindow(QString&, QWidget* = 0,  QTcpSocket* = 0);
 
     BuildableLabel* getClickedLabel();

@@ -55,6 +55,7 @@ public:
     QString getBeginWorld();
     Tile* getNextPathTile(unsigned int, int);
     void loadUnit(QString type, int team, int x, int y, int direction);
+    void updateMoney(int team, int money);
 
     bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
     void removeTeam(int);
