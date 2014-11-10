@@ -14,7 +14,6 @@ Load::Load(QString filename) {
 
 //Build every tower, base, unit, from new file
 void Load::loadFile(QFile &file) {
-    World::Instance()->setSendToClient("");
     QTextStream in(&file);
 
     while(!in.atEnd()) {

@@ -27,16 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::timerHit()
 {
-    /*
-    World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
-    World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
-    for(QObject* obj : server->children()) {
-        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
-        if (anotherSock != NULL)
-            updateClient();
-    }
-    */
     World::Instance()->updateWorld();
+    updateClient();
 }
 
 void MainWindow::clientConnected()
@@ -89,19 +81,21 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
         if (paused) {
             timer->start();
             paused = false;
-            QString clientMsg = "5\n";
+            QString clientMsg = "5 \n";
             sock->write(clientMsg.toLocal8Bit());
+            return;
         } else {
             timer->stop();
             paused = true;
-            QString clientMsg = "5\n";
+            QString clientMsg = "5 \n";
             sock->write(clientMsg.toLocal8Bit());
+            return;
         }
     } else if(command == "6") {
         World::Instance()->save(data.at(1));
     } else if (command == "7") {
         paused = false;
-        QString clientMsg = "5\n";
+        QString clientMsg = "5 \n";
         sock->write(clientMsg.toLocal8Bit());
         World::Instance()->load(data.at(1));
     } else if (command == "1") {

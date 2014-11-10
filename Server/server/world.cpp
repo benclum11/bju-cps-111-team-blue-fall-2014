@@ -83,10 +83,14 @@ void World::upgradeTower(Tile* tile)
 void World::deployUnit(QString type, int team)
 {
     Unit* unit = new Unit(getUnitType(type));
+    unit->setId(nextID);
+    ++nextID;
+    if(nextID == 1000) { nextID = 0;}
     vector<Tile*> path = getPath(team);
     unit->setXCoord(path[0]->getXCoord());
     unit->setYCoord(path[0]->getYCoord());
     unit->setTeam(team);
+    unit->setEndOfPath(false);
     calculateDirection(unit);
     livingUnits.push_back(unit);
     sendToClient = QString("31 ") + QString::number(unit->getID()) + " "
@@ -98,10 +102,14 @@ void World::deployUnit(QString type, int team)
 void World::loadUnit(QString type, int team, int x, int y, int direction)
 {
     Unit* unit = new Unit(getUnitType(type));
+//    unit->setId(nextID);
+//    ++nextID;
+//    if(nextID == 1000) { nextID = 0;}
     unit->setXCoord(x);
     unit->setYCoord(y);
     unit->setTeam(team);
     unit->setDirection(direction);
+    unit->setEndOfPath(false);
     livingUnits.push_back(unit);
     sendToClient += QString("31 ") + QString::number(unit->getID()) + " "
             + unit->getType() + " " + QString::number(unit->getXCoord()) + " "
@@ -167,22 +175,38 @@ World::~World()
 //runs every 20 milliseconds
 void World::updateWorld()
 {
+    sendToClient = "";
+    if (counter == 0) {
+        counter = 50;
+        /*
+        World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
+        World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
+        for(QObject* obj : server->children()) {
+            QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+            if (anotherSock != NULL)
+                updateClient();
+        }
+        */
+    } else {
+        --counter;
+    }
     for(unsigned int i = 0; i < livingUnits.size(); ++i)
     {
-        updateState(livingUnits[i]);
+        updateUnit(livingUnits[i]);
     }
-    /*for(int i = 0; i < rows; ++i) {
+    /*
+    for(int i = 0; i < rows; ++i) {
         for(int j = 0; j < columns; ++j) {
             if (map[i][j]->isBuildable() && map[i][j]->getBuilding() != nullptr) {
                 updateState(map[i][j]->getBuilding());
             }
         }
-    }*/
+    }
+    */
 }
 
-void World::updateState(Unit* unit)
+void World::updateUnit(Unit* unit)
 {
-
     int direction = unit->getDirection();
     vector<Tile*> path = getPath(unit->getTeam());
     if (direction == 1) {
@@ -267,7 +291,7 @@ void World::moveWest(Unit* unit, vector<Tile*>& path)
     }
 }
 
-void World::updateState(Building* building)
+void World::updateTower(Building* building)
 {
     (void)building;//stub
 }
@@ -322,7 +346,7 @@ bool World::calculateDirection(Unit* unit)
 }
 
 //constructs the initial game state
-World::World() : counter(500), sentTeam1(false), sentTeam2(false)
+World::World() : nextID(0), counter(500), sendToClient(""), sentTeam1(false), sentTeam2(false)
 {
     QFile worldFile("://textfiles/world.txt");
     if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
@@ -484,7 +508,7 @@ void World::readUnitInfo(QTextStream& readUnits)
 {
     QString temp = readUnits.readLine();
     QStringList data =  temp.split(" ");
-    Unit tempUnit(true);
+    Unit tempUnit;
 
     tempUnit.setType(data[0]);
     tempUnit.setHealth(data[1].toInt());
