@@ -1,3 +1,5 @@
+//This file contains code for the game display. Most of the client events happen here.
+
 #include "ui_gamewindow.h"
 #include "gamewindow.h"
 #include "displaybuilding.h"
@@ -12,9 +14,12 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     socket(socket), unexpected(true), windowSized(false)
 {
     ui->setupUi(this);
+
+    //Display for game events.
     gameDisplay = new QWidget(this);
     HighlightedLabel *label = new HighlightedLabel(gameDisplay);
 
+    //Display for buttons and selections.
     actionDisplay = new QWidget(this);
     HighlightedLabel *towerLabel = new HighlightedLabel(actionDisplay);
 
@@ -87,6 +92,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
 }
 
+//Insert comment here
 BuildableLabel* GameWindow::getClickedLabel()
 {
     for (QObject *obj : gameDisplay->children())
@@ -101,6 +107,7 @@ BuildableLabel* GameWindow::getClickedLabel()
     return NULL;
 }
 
+//Insert comment here
 ChooseTower* GameWindow::getTowerChosen()
 {
     for (QObject *obj : actionDisplay->children())
@@ -135,7 +142,7 @@ void GameWindow::dataReceived()
     }
 }
 
-
+//Creates tower creation command and sends it to the server.
 void GameWindow::on_btn_clicked() {
     QString serverMsg = "";
     ChooseTower* tower = getTowerChosen();
@@ -157,6 +164,7 @@ void GameWindow::on_btn_clicked() {
     }
 }
 
+//Creates a unit creation command and sends it to the server.
 void GameWindow::on_btnUnits_clicked()
 {
     QString unitCreate = "";
@@ -185,6 +193,7 @@ void GameWindow::on_btnUnits_clicked()
     }
 }
 
+//Saves current game state to file.
 void GameWindow::on_saveGame_clicked()
 {
     QString serverMsg;
@@ -201,17 +210,20 @@ void GameWindow::on_saveGame_clicked()
     }
 }
 
+//Sends signal to server to start game timer.
 void GameWindow::on_start_clicked()
 {
     QString serverMsg = "10 10\n";
     socket->write(serverMsg.toLocal8Bit());
 }
 
+//Closes current game.
 void GameWindow::on_btnExitGame_clicked()
 {
     this->close();
 }
 
+//Insert comment here
 void GameWindow::getTileInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -260,6 +272,7 @@ void GameWindow::getTileInfo(QString command)
     windowSized = true;
 }
 
+//Insert comment here
 void GameWindow::getBuildingInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -270,6 +283,7 @@ void GameWindow::getBuildingInfo(QString command)
     stats.push_back(stat);
 }
 
+//Insert comment here.
 void GameWindow::getUnitInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -279,11 +293,14 @@ void GameWindow::getUnitInfo(QString command)
     stats.push_back(stat);
 }
 
+//Currently not implemented.
 void GameWindow::getPlayerInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
 }
 
+
+//Processes server command to create a new tower.
 void GameWindow::createBuilding(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -299,6 +316,8 @@ void GameWindow::createBuilding(QString command)
     build->show();
 }
 
+
+//Depricated/not implemented
 void GameWindow::getPlayerHealth(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -326,11 +345,13 @@ void GameWindow::getPlayerMoney(QString command)
     }
 }
 
+//Depricated/not implemented
 void GameWindow::getPlayerHealthMoney(QString command)
 {
     QStringList commandArgs = command.split(" ");
 }
 
+//Currently not implemented. Processes server command to upgrade a building.
 void GameWindow::getBuildingUpgrade(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -356,6 +377,7 @@ void GameWindow::getBuildingUpgrade(QString command)
     }
 }
 
+//Currently not implemented. Processes server command to delete a building.
 void GameWindow::getBuildingDeath(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -374,6 +396,7 @@ void GameWindow::getBuildingDeath(QString command)
     }
 }
 
+//Processes server command to create a new unit.
 void GameWindow::getUnitCreation(QString command)
 {
         QStringList commandArgs = command.split(" ");
@@ -398,6 +421,7 @@ void GameWindow::getUnitCreation(QString command)
         }
 }
 
+// Currently not implemented. Processes server command to move a unit.
 void GameWindow::getUnitMove(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -410,13 +434,14 @@ void GameWindow::getUnitMove(QString command)
 
     if (ok)
     {
-        //call move unit
+        //QMessageBox::information(this, "Notice", "Unit is moving.");
     } else
     {
         //what happens if it fails?
     }
 }
 
+//Currently not implemented. Processes server command to move a unit and to change the image facing direction.
 void GameWindow::getUnitMoveTurn(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -438,6 +463,7 @@ void GameWindow::getUnitMoveTurn(QString command)
     }
 }
 
+//Deprecated.
 void GameWindow::getUnitMoveHealth(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -458,6 +484,7 @@ void GameWindow::getUnitMoveHealth(QString command)
     }
 }
 
+//Deprecated.
 void GameWindow::getUnitMoveTurnHealth(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -480,6 +507,7 @@ void GameWindow::getUnitMoveTurnHealth(QString command)
     }
 }
 
+//Currently not implemented. Processes server command to destroy unit.
 void GameWindow::getUnitDeath(QString command)
 {
     bool ok;
@@ -494,6 +522,7 @@ void GameWindow::getUnitDeath(QString command)
     }
 }
 
+//Currently not implemented. Processes server command regarding bullets.
 void GameWindow::getBulletInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -524,6 +553,7 @@ Stats GameWindow::getStatsByType(QString type)
     }
 }
 
+//Initial processesing of all server commands.
 void GameWindow::updateGameState(QString srvrMsg)
 {
     QStringList commands = srvrMsg.split("%%");

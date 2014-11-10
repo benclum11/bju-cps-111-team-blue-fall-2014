@@ -1,3 +1,5 @@
+//This file contains code for the initial game lobby window. The lobby serves as a starting point for a networked game.
+
 #include "gamelobby.h"
 #include "ui_gamelobby.h"
 #include "gamewindow.h"

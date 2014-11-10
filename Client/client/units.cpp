@@ -1,3 +1,5 @@
+//This files contains code to create, display, and move the units.
+
 #include "units.h"
 #include <QProgressBar>
 
@@ -36,6 +38,7 @@ QString createImageString(int unitType, int direction)
     return picture;
 }
 
+// Breaks unit type QString into relevant parts which are saved in the unit's instance variables.
 bool units::processType(QString unitType, units *instance)
 {
     QStringList typeArgs = unitType.split("_");
@@ -54,7 +57,7 @@ bool units::processType(QString unitType, units *instance)
     }
 }
 
-//Note that this constructor currently does nothing with the level variable.
+// Note that this constructor does nothing with the level variable. I don't think it needs to either.
 units::units(QString unitType,int xCoord, int yCoord, int direction, QWidget *display)
 {
     if (processType(unitType, this))
