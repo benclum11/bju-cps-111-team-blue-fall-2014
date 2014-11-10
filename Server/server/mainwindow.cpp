@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     timer = new QTimer(this);
-    timer->setInterval(20);
+    timer->setInterval(10000);
     connect(timer, &QTimer::timeout, this, &MainWindow::timerHit);
 
     server = new QTcpServer(this);
@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::timerHit()
 {
+    /*
     World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
     World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
     for(QObject* obj : server->children()) {
@@ -34,6 +35,7 @@ void MainWindow::timerHit()
         if (anotherSock != NULL)
             updateClient();
     }
+    */
     World::Instance()->updateWorld();
 }
 

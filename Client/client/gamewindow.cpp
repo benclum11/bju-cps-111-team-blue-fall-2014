@@ -3,7 +3,7 @@
 #include "ui_gamewindow.h"
 #include "gamewindow.h"
 #include "displaybuilding.h"
-#include <units.h>
+#include "units.h"
 #include <QLabel>
 #include <QPixmap>
 #include <QString>
@@ -426,18 +426,14 @@ void GameWindow::getUnitMove(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int id = commandArgs.at(0).toInt(&ok, 10);
+    int id = commandArgs.at(0).toInt();
     int x, y;
-    if (ok) x = commandArgs.at(1).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(2).toInt(&ok, 10);
-
-    if (ok)
-    {
-        //QMessageBox::information(this, "Notice", "Unit is moving.");
-    } else
-    {
-        //what happens if it fails?
+    x = commandArgs.at(1).toInt();
+    y = commandArgs.at(2).toInt();
+    for (QObject *lbl : this->gameDisplay->children()) {
+        units *unit = dynamic_cast<units*>(lbl);
+        unit->setXY(x,y);
+        unit->setGeometry(x,y,50,50);
     }
 }
 
