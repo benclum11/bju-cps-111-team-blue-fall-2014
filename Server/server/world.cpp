@@ -167,22 +167,22 @@ World::~World()
 //runs every 20 milliseconds
 void World::updateWorld()
 {
-    sendToClient = "";
     for(unsigned int i = 0; i < livingUnits.size(); ++i)
     {
         updateState(livingUnits[i]);
     }
-    for(int i = 0; i < rows; ++i) {
+    /*for(int i = 0; i < rows; ++i) {
         for(int j = 0; j < columns; ++j) {
             if (map[i][j]->isBuildable() && map[i][j]->getBuilding() != nullptr) {
                 updateState(map[i][j]->getBuilding());
             }
         }
-    }
+    }*/
 }
 
 void World::updateState(Unit* unit)
 {
+
     int direction = unit->getDirection();
     vector<Tile*> path = getPath(unit->getTeam());
     if (direction == 1) {
@@ -203,10 +203,10 @@ void World::moveNorth(Unit* unit, vector<Tile*>& path)
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + " 1%%";
+            sendToClient += QString::number(unit->getYCoord()+5) + " 1%%";
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + "%%";
+            sendToClient += QString::number(unit->getYCoord()+5) + "%%";
         }
         unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
@@ -215,14 +215,15 @@ void World::moveNorth(Unit* unit, vector<Tile*>& path)
 
 void World::moveEast(Unit* unit, vector<Tile*>& path)
 {
+    sendToClient = "";
     unit->setXCoord(unit->getXCoord() + unit->getSpeed());
     if (unit->getXCoord() > path.at(unit->getIndexOfPath())->getXCoord()) {
         if (calculateDirection(unit)) {
             unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()+5) + " ";
             sendToClient += QString::number(unit->getYCoord()) + " 2%%";
         } else {
-            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()+5) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
         unit->incrementIndexOfPath();
@@ -232,15 +233,16 @@ void World::moveEast(Unit* unit, vector<Tile*>& path)
 
 void World::moveSouth(Unit* unit, vector<Tile*>& path)
 {
+    sendToClient = "";
     unit->setYCoord(unit->getYCoord() - unit->getSpeed());
     if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + " 3%%";
+            sendToClient += QString::number(unit->getYCoord()-5) + " 3%%";
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + "%%";
+            sendToClient += QString::number(unit->getYCoord()-5) + "%%";
         }
         unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
@@ -249,14 +251,15 @@ void World::moveSouth(Unit* unit, vector<Tile*>& path)
 
 void World::moveWest(Unit* unit, vector<Tile*>& path)
 {
+    sendToClient = "";
     unit->setXCoord(unit->getXCoord() - unit->getSpeed());
     if (unit->getXCoord() < path.at(unit->getIndexOfPath())->getXCoord()) {
         if (calculateDirection(unit)) {
             unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()-5) + " ";
             sendToClient += QString::number(unit->getYCoord()) + " 4%%";
         } else {
-            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()-5) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
         unit->incrementIndexOfPath();
