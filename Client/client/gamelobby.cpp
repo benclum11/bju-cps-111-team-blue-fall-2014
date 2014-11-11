@@ -22,8 +22,6 @@ gameLobby::~gameLobby()
 
 void gameLobby::on_btnStart_clicked()
 {
-    QString serverMsg = "5\n";
-    socket->write(serverMsg.toLocal8Bit());
     GameWindow game(initMsg, this, socket);
     game.exec();
 }

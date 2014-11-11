@@ -5,11 +5,13 @@
 
 class units : public QLabel
 {
-    int id, x, y, facing, type, level;
+    int id, x, y, facing, type;
     //QLabel* image; //This is depricated now
 
 public:
-    units(QString unitType, int xCoord, int yCoord, int direction, QWidget *display);
+    units(int ID, QString unitType, int xCoord, int yCoord, int direction, QWidget *display);
+
+    int getID() {return id;}
 
     void setXY (int xCoord, int yCoord);
     void setFacing(int direction);

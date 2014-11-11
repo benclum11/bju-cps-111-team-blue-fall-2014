@@ -46,7 +46,6 @@ bool units::processType(QString unitType, units *instance)
     bool ok;
     int firstVal = typeArgs.at(0).toInt(&ok, 10);
     if (ok) instance->type = typeArgs.at(1).toInt(&ok, 10);
-    if (ok) instance->level = typeArgs.at(2).toInt(&ok, 10);
 
     if (ok && firstVal == 2)
     {
@@ -58,8 +57,9 @@ bool units::processType(QString unitType, units *instance)
 }
 
 // Note that this constructor does nothing with the level variable. I don't think it needs to either.
-units::units(QString unitType,int xCoord, int yCoord, int direction, QWidget *display)
+units::units(int ID, QString unitType,int xCoord, int yCoord, int direction, QWidget *display)
 {
+    id = ID;
     if (processType(unitType, this))
     {
         x = xCoord-25;
@@ -91,6 +91,7 @@ void units::setXY(int xCoord, int yCoord)
 {
     x = xCoord-25;
     y = yCoord-25;
+    setGeometry(x,y,50,50);
 }
 
 void units::setFacing(int direction)

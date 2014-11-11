@@ -402,8 +402,9 @@ void GameWindow::getUnitCreation(QString command)
         QStringList commandArgs = command.split(" ");
         bool ok;
         QString type;
-        int team, health, x, y, facing;
+        int id, team, health, x, y, facing;
 
+        id = commandArgs.at(1).toInt();
         type = commandArgs.at(2);
         //team = commandArgs.at(1).toInt(&ok, 10);
         //if (ok) health = commandArgs.at(2).toInt(&ok, 10);
@@ -413,7 +414,7 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            units* unit = new units(type, x, y, facing, gameDisplay);
+            units* unit = new units(id, type, x, y, facing, gameDisplay);
 
         } else
         {
@@ -426,14 +427,17 @@ void GameWindow::getUnitMove(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
-    int id = commandArgs.at(0).toInt();
+    int id = commandArgs.at(1).toInt();
     int x, y;
-    x = commandArgs.at(1).toInt();
-    y = commandArgs.at(2).toInt();
+    x = commandArgs.at(2).toInt();
+    y = commandArgs.at(3).toInt();
     for (QObject *lbl : this->gameDisplay->children()) {
         units *unit = dynamic_cast<units*>(lbl);
-        unit->setXY(x,y);
-        unit->setGeometry(x,y,50,50);
+        if (unit != nullptr) {
+            if (unit->getID() == id) {
+                unit->setXY(x,y);
+            }
+        }
     }
 }
 

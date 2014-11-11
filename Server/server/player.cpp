@@ -39,7 +39,7 @@ void Player::setInitialUnlocks(vector<Building>& buildingData, vector<Unit>& uni
 bool Player::attempttoSpendMoney(int amount)
 {
     if (cheatMode) { return true; }
-    if (amount <= money || money < 0) {
+    if (amount <= money) {
         money -= amount;
         World::Instance()->updateMoney(team, money);
         return true;

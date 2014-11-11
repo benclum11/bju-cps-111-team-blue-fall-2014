@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     timer = new QTimer(this);
-    timer->setInterval(10000);
+    timer->setInterval(50);
     connect(timer, &QTimer::timeout, this, &MainWindow::timerHit);
 
     server = new QTcpServer(this);
@@ -120,7 +120,15 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
 
 void MainWindow::updateClient()
 {
-
+    for(QObject* obj : server->children()) {
+        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+        if (anotherSock != NULL) {
+            QString str = (World::Instance()->getSendToClient());
+            if(str != "\n") {
+                anotherSock->write(str.toLocal8Bit());
+            }
+        }
+    }
 }
 
 MainWindow::~MainWindow()

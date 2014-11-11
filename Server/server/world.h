@@ -72,8 +72,6 @@ public:
 
     void updateTower(Building*);
 
-    void canDeployUnits();
-
     bool calculateDirection(Unit*);
 
     void buyTower(QStringList&);

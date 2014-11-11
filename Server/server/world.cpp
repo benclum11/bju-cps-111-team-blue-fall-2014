@@ -93,18 +93,15 @@ void World::deployUnit(QString type, int team)
     unit->setEndOfPath(false);
     calculateDirection(unit);
     livingUnits.push_back(unit);
-    sendToClient = QString("31 ") + QString::number(unit->getID()) + " "
+    sendToClient += QString("31 ") + QString::number(unit->getID()) + " "
             + unit->getType() + " " + QString::number(unit->getXCoord()) + " "
-            + QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%91";
+            + QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
 
 }
 
 void World::loadUnit(QString type, int team, int x, int y, int direction)
 {
     Unit* unit = new Unit(getUnitType(type));
-//    unit->setId(nextID);
-//    ++nextID;
-//    if(nextID == 1000) { nextID = 0;}
     unit->setXCoord(x);
     unit->setYCoord(y);
     unit->setTeam(team);
@@ -118,7 +115,6 @@ void World::loadUnit(QString type, int team, int x, int y, int direction)
 
 void World::updateMoney(int team, int money)
 {
-    sendToClient = "";
     sendToClient = QString("16 ") + QString::number(team) + " " + QString::number(money) + "%%";
 }
 
@@ -178,15 +174,8 @@ void World::updateWorld()
     sendToClient = "";
     if (counter == 0) {
         counter = 50;
-        /*
         World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
         World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
-        for(QObject* obj : server->children()) {
-            QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
-            if (anotherSock != NULL)
-                updateClient();
-        }
-        */
     } else {
         --counter;
     }
@@ -198,7 +187,7 @@ void World::updateWorld()
     for(int i = 0; i < rows; ++i) {
         for(int j = 0; j < columns; ++j) {
             if (map[i][j]->isBuildable() && map[i][j]->getBuilding() != nullptr) {
-                updateState(map[i][j]->getBuilding());
+                updateTower(map[i][j]->getBuilding());
             }
         }
     }
@@ -227,88 +216,82 @@ void World::moveNorth(Unit* unit, vector<Tile*>& path)
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()+5) + " 1%%";
+            sendToClient += QString::number(unit->getYCoord()) + " 1%%";
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()+5) + "%%";
+            sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
         unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    } else {
+        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+        sendToClient += QString::number(unit->getYCoord()) + "%%";
     }
 }
 
 void World::moveEast(Unit* unit, vector<Tile*>& path)
 {
-    sendToClient = "";
     unit->setXCoord(unit->getXCoord() + unit->getSpeed());
     if (unit->getXCoord() > path.at(unit->getIndexOfPath())->getXCoord()) {
         if (calculateDirection(unit)) {
             unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()+5) + " ";
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + " 2%%";
         } else {
-            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()+5) + " ";
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
         unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    } else {
+        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+        sendToClient += QString::number(unit->getYCoord()) + "%%";
     }
 }
 
 void World::moveSouth(Unit* unit, vector<Tile*>& path)
 {
-    sendToClient = "";
     unit->setYCoord(unit->getYCoord() - unit->getSpeed());
     if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()-5) + " 3%%";
+            sendToClient += QString::number(unit->getYCoord()) + " 3%%";
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()-5) + "%%";
+            sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
         unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    } else {
+        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+        sendToClient += QString::number(unit->getYCoord()) + "%%";
     }
 }
 
 void World::moveWest(Unit* unit, vector<Tile*>& path)
 {
-    sendToClient = "";
     unit->setXCoord(unit->getXCoord() - unit->getSpeed());
     if (unit->getXCoord() < path.at(unit->getIndexOfPath())->getXCoord()) {
         if (calculateDirection(unit)) {
             unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()-5) + " ";
+            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + " 4%%";
         } else {
-            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()-5) + " ";
+            sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
         unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
+    } else {
+        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+        sendToClient += QString::number(unit->getYCoord()) + "%%";
     }
 }
 
 void World::updateTower(Building* building)
 {
     (void)building;//stub
-}
-
-//checks to see whether this interval is the one to deploy
-void World::canDeployUnits()
-{
-    if (counter == 0)
-    {
-        for(int i = 1; i < players[0]->getUnitCuesSize(); ++i) {
-            if (players[0]->checkUnitCue(i)) {
-                QString type = "2_" + QString::number(i/5) + "_" + QString::number(i%5);
-                deployUnit(type, 1);
-            }
-        }
-        counter = 150;
-    } else { --counter; }
 }
 
 bool World::calculateDirection(Unit* unit)
@@ -584,13 +567,12 @@ void World::buyTower(QStringList& data)
 
 void World::buyUnit(QStringList& data)
 {
-    //int cost = getUnitType(data[1]).getCost();
-    //if (getPlayer(data[2].toInt())->attempttoSpendMoney(cost)) {
-    QString type = QString(data.at(1));
-    int team = data.at(2).toInt();
+    int cost = getUnitType(data[1]).getCost();
+    if (getPlayer(data[2].toInt())->attempttoSpendMoney(cost)) {
+        QString type = QString(data.at(1));
+        int team = data.at(2).toInt();
         deployUnit(type, team);
-
-   // }
+    }
 }
 
 void World::destroy(QStringList& data)
