@@ -110,13 +110,21 @@ void World::loadUnit(QString type, int team, int x, int y, int direction)
 
 void World::updateMoney(int team, int money)
 {
-    sendToClient = "";
-    sendToClient = QString("16 ") + QString::number(team) + " " + QString::number(money) + "%%";
+    sendToClient += QString("16 ") + QString::number(team) + " " + QString::number(money) + "%%";
 }
 
 Player* World::getPlayer(int team)
 {
     return players[team-1];
+}
+
+void World::loadPlayer(QStringList &data)
+{
+
+    getPlayer(data.at(1).toInt())->setMoney(data.at(2).toInt());
+    getPlayer(data.at(1).toInt())->setHealth(data.at(3).toInt());
+
+    sendToClient += QString("17 ") + data.at(1) + " " + data.at(2) + " " + data.at(3) + "%%";
 }
 
 Tile* World::findTileAt(int xCoord, int yCoord)
@@ -215,7 +223,6 @@ void World::moveNorth(Unit* unit, vector<Tile*>& path)
 
 void World::moveEast(Unit* unit, vector<Tile*>& path)
 {
-    sendToClient = "";
     unit->setXCoord(unit->getXCoord() + unit->getSpeed());
     if (unit->getXCoord() > path.at(unit->getIndexOfPath())->getXCoord()) {
         if (calculateDirection(unit)) {
@@ -233,7 +240,6 @@ void World::moveEast(Unit* unit, vector<Tile*>& path)
 
 void World::moveSouth(Unit* unit, vector<Tile*>& path)
 {
-    sendToClient = "";
     unit->setYCoord(unit->getYCoord() - unit->getSpeed());
     if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
         if (calculateDirection(unit)) {
@@ -251,7 +257,6 @@ void World::moveSouth(Unit* unit, vector<Tile*>& path)
 
 void World::moveWest(Unit* unit, vector<Tile*>& path)
 {
-    sendToClient = "";
     unit->setXCoord(unit->getXCoord() - unit->getSpeed());
     if (unit->getXCoord() < path.at(unit->getIndexOfPath())->getXCoord()) {
         if (calculateDirection(unit)) {
@@ -549,7 +554,6 @@ void World::buildTower(QString type, Tile* tile)
 
 void World::buyTower(QStringList& data)
 {
-    sendToClient = "";
     Tile* tile = findTileAt(data.at(2).toInt(), data.at(3).toInt());
     int cost = getBuildingType(data.at(1)).getCost();
     if (getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
@@ -591,6 +595,7 @@ void World::load(QString filename)
 void World::save(QString filename)
 {
     Save *save = new Save(filename);
+
 }
 
 void World::Reset()

@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     timer = new QTimer(this);
-    timer->setInterval(10000);
+    timer->setInterval(1000);
     connect(timer, &QTimer::timeout, this, &MainWindow::timerHit);
 
     server = new QTcpServer(this);

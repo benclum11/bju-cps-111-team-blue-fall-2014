@@ -349,6 +349,11 @@ void GameWindow::getPlayerMoney(QString command)
 void GameWindow::getPlayerHealthMoney(QString command)
 {
     QStringList commandArgs = command.split(" ");
+
+    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
+        money->setText(QString("Current Money: ") + commandArgs.at(2));
+        //health->setText(QString("Current Money: ") + commandArgs.at(2));
+    }
 }
 
 //Currently not implemented. Processes server command to upgrade a building.
