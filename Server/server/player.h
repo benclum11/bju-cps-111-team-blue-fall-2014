@@ -36,6 +36,10 @@ public:
     int getHealth() {return health;}
     int getMoney() {return money;}
 
+    void setMoney(int init) { money = init; }
+    void setHealth(int init) { health = init; }
+
+
     vector<int> getUnlockedBuildings() {return unlockedBuildings;}
     vector<int> getUnlockedUnits() {return unlockedUnits;}
 

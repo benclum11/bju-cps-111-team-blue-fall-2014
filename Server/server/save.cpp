@@ -7,7 +7,7 @@ using namespace std;
 Save::Save(QString filename) {
     filename.replace(QString("\n"), QString(""));
     QFile file;
-    file.setFileName(QString("../server/saved/") + filename + ".txt");
+    file.setFileName(QString(filename + ".txt");
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     saveFile(file);
     file.close();
@@ -19,6 +19,16 @@ void Save::saveFile(QFile &file) {
 
     //needs more for counters. How do I get "all" the counters?
     out << World::Instance()->getCounter() << endl;
+
+    //player 1 info
+    QString player1 = QString("player 1 ") + QString::number(World::Instance()->getPlayer(1)->getMoney()) +
+            " " + QString::number(World::Instance()->getPlayer(1)->getHealth());
+    out << player1 << endl;
+
+    //player 2 info
+    QString player2 = QString("player 2 ") + QString::number(World::Instance()->getPlayer(2)->getMoney()) +
+            " " + QString::number(World::Instance()->getPlayer(2)->getHealth());
+    out << player2 << endl;
 
     for (int y = 0; y < World::Instance()->getRows(); ++y) {
         for (int x = 0; x < World::Instance()->getColumns(); ++x) {

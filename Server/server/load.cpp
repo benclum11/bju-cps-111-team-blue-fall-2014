@@ -5,7 +5,7 @@
 using namespace std;
 Load::Load(QString filename) {
     filename.replace(QString("\n"), QString(""));
-    QFile file(QString("../server/saved/") + filename + ".txt");
+    QFile file(QString(filename + ".txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     loadFile(file);
     file.close();
@@ -20,8 +20,9 @@ void Load::loadFile(QFile &file) {
         QString line = in.readLine();
         QStringList data = line.split(" ");
 
-        if (data.size() == 1) {
-            World::Instance()->setCounter(data.at(0).toInt());
+        if (data.size() == 1) { //skip over size 1 strings
+        } else if (data.at(0) == "player") { //load player
+           // World::Instance()->loadPlayer(data);
         } else {
             QStringList typeList;
             for (int i = 0; i < data.size(); ++i) {

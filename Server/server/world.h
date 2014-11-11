@@ -62,6 +62,7 @@ public:
     void removeTeam(int);
 
     Player* getPlayer(int);
+    void loadPlayer(QStringList &data);
 
     void updateWorld();
     void updateUnit(Unit*);
