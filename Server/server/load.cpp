@@ -5,7 +5,7 @@
 using namespace std;
 Load::Load(QString filename) {
     filename.replace(QString("\n"), QString(""));
-    QFile file(QString(filename + ".txt");
+    QFile file(filename + ".txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     loadFile(file);
     file.close();
