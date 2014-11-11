@@ -5,20 +5,19 @@
 
 class Unit : public Object {
 
-    static int nextID;
-
     int ID, health, speed, damage, direction;
     bool endOfPath;
     int indexOfPath;
 
 public:
-    Unit(bool);
+    Unit();
 
     void setHealth(int init) {health = init;}
     void setSpeed(int init) {speed = init;}
     void setDamage(int init) {damage = init;}
     void setDirection(int init) {direction = init;}
     void incrementIndexOfPath() {++indexOfPath;}
+    void setId(int init) {ID = init;}
     void setEndOfPath(bool init) {endOfPath = init;}
 
     int getHealth() {return health;}

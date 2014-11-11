@@ -172,21 +172,21 @@ void GameWindow::on_btnUnits_clicked()
     if (tower != nullptr) {
         if (BuildableLabel::getClientTeam() == 1) {
             if (tower->getTowerNumber() == 4) {
-                 unitCreate = QString("3") + " 2_0_1 " + "1\n";
+                 unitCreate = QString("3") + " 2_0_1 " + "1 \n";
             } else if (tower->getTowerNumber() == 5) {
-                 unitCreate = QString("3") + " 2_1_1 " + "1\n";
+                 unitCreate = QString("3") + " 2_1_1 " + "1 \n";
             } else if (tower->getTowerNumber() == 6) {
-                 unitCreate = QString("3") + " 2_2_1 " + "1\n";
+                 unitCreate = QString("3") + " 2_2_1 " + "1 \n";
             }
             socket->write(unitCreate.toLocal8Bit());
         }
         if (BuildableLabel::getClientTeam() == 2) {
             if (tower->getTowerNumber() == 4) {
-                 unitCreate = QString("3") + " 2_0_1 " + "2\n";
+                 unitCreate = QString("3") + " 2_0_1 " + "2 \n";
             } else if (tower->getTowerNumber() == 5) {
-                 unitCreate = QString("3") + " 2_1_1 " + "2\n";
+                 unitCreate = QString("3") + " 2_1_1 " + "2 \n";
             } else if (tower->getTowerNumber() == 6) {
-                 unitCreate = QString("3") + " 2_2_1 " + "2\n";
+                 unitCreate = QString("3") + " 2_2_1 " + "2 \n";
             }
             socket->write(unitCreate.toLocal8Bit());
         }
@@ -213,7 +213,7 @@ void GameWindow::on_saveGame_clicked()
 //Sends signal to server to start game timer.
 void GameWindow::on_start_clicked()
 {
-    QString serverMsg = "10 10\n";
+    QString serverMsg = "5 \n";
     socket->write(serverMsg.toLocal8Bit());
 }
 

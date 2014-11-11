@@ -22,6 +22,7 @@ class World {
     vector<Tile*> team1path, team2path;
     vector<Player*> players;
     vector<Unit*> livingUnits;
+    int nextID;
     int counter, rows, columns, tileWidth, tileHeight;
     QString sendToClient, worldBegin;
     bool sentTeam1, sentTeam2;
@@ -64,13 +65,13 @@ public:
     void loadPlayer(QStringList &data);
 
     void updateWorld();
-    void updateState(Unit*);
+    void updateUnit(Unit*);
     void moveNorth(Unit*, vector<Tile*>&);
     void moveEast(Unit*, vector<Tile*>&);
     void moveSouth(Unit*, vector<Tile*>&);
     void moveWest(Unit*, vector<Tile*>&);
 
-    void updateState(Building*);
+    void updateTower(Building*);
 
     void canDeployUnits();
 
@@ -88,7 +89,6 @@ public:
     Tile* getTile(int y, int x) {return map[y][x];}
     int getCounter() {return counter;}
     vector<Unit*> getLivingUnits() {return livingUnits;}
-    void setSendToClient(QString init) { sendToClient = init; }
 
     static void Reset();
 };
