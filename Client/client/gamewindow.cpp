@@ -515,15 +515,17 @@ void GameWindow::getUnitMoveTurnHealth(QString command)
 //Currently not implemented. Processes server command to destroy unit.
 void GameWindow::getUnitDeath(QString command)
 {
-    bool ok;
-    int id = command.toInt(&ok, 10);
+    QStringList commandArgs = command.split(" ");
 
-    if (ok)
-    {
-        //call unit destroy
-    } else
-    {
+    int id = commandArgs.at(1).toInt();
 
+    for (QObject *obj : this->gameDisplay->children()) {
+        units *unit = dynamic_cast<units*>(obj);
+        if (unit != NULL) {
+            if (unit->getID() == id) {
+                delete unit;
+            }
+        }
     }
 }
 
