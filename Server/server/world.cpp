@@ -222,6 +222,7 @@ void World::moveNorth(Unit* unit, vector<Tile*>& path)
 {
     unit->setYCoord(unit->getYCoord() + unit->getSpeed());
     if (unit->getYCoord() > path.at(unit->getIndexOfPath())->getYCoord()) {
+        unit->incrementIndexOfPath();
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
@@ -230,7 +231,6 @@ void World::moveNorth(Unit* unit, vector<Tile*>& path)
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
     } else {
         sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
@@ -242,15 +242,15 @@ void World::moveEast(Unit* unit, vector<Tile*>& path)
 {
     unit->setXCoord(unit->getXCoord() + unit->getSpeed());
     if (unit->getXCoord() > path.at(unit->getIndexOfPath())->getXCoord()) {
+        unit->incrementIndexOfPath();
         if (calculateDirection(unit)) {
-            unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
+            unit->setXCoord(path.at(unit->getIndexOfPath())->getXCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + " 2%%";
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
     } else {
         sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
@@ -262,6 +262,7 @@ void World::moveSouth(Unit* unit, vector<Tile*>& path)
 {
     unit->setYCoord(unit->getYCoord() - unit->getSpeed());
     if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
+        unit->incrementIndexOfPath();
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
@@ -270,7 +271,6 @@ void World::moveSouth(Unit* unit, vector<Tile*>& path)
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
     } else {
         sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
@@ -282,15 +282,15 @@ void World::moveWest(Unit* unit, vector<Tile*>& path)
 {
     unit->setXCoord(unit->getXCoord() - unit->getSpeed());
     if (unit->getXCoord() < path.at(unit->getIndexOfPath())->getXCoord()) {
+        unit->incrementIndexOfPath();
         if (calculateDirection(unit)) {
-            unit->setXCoord(path.at(unit->getIndexOfPath())->getYCoord());
+            unit->setXCoord(path.at(unit->getIndexOfPath())->getXCoord());
             sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + " 4%%";
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->incrementIndexOfPath();
         unit->setEndOfPath(path.at(unit->getIndexOfPath()));
     } else {
         sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
@@ -313,22 +313,22 @@ bool World::calculateDirection(Unit* unit)
     }
     int dy = tile->getYCoord()-unit->getYCoord();
     int dx = tile->getXCoord()-unit->getXCoord();
-    if (dy > 0) {
+    if (dy > unit->getSpeed()) {
         if(unit->getDirection() != 1) {
             unit->setDirection(1);
             return true;
         }
-    } else if (dx > 0) {
+    } else if (dx > unit->getSpeed()) {
         if(unit->getDirection() != 2) {
             unit->setDirection(2);
             return true;
         }
-    } else if (dy < 0) {
+    } else if (dy < unit->getSpeed()) {
         if(unit->getDirection() != 3) {
             unit->setDirection(3);
             return true;
         }
-    } else if (dx < 0) {
+    } else if (dx < unit->getSpeed()) {
         if(unit->getDirection() != 4) {
             unit->setDirection(4);
             return true;
