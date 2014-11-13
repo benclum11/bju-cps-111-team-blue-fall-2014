@@ -454,17 +454,18 @@ void GameWindow::getUnitMoveTurn(QString command)
     bool ok;
     int id, x, y, facing;
 
-    id = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) x = commandArgs.at(1).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(2).toInt(&ok, 10);
-    if (ok) facing = commandArgs.at(3).toInt(&ok, 10);
-
-    if (ok)
-    {
-
-    } else
-    {
-
+    id = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
+    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
+    if (ok) facing = commandArgs.at(4).toInt(&ok, 10);
+    for (QObject *lbl : this->gameDisplay->children()) {
+        units *unit = dynamic_cast<units*>(lbl);
+        if (unit != nullptr) {
+            if (unit->getID() == id) {
+                unit->setXY(x,y);
+                unit->setFacing(facing);
+            }
+        }
     }
 }
 
