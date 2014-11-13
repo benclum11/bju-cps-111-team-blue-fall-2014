@@ -113,9 +113,9 @@ void World::loadUnit(QString type, int team, int x, int y, int direction)
             + QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
 }
 
-void World::updateMoney(int team, int money)
+void World::updateMoneyHealth(int team, int money, int health)
 {
-    sendToClient += QString("16 ") + QString::number(team) + " " + QString::number(money) + "%%";
+    sendToClient += QString("17 ") + QString::number(team) + " " + QString::number(money) + " " + QString::number(health) + "%%";
 }
 
 Player* World::getPlayer(int team)
@@ -130,6 +130,11 @@ void World::loadPlayer(QStringList &data)
     getPlayer(data.at(1).toInt())->setHealth(data.at(3).toInt());
 
     sendToClient += QString("17 ") + data.at(1) + " " + data.at(2) + " " + data.at(3) + "%%";
+}
+
+void World::gameOver(int team)
+{
+    sendToClient = QString("100 ") + QString::number(team) + "%%";
 }
 
 Tile* World::findTileAt(int xCoord, int yCoord)
@@ -183,14 +188,48 @@ void World::updateWorld()
     sendToClient = "";
     if (counter == 0) {
         counter = 50;
-        World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
-        World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
+       // World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(1)->getUnlockedUnits().at(0)), 1);
+       // World::Instance()->deployUnit("2_0" + QString::number(World::Instance()->getPlayer(2)->getUnlockedUnits().at(0)), 2);
     } else {
         --counter;
     }
     for(unsigned int i = 0; i < livingUnits.size(); ++i)
     {
-        updateUnit(livingUnits[i]);
+        Unit* unit = livingUnits[i];
+        int x = unit->getXCoord();
+        int y = unit->getYCoord();
+
+        //deletes unit when it reaches base
+        if ((unit->getTeam() == 1) && (x < 300 && x > 250) && (y < 350 && y > 300)) {
+            sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%"; //delete unit in client
+
+            Player *player = getPlayer(2);
+            player->setHealth(player->getHealth() - 1); //hurt health
+            World::Instance()->updateMoneyHealth(player->getTeam(),player->getMoney(), player->getHealth()); //update player info
+
+            if (player->getHealth() == 0) {
+                gameOver(2);
+            }
+
+            livingUnits.erase(livingUnits.begin() + i);
+            delete unit;
+        } else if ((unit->getTeam() == 2) && (x > 200 && x < 250) && (y > 0 && y < 50)) {
+            sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%"; //delete unit in client
+
+            Player *player = getPlayer(1);
+            player->setHealth(player->getHealth() - 1); //hurt health
+            World::Instance()->updateMoneyHealth(player->getTeam(), player->getMoney(), player->getHealth());  //update player info
+
+            if (player->getHealth() == 0) {
+                gameOver(1);
+            }
+
+            livingUnits.erase(livingUnits.begin() + i);
+            delete unit;
+        } else {  updateUnit(unit); }
+
+
+
     }
     /*
     for(int i = 0; i < rows; ++i) {

@@ -17,11 +17,11 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
     //Display for game events.
     gameDisplay = new QWidget(this);
-    HighlightedLabel *label = new HighlightedLabel(gameDisplay);
+    HighlightedLabel *label = new HighlightedLabel(gameDisplay); //used to select items in the game display
 
     //Display for buttons and selections.
     actionDisplay = new QWidget(this);
-    HighlightedLabel *towerLabel = new HighlightedLabel(actionDisplay);
+    HighlightedLabel *towerLabel = new HighlightedLabel(actionDisplay); //used to select items in the action display
 
     updateGameState(initMsg);
     parent->hide();
@@ -29,6 +29,12 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     connect(socket, &QTcpSocket::readyRead, this, &GameWindow::dataReceived);
     connect(socket, &QTcpSocket::disconnected, this, &GameWindow::serverDisconnected);
 
+    createLabelsandButtons();
+}
+
+//creates labels and buttons for the game state
+void GameWindow::createLabelsandButtons()
+{
     //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
     btn = new QPushButton("Create Tower", this->actionDisplay);
     connect(btn, &QPushButton::clicked, this, &GameWindow::on_btn_clicked);
@@ -90,6 +96,12 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     money->raise();
     money->show();
 
+    //label that displays the users health
+    health = new QLabel(this->actionDisplay);
+    health->setGeometry(50,250,200,50);
+    health->setText("Current Health: 20");
+    health->raise();
+    health->show();
 }
 
 //Insert comment here
@@ -126,6 +138,23 @@ GameWindow::~GameWindow()
 {
     delete ui;
     parent->close();
+}
+
+void GameWindow::doGameOver(QString command)
+{
+     QStringList commandArgs = command.split(" ");
+
+     int deadTeam = commandArgs.at(1).toInt();
+
+     if (deadTeam == 1) {
+          QMessageBox::critical(this, "GAME OVER", "Player 2 Wins!");
+          this->close();
+     }
+     else if (deadTeam == 2) {
+         QMessageBox::critical(this, "GAME OVER", "Player 1 Wins!");
+         this->close();
+     }
+
 }
 
 void GameWindow::serverDisconnected()
@@ -223,7 +252,7 @@ void GameWindow::on_btnExitGame_clicked()
     this->close();
 }
 
-//Insert comment here
+
 void GameWindow::getTileInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -352,7 +381,7 @@ void GameWindow::getPlayerHealthMoney(QString command)
 
     if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
         money->setText(QString("Current Money: ") + commandArgs.at(2));
-        //health->setText(QString("Current Money: ") + commandArgs.at(2));
+        health->setText(QString("Current Health: ") + commandArgs.at(3));
     }
 }
 
@@ -573,6 +602,7 @@ void GameWindow::updateGameState(QString srvrMsg)
         case 0:
             team = commands.at(i).split(" ").at(1).toInt();
             BuildableLabel::setClientTeam(team);
+            GameWindow::setWindowTitle("Player " + QString::number(team));
             break;
         case 1:
             getTileInfo(commands.at(i));
@@ -627,6 +657,9 @@ void GameWindow::updateGameState(QString srvrMsg)
             break;
         case 5:
             doGamePause();
+            break;
+        case 100:
+            doGameOver(commands.at(i));
             break;
         default:
             break;
