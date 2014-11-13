@@ -56,13 +56,14 @@ public:
     QString getBeginWorld();
     Tile* getNextPathTile(unsigned int, int);
     void loadUnit(QString type, int team, int x, int y, int direction);
-    void updateMoney(int team, int money);
+    void updateMoneyHealth(int team, int money, int health);
 
     bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
     void removeTeam(int);
 
     Player* getPlayer(int);
     void loadPlayer(QStringList &data);
+    void gameOver(int team);
 
     void updateWorld();
     void updateUnit(Unit*);

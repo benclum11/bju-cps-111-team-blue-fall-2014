@@ -29,11 +29,13 @@ class GameWindow : public QDialog
     QWidget *parent, *gameDisplay, *actionDisplay;
     QPushButton *btn, *btnUnits, *saveGame, *startBtn;
     QTextEdit *filename;
-    QLabel *money; //label that displays money
+    QLabel *money, *health; //label that displays money/health
     Ui::GameWindow* ui;
     QTcpSocket* socket;
     bool unexpected, windowSized;
     vector<Stats> stats;
+
+    void createLabelsandButtons();
 
     void getTileInfo(QString);
     void getBuildingInfo(QString);
@@ -69,6 +71,8 @@ public:
 
     void updateGameState(QString);
     ~GameWindow();
+
+    void doGameOver(QString);
 
 private slots:
     void serverDisconnected();
