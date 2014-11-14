@@ -115,12 +115,12 @@ void World::loadUnit(QString type, int team, int x, int y, int direction)
 
 void World::updateMoney(int team, int money)
 {
-    sendToClient += QString("14 ") + QString::number(team) + " " + QString::number(money) + " %%";
+    sendToClient += QString("16 ") + QString::number(team) + " " + QString::number(money) + " %%";
 }
 
 void World::updateHealth(int team, int health)
 {
-    sendToClient += QString("16 ") + QString::number(team) + " " + QString::number(health) + "%%";
+    sendToClient += QString("14 ") + QString::number(team) + " " + QString::number(health) + "%%";
 }
 
 Player* World::getPlayer(int team)
