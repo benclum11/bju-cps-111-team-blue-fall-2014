@@ -103,6 +103,7 @@ void GameWindow::createLabelsandButtons()
     connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
     startBtn->setGeometry(5, 612, 150, 25);
     startBtn->raise();
+    this->isPaused = false;
     startBtn->show();
 }
 
@@ -247,6 +248,7 @@ void GameWindow::on_start_clicked()
 {
     QString serverMsg = "5 \n";
     socket->write(serverMsg.toLocal8Bit());
+    this->isPaused = !this->isPaused;
 }
 
 // Closes current game.
@@ -618,7 +620,7 @@ void GameWindow::updateGameState(QString srvrMsg)
             getPlayerMoney(commands.at(i));
             break;
         case 17:
-            getPlayerHealthMoney(commands.at(i));
+            getPlayerHealthMoney(commands.at(i)); // Remove this
             break;
         case 21:
             createBuilding(commands.at(i));
@@ -651,7 +653,7 @@ void GameWindow::updateGameState(QString srvrMsg)
             getBulletInfo(commands.at(i));
             break;
         case 5:
-            doGamePause();
+            doGamePause(); // Remove this
             break;
         case 100:
             doGameOver(commands.at(i));

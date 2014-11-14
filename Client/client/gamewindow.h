@@ -74,6 +74,8 @@ public:
 
     void doGameOver(QString);
 
+    bool isPaused;
+
 private slots:
     void serverDisconnected();
 
