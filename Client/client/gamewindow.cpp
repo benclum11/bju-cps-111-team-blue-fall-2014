@@ -67,6 +67,7 @@ void GameWindow::createLabelsandButtons()
     //3 labels to choose which unit to create
     unit1 = new ChooseTower(actionDisplay, 4);
     unit1->make(":/Resources/Units/0/1.png", 50, 110, 50, 50, true);
+    unit1->setEnabled(false);
 
     unit2 = new ChooseTower(actionDisplay, 5);
     unit2->make(":/Resources/Units/1/1.png", 110, 110, 50, 50, true);

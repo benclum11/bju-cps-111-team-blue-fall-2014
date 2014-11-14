@@ -29,22 +29,22 @@
   <widget class="QPlainTextEdit" name="plainTextEdit">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>190</y>
-     <width>271</width>
-     <height>101</height>
+     <x>260</x>
+     <y>100</y>
+     <width>231</width>
+     <height>191</height>
     </rect>
    </property>
    <property name="plainText">
-    <string>User starts with a home base. There are predefined routs around which towers can be placed strategically. The user can spawn units to attack on one rout while defending the other rout with those strategic towers. The user may also upgrading his buildings to allow for better units and better towers. The user starts with a given amount of money and a base income. The player has the ability to create several types of buildings including some that increase income, and others that unlock units to deploy. These building and defensive towers can be upgraded to increase efficiency. </string>
+    <string>User starts with a home base. There are predefined routes around which towers can be placed strategically. The user can spawn units to attack on one route while defending the other route with those strategic towers.</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>140</y>
-     <width>251</width>
+     <x>260</x>
+     <y>50</y>
+     <width>221</width>
      <height>41</height>
     </rect>
    </property>
@@ -53,38 +53,6 @@
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#fc0303;&quot;&gt;Gameplay:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::RichText</enum>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>190</y>
-     <width>191</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="plainText">
-    <string>Scoring is based is based on number of units destroyed and time taken to destroy the other player. The player that destroys the other player first wins. </string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>140</y>
-     <width>171</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 15pt &quot;Ubuntu&quot;;</string>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#ff0404;&quot;&gt;Scoring:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
@@ -109,14 +77,14 @@
   <widget class="QPlainTextEdit" name="plainTextEdit_3">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>60</y>
-     <width>351</width>
-     <height>71</height>
+     <x>10</x>
+     <y>100</y>
+     <width>241</width>
+     <height>191</height>
     </rect>
    </property>
    <property name="plainText">
-    <string>Press Start to start a game. Enter an IP address in the text box to connect to a remote game, or leave blank to connect to localhost. Once in the Game Lobby press start to start immediately or automatically start when a secodn person connects</string>
+    <string>Enter an IP address in the text box to connect to a remote game, or leave blank to connect to localhost. Then, press Start to start a game. Once in the Game Lobby press start to start immediately or wait until another person joins the game.</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -556,14 +524,32 @@
     <enum>Qt::RichText</enum>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>241</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 15pt &quot;Ubuntu&quot;;</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#fc0303;&quot;&gt;Connection:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+  </widget>
   <zorder>label_3</zorder>
   <zorder>exitHelp</zorder>
   <zorder>plainTextEdit</zorder>
   <zorder>label</zorder>
-  <zorder>plainTextEdit_2</zorder>
-  <zorder>label_2</zorder>
   <zorder>plainTextEdit_3</zorder>
   <zorder>label_4</zorder>
+  <zorder>label_2</zorder>
  </widget>
  <resources>
   <include location="client-resources.qrc"/>

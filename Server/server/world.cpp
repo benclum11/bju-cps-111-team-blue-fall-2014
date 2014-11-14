@@ -259,8 +259,8 @@ void World::updateUnit(Unit* unit)
 
 void World::moveNorth(Unit* unit, vector<Tile*>& path)
 {
-    unit->setYCoord(unit->getYCoord() + unit->getSpeed());
-    if (unit->getYCoord() > path.at(unit->getIndexOfPath())->getYCoord()) {
+    unit->setYCoord(unit->getYCoord() - unit->getSpeed());
+    if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
         unit->incrementIndexOfPath();
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
@@ -299,8 +299,8 @@ void World::moveEast(Unit* unit, vector<Tile*>& path)
 
 void World::moveSouth(Unit* unit, vector<Tile*>& path)
 {
-    unit->setYCoord(unit->getYCoord() - unit->getSpeed());
-    if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
+    unit->setYCoord(unit->getYCoord() + unit->getSpeed());
+    if (unit->getYCoord() > path.at(unit->getIndexOfPath())->getYCoord()) {
         unit->incrementIndexOfPath();
         if (calculateDirection(unit)) {
             unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
@@ -352,7 +352,7 @@ bool World::calculateDirection(Unit* unit)
     }
     int dy = tile->getYCoord()-unit->getYCoord();
     int dx = tile->getXCoord()-unit->getXCoord();
-    if (dy > unit->getSpeed()) {
+    if (dy < unit->getSpeed() * (-1)) {
         if(unit->getDirection() != 1) {
             unit->setDirection(1);
             return true;
@@ -362,12 +362,12 @@ bool World::calculateDirection(Unit* unit)
             unit->setDirection(2);
             return true;
         }
-    } else if (dy < unit->getSpeed()) {
+    } else if (dy > unit->getSpeed()) {
         if(unit->getDirection() != 3) {
             unit->setDirection(3);
             return true;
         }
-    } else if (dx < unit->getSpeed()) {
+    } else if (dx < unit->getSpeed() * (-1)) {
         if(unit->getDirection() != 4) {
             unit->setDirection(4);
             return true;
@@ -377,7 +377,7 @@ bool World::calculateDirection(Unit* unit)
 }
 
 //constructs the initial game state
-World::World() : nextID(0), counter(500), sendToClient(""), sentTeam1(false), sentTeam2(false)
+World::World() : nextID(0), counter(200), sendToClient(""), sentTeam1(false), sentTeam2(false)
 {
     QFile worldFile("://textfiles/world.txt");
     if (!worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) { return; }
