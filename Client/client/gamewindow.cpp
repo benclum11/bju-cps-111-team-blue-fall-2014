@@ -32,7 +32,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     createLabelsandButtons();
 }
 
-//creates labels and buttons for the game state
+// Creates labels and buttons for the game state
 void GameWindow::createLabelsandButtons()
 {
     //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
@@ -49,6 +49,7 @@ void GameWindow::createLabelsandButtons()
     saveGame->raise();
     saveGame->show();
 
+    //Textbox for saved game filename.
     filename = new QTextEdit(this);
     filename->setGeometry(this->width() - 150, this->height()- 40 ,100, 25);
     filename->raise();
@@ -105,7 +106,7 @@ void GameWindow::createLabelsandButtons()
     health->show();
 }
 
-//Insert comment here
+// Insert comment here
 BuildableLabel* GameWindow::getClickedLabel()
 {
     for (QObject *obj : gameDisplay->children())
@@ -120,7 +121,7 @@ BuildableLabel* GameWindow::getClickedLabel()
     return NULL;
 }
 
-//Insert comment here
+// Insert comment here
 ChooseTower* GameWindow::getTowerChosen()
 {
     for (QObject *obj : actionDisplay->children())
@@ -141,6 +142,7 @@ GameWindow::~GameWindow()
     parent->close();
 }
 
+// Displays winning team and closes game.
 void GameWindow::doGameOver(QString command)
 {
      QStringList commandArgs = command.split(" ");
@@ -172,7 +174,7 @@ void GameWindow::dataReceived()
     }
 }
 
-//Creates tower creation command and sends it to the server.
+// Creates tower creation command and sends it to the server.
 void GameWindow::on_btn_clicked() {
     QString serverMsg = "";
     ChooseTower* tower = getTowerChosen();
@@ -194,7 +196,7 @@ void GameWindow::on_btn_clicked() {
     }
 }
 
-//Creates a unit creation command and sends it to the server.
+// Creates a unit creation command and sends it to the server.
 void GameWindow::on_btnUnits_clicked()
 {
     QString unitCreate = "";
@@ -223,7 +225,7 @@ void GameWindow::on_btnUnits_clicked()
     }
 }
 
-//Saves current game state to file.
+// Saves current game state to file.
 void GameWindow::on_saveGame_clicked()
 {
     QString serverMsg;
@@ -240,14 +242,14 @@ void GameWindow::on_saveGame_clicked()
     }
 }
 
-//Sends signal to server to start game timer.
+// Sends signal to server to start game timer.
 void GameWindow::on_start_clicked()
 {
     QString serverMsg = "5 \n";
     socket->write(serverMsg.toLocal8Bit());
 }
 
-//Closes current game.
+// Closes current game.
 void GameWindow::on_btnExitGame_clicked()
 {
     this->close();
@@ -302,7 +304,7 @@ void GameWindow::getTileInfo(QString command)
     windowSized = true;
 }
 
-//Insert comment here
+// Insert comment here
 void GameWindow::getBuildingInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -313,7 +315,7 @@ void GameWindow::getBuildingInfo(QString command)
     stats.push_back(stat);
 }
 
-//Insert comment here.
+// Insert comment here.
 void GameWindow::getUnitInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -323,14 +325,14 @@ void GameWindow::getUnitInfo(QString command)
     stats.push_back(stat);
 }
 
-//Currently not implemented.
+// Currently not implemented.
 void GameWindow::getPlayerInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
 }
 
 
-//Processes server command to create a new tower.
+// Processes server command to create a new tower.
 void GameWindow::createBuilding(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -347,25 +349,17 @@ void GameWindow::createBuilding(QString command)
 }
 
 
-//Depricated/not implemented
+// Changes player health based on command from server.
 void GameWindow::getPlayerHealth(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int team, health;
-    team = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
-
-    if (ok)
-    {
-
-    } else
-    {
-
+    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
+        health->setText(QString("Current Health: ") + commandArgs.at(2));
     }
 }
 
+// Changes player money value based on command from server.
 void GameWindow::getPlayerMoney(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -375,18 +369,18 @@ void GameWindow::getPlayerMoney(QString command)
     }
 }
 
-//Depricated/not implemented
+// Depricated
 void GameWindow::getPlayerHealthMoney(QString command)
 {
-    QStringList commandArgs = command.split(" ");
+//    QStringList commandArgs = command.split(" ");
 
-    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
-        money->setText(QString("Current Money: ") + commandArgs.at(2));
-        health->setText(QString("Current Health: ") + commandArgs.at(3));
-    }
+//    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
+//        money->setText(QString("Current Money: ") + commandArgs.at(2));
+//        health->setText(QString("Current Health: ") + commandArgs.at(3));
+//    }
 }
 
-//Currently not implemented. Processes server command to upgrade a building.
+// Deprecated & not implemented. Processes server command to upgrade a building.
 void GameWindow::getBuildingUpgrade(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -412,7 +406,7 @@ void GameWindow::getBuildingUpgrade(QString command)
     }
 }
 
-//Currently not implemented. Processes server command to delete a building.
+//Currently not implemented. Processes server command to delete a building. (Why do we even have this?)
 void GameWindow::getBuildingDeath(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -431,7 +425,7 @@ void GameWindow::getBuildingDeath(QString command)
     }
 }
 
-//Processes server command to create a new unit.
+// Processes server command to create a new unit.
 void GameWindow::getUnitCreation(QString command)
 {
         QStringList commandArgs = command.split(" ");
@@ -457,7 +451,7 @@ void GameWindow::getUnitCreation(QString command)
         }
 }
 
-// Currently not implemented. Processes server command to move a unit.
+// Processes server command to move a unit.
 void GameWindow::getUnitMove(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -476,7 +470,7 @@ void GameWindow::getUnitMove(QString command)
     }
 }
 
-//Currently not implemented. Processes server command to move a unit and to change the image facing direction.
+// Processes server command to move a unit and to change the image facing direction.
 void GameWindow::getUnitMoveTurn(QString command)
 {
     QStringList commandArgs = command.split(" ");
