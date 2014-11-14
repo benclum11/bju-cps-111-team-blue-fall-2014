@@ -84,13 +84,6 @@ void GameWindow::createLabelsandButtons()
     btnUnits->show();
     connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
 
-    //button to start the timer
-    startBtn = new QPushButton("Start Timer", this);
-    connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
-    startBtn->setGeometry(100, 210 ,100, 25);
-    startBtn->raise();
-    startBtn->show();
-
     //label that displays the users money
     money = new QLabel(this->actionDisplay);
     money->setGeometry(50,200,200,50);
@@ -104,6 +97,13 @@ void GameWindow::createLabelsandButtons()
     health->setText("Current Health: 20");
     health->raise();
     health->show();
+
+    //button to start the timer
+    startBtn = new QPushButton("Start/Pause Timer", this);
+    connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
+    startBtn->setGeometry(5, 612, 150, 25);
+    startBtn->raise();
+    startBtn->show();
 }
 
 // Insert comment here
