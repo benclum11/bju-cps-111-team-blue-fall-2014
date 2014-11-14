@@ -47,19 +47,20 @@ public:
 
     void setCounter(int init) { counter = init; }
     void buildTower(QString, Tile*);
+    void removeTeam(int);
+
+
     Tile* findTileAt(int, int);
     static World* Instance();
-    Building& getBuildingType(QString);
-    Unit& getUnitType(QString);
-    vector<Tile*> getPath(int team);
-    QString getSendToClient();
-    QString getBeginWorld();
-    Tile* getNextPathTile(unsigned int, int);
+
+
     void loadUnit(QString type, int team, int x, int y, int direction);
+    Building& getBuildingType(QString); //returns building based on type
+
     void updateMoneyHealth(int team, int money, int health);
 
     bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
-    void removeTeam(int);
+
 
     Player* getPlayer(int);
     void loadPlayer(QStringList &data);
@@ -83,13 +84,22 @@ public:
     void upgrade(QStringList&);
     void load(QString);
     void save(QString);
+
+
+    static void Reset();
+
+    //getter methods
+
+    Unit& getUnitType(QString);
+    vector<Tile*> getPath(int team);
+    QString getSendToClient();
+    QString getBeginWorld();
+    Tile* getNextPathTile(unsigned int, int);
     int getRows() {return rows;}
     int getColumns() {return columns;}
     Tile* getTile(int y, int x) {return map[y][x];}
     int getCounter() {return counter;}
     vector<Unit*> getLivingUnits() {return livingUnits;}
-
-    static void Reset();
 };
 
 
