@@ -41,6 +41,7 @@ void GameWindow::createLabelsandButtons()
     btn->setGeometry(actionDisplay->width() - 100, actionDisplay->height()- 26 ,100, 25);
     btn->raise();
     btn->show();
+    btn->setEnabled(false);
 
     //button to save game
     saveGame = new QPushButton("Save Game", this);
@@ -48,6 +49,7 @@ void GameWindow::createLabelsandButtons()
     saveGame->setGeometry(this->width() - 265, this->height()- 40 ,100, 25);
     saveGame->raise();
     saveGame->show();
+    saveGame->setEnabled(false);
 
     //Textbox for saved game filename.
     filename = new QTextEdit(this);
@@ -82,6 +84,7 @@ void GameWindow::createLabelsandButtons()
     btnUnits->setObjectName(QString::fromUtf8("btnUnits"));
     btnUnits->raise();
     btnUnits->show();
+    btnUnits->setEnabled(false);
     connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
 
     //label that displays the users money
@@ -103,7 +106,7 @@ void GameWindow::createLabelsandButtons()
     connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
     startBtn->setGeometry(5, 612, 150, 25);
     startBtn->raise();
-    this->isPaused = false;
+    this->isPaused = true;
     startBtn->show();
 }
 
@@ -239,7 +242,7 @@ void GameWindow::on_saveGame_clicked()
     } else {
         serverMsg = QString("6 ") + filename->toPlainText() + "\n";
         socket->write(serverMsg.toLocal8Bit());
-        QMessageBox::warning(this, "Saved", "Your game was saved");
+        QMessageBox::information(this, "Saved", "Your game was saved");
     }
 }
 
@@ -248,7 +251,6 @@ void GameWindow::on_start_clicked()
 {
     QString serverMsg = "5 \n";
     socket->write(serverMsg.toLocal8Bit());
-    this->isPaused = !this->isPaused;
 }
 
 // Closes current game.
@@ -577,7 +579,18 @@ void GameWindow::getBulletInfo(QString command)
 
 void GameWindow::doGamePause()
 {
-
+    this->isPaused = !this->isPaused;
+    if (this->isPaused)
+    {
+        btnUnits->setEnabled(false);
+        btn->setEnabled(false);
+        saveGame->setEnabled(true);
+    } else
+    {
+        btnUnits->setEnabled(true);
+        btn->setEnabled(true);
+        saveGame->setEnabled(false);
+    }
 }
 
 Stats GameWindow::getStatsByType(QString type)
@@ -610,6 +623,9 @@ void GameWindow::updateGameState(QString srvrMsg)
         case 3:
             getUnitInfo(commands.at(i));
             break;
+        case 5:
+            doGamePause();
+            break;
         case 11:
             getPlayerInfo(commands.at(i));
             break;
@@ -620,7 +636,7 @@ void GameWindow::updateGameState(QString srvrMsg)
             getPlayerMoney(commands.at(i));
             break;
         case 17:
-            getPlayerHealthMoney(commands.at(i)); // Remove this
+            getPlayerHealthMoney(commands.at(i)); // Remove this?
             break;
         case 21:
             createBuilding(commands.at(i));
@@ -650,10 +666,7 @@ void GameWindow::updateGameState(QString srvrMsg)
             getUnitDeath(commands.at(i));
             break;
         case 4:
-            getBulletInfo(commands.at(i));
-            break;
-        case 5:
-            doGamePause(); // Remove this
+            getBulletInfo(commands.at(i)); // Deprecated
             break;
         case 100:
             doGameOver(commands.at(i));

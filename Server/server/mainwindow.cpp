@@ -81,22 +81,29 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
         if (paused) {
             timer->start();
             paused = false;
-            QString clientMsg = "5 \n";
-            sock->write(clientMsg.toLocal8Bit());
+            QString clientMsg = "5%%\n";
+            for(QObject* obj : server->children()) {
+                QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+                if (anotherSock != NULL) {
+                    anotherSock->write(clientMsg.toLocal8Bit());
+                }
+            }
             return;
         } else {
             timer->stop();
             paused = true;
-            QString clientMsg = "5 \n";
-            sock->write(clientMsg.toLocal8Bit());
+            QString clientMsg = "5%%\n";
+            for(QObject* obj : server->children()) {
+                QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+                if (anotherSock != NULL) {
+                    anotherSock->write(clientMsg.toLocal8Bit());
+                }
+            }
             return;
         }
     } else if(command == "6") {
         World::Instance()->save(data.at(1));
     } else if (command == "7") {
-        paused = false;
-        QString clientMsg = "5 \n";
-        sock->write(clientMsg.toLocal8Bit());
         World::Instance()->load(data.at(1));
     } else if (command == "1") {
         World::Instance()->buyTower(data);
