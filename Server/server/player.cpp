@@ -41,7 +41,7 @@ bool Player::attempttoSpendMoney(int amount)
     if (cheatMode) { return true; }
     if (amount <= money) {
         money -= amount;
-        World::Instance()->updateMoneyHealth(team, money, health);
+        World::Instance()->updateMoney(team, money);
         return true;
     }
     return false;

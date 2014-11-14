@@ -56,7 +56,8 @@ public:
     QString getBeginWorld();
     Tile* getNextPathTile(unsigned int, int);
     void loadUnit(QString type, int team, int x, int y, int direction);
-    void updateMoneyHealth(int team, int money, int health);
+    void updateMoney(int, int);
+    void updateHealth(int, int);
 
     bool hasSentTeams() {return (sentTeam1 && sentTeam2);}
     void removeTeam(int);
@@ -66,7 +67,7 @@ public:
     void gameOver(int team);
 
     void updateWorld();
-    void updateUnit(Unit*);
+    void updateUnit(Unit*, bool&);
     void moveNorth(Unit*, vector<Tile*>&);
     void moveEast(Unit*, vector<Tile*>&);
     void moveSouth(Unit*, vector<Tile*>&);

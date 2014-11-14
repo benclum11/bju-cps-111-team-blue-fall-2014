@@ -113,9 +113,14 @@ void World::loadUnit(QString type, int team, int x, int y, int direction)
             + QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
 }
 
-void World::updateMoneyHealth(int team, int money, int health)
+void World::updateMoney(int team, int money)
 {
-    sendToClient += QString("17 ") + QString::number(team) + " " + QString::number(money) + " " + QString::number(health) + "%%";
+    sendToClient += QString("14 ") + QString::number(team) + " " + QString::number(money) + " %%";
+}
+
+void World::updateHealth(int team, int health)
+{
+    sendToClient += QString("16 ") + QString::number(team) + " " + QString::number(health) + "%%";
 }
 
 Player* World::getPlayer(int team)
@@ -125,11 +130,12 @@ Player* World::getPlayer(int team)
 
 void World::loadPlayer(QStringList &data)
 {
-
     getPlayer(data.at(1).toInt())->setMoney(data.at(2).toInt());
     getPlayer(data.at(1).toInt())->setHealth(data.at(3).toInt());
 
-    sendToClient += QString("17 ") + data.at(1) + " " + data.at(2) + " " + data.at(3) + "%%";
+    sendToClient += QString("14 ") + data.at(1) + " " + data.at(3) + "%%";
+
+    sendToClient += QString("16 ") + data.at(1) + " " + data.at(2) + "%%";
 }
 
 void World::gameOver(int team)
@@ -195,41 +201,12 @@ void World::updateWorld()
     }
     for(unsigned int i = 0; i < livingUnits.size(); ++i)
     {
+        bool finished = false;
         Unit* unit = livingUnits[i];
-        int x = unit->getXCoord();
-        int y = unit->getYCoord();
-
-        //deletes unit when it reaches base
-        if ((unit->getTeam() == 1) && (x < 300 && x > 250) && (y < 350 && y > 300)) {
-            sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%"; //delete unit in client
-
-            Player *player = getPlayer(2);
-            player->setHealth(player->getHealth() - 1); //hurt health
-            World::Instance()->updateMoneyHealth(player->getTeam(),player->getMoney(), player->getHealth()); //update player info
-
-            if (player->getHealth() == 0) {
-                gameOver(2);
-            }
-
+        updateUnit(unit, finished);
+        if (finished) {
             livingUnits.erase(livingUnits.begin() + i);
-            delete unit;
-        } else if ((unit->getTeam() == 2) && (x > 200 && x < 250) && (y > 0 && y < 50)) {
-            sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%"; //delete unit in client
-
-            Player *player = getPlayer(1);
-            player->setHealth(player->getHealth() - 1); //hurt health
-            World::Instance()->updateMoneyHealth(player->getTeam(), player->getMoney(), player->getHealth());  //update player info
-
-            if (player->getHealth() == 0) {
-                gameOver(1);
-            }
-
-            livingUnits.erase(livingUnits.begin() + i);
-            delete unit;
-        } else {  updateUnit(unit); }
-
-
-
+        }
     }
     /*
     for(int i = 0; i < rows; ++i) {
@@ -242,8 +219,9 @@ void World::updateWorld()
     */
 }
 
-void World::updateUnit(Unit* unit)
+void World::updateUnit(Unit* unit, bool &finished)
 {
+    //deletes unit when it reaches base
     int direction = unit->getDirection();
     vector<Tile*> path = getPath(unit->getTeam());
     if (direction == 1) {
@@ -255,85 +233,118 @@ void World::updateUnit(Unit* unit)
     } else if (direction == 4) {
         moveWest(unit, path);
     }
+    if (unit->getEndOfPath()) {
+        if (unit->getTeam() == 1) {
+            getPlayer(2)->setHealth(getPlayer(2)->getHealth() - unit->getDamage()); //hurt health
+            World::Instance()->updateHealth(getPlayer(2)->getTeam(), getPlayer(2)->getHealth()); //update player info
+        }
+        if (unit->getTeam() == 2) {
+            getPlayer(1)->setHealth(getPlayer(1)->getHealth() - unit->getDamage()); //hurt health
+            World::Instance()->updateHealth(getPlayer(1)->getTeam(), getPlayer(1)->getHealth()); //update player info
+        }
+        if (getPlayer(1)->getHealth() == 0) {
+            gameOver(1);
+        }
+        if (getPlayer(2)->getHealth() == 0) {
+            gameOver(2);
+        }
+        delete unit;
+        finished = true;
+        sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%"; //delete unit in client
+    }
 }
 
 void World::moveNorth(Unit* unit, vector<Tile*>& path)
 {
-    unit->setYCoord(unit->getYCoord() - unit->getSpeed());
-    if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
-        unit->incrementIndexOfPath();
-        if (calculateDirection(unit)) {
-            unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+    try {
+        unit->setYCoord(unit->getYCoord() - unit->getSpeed());
+        if (unit->getYCoord() < path.at(unit->getIndexOfPath())->getYCoord()) {
+            unit->incrementIndexOfPath();
+            if (calculateDirection(unit)) {
+                unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
+                sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+            } else {
+                sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + "%%";
+            }
+            path.at(unit->getIndexOfPath() + 1);
+
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
-    } else {
-        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-        sendToClient += QString::number(unit->getYCoord()) + "%%";
+    } catch (...) {
+        unit->setEndOfPath(true);
     }
 }
 
 void World::moveEast(Unit* unit, vector<Tile*>& path)
 {
-    unit->setXCoord(unit->getXCoord() + unit->getSpeed());
-    if (unit->getXCoord() > path.at(unit->getIndexOfPath())->getXCoord()) {
-        unit->incrementIndexOfPath();
-        if (calculateDirection(unit)) {
-            unit->setXCoord(path.at(unit->getIndexOfPath())->getXCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+    try {
+        unit->setXCoord(unit->getXCoord() + unit->getSpeed());
+        if (unit->getXCoord() > path.at(unit->getIndexOfPath())->getXCoord()) {
+            unit->incrementIndexOfPath();
+            if (calculateDirection(unit)) {
+                unit->setXCoord(path.at(unit->getIndexOfPath())->getXCoord());
+                sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+            } else {
+                sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + "%%";
+            }
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
-    } else {
-        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-        sendToClient += QString::number(unit->getYCoord()) + "%%";
+    } catch (...) {
+        unit->setEndOfPath(true);
     }
 }
 
 void World::moveSouth(Unit* unit, vector<Tile*>& path)
 {
-    unit->setYCoord(unit->getYCoord() + unit->getSpeed());
-    if (unit->getYCoord() > path.at(unit->getIndexOfPath())->getYCoord()) {
-        unit->incrementIndexOfPath();
-        if (calculateDirection(unit)) {
-            unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+    try {
+        unit->setYCoord(unit->getYCoord() + unit->getSpeed());
+        if (unit->getYCoord() > path.at(unit->getIndexOfPath())->getYCoord()) {
+            unit->incrementIndexOfPath();
+            if (calculateDirection(unit)) {
+                unit->setYCoord(path.at(unit->getIndexOfPath())->getYCoord());
+                sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+            } else {
+                sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + "%%";
+            }
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
-    } else {
-        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-        sendToClient += QString::number(unit->getYCoord()) + "%%";
+    } catch (...) {
+        unit->setEndOfPath(true);
     }
 }
 
 void World::moveWest(Unit* unit, vector<Tile*>& path)
 {
-    unit->setXCoord(unit->getXCoord() - unit->getSpeed());
-    if (unit->getXCoord() < path.at(unit->getIndexOfPath())->getXCoord()) {
-        unit->incrementIndexOfPath();
-        if (calculateDirection(unit)) {
-            unit->setXCoord(path.at(unit->getIndexOfPath())->getXCoord());
-            sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-            sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+    try {
+        unit->setXCoord(unit->getXCoord() - unit->getSpeed());
+        if (unit->getXCoord() < path.at(unit->getIndexOfPath())->getXCoord()) {
+            unit->incrementIndexOfPath();
+            if (calculateDirection(unit)) {
+                unit->setXCoord(path.at(unit->getIndexOfPath())->getXCoord());
+                sendToClient += "33 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + "%%";
+            } else {
+                sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
+                sendToClient += QString::number(unit->getYCoord()) + "%%";
+            }
         } else {
             sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
             sendToClient += QString::number(unit->getYCoord()) + "%%";
         }
-        unit->setEndOfPath(path.at(unit->getIndexOfPath()));
-    } else {
-        sendToClient += "32 " + QString::number(unit->getID()) + " " + QString::number(unit->getXCoord()) + " ";
-        sendToClient += QString::number(unit->getYCoord()) + "%%";
+    } catch (...) {
+        unit->setEndOfPath(true);
     }
 }
 
