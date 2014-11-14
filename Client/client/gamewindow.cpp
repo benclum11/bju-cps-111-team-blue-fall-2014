@@ -32,7 +32,7 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     createLabelsandButtons();
 }
 
-//creates labels and buttons for the game state
+// Creates labels and buttons for the game state
 void GameWindow::createLabelsandButtons()
 {
     //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
@@ -49,6 +49,7 @@ void GameWindow::createLabelsandButtons()
     saveGame->raise();
     saveGame->show();
 
+    //Textbox for saved game filename.
     filename = new QTextEdit(this);
     filename->setGeometry(this->width() - 150, this->height()- 40 ,100, 25);
     filename->raise();
@@ -67,6 +68,7 @@ void GameWindow::createLabelsandButtons()
     //3 labels to choose which unit to create
     unit1 = new ChooseTower(actionDisplay, 4);
     unit1->make(":/Resources/Units/0/1.png", 50, 110, 50, 50, true);
+    unit1->setEnabled(false);
 
     unit2 = new ChooseTower(actionDisplay, 5);
     unit2->make(":/Resources/Units/1/1.png", 110, 110, 50, 50, true);
@@ -82,13 +84,6 @@ void GameWindow::createLabelsandButtons()
     btnUnits->show();
     connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
 
-    //button to start the timer
-    startBtn = new QPushButton("Start Timer", this);
-    connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
-    startBtn->setGeometry(100, 210 ,100, 25);
-    startBtn->raise();
-    startBtn->show();
-
     //label that displays the users money
     money = new QLabel(this->actionDisplay);
     money->setGeometry(50,200,200,50);
@@ -102,9 +97,17 @@ void GameWindow::createLabelsandButtons()
     health->setText("Current Health: 20");
     health->raise();
     health->show();
+
+    //button to start the timer
+    startBtn = new QPushButton("Start/Pause Timer", this);
+    connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
+    startBtn->setGeometry(5, 612, 150, 25);
+    startBtn->raise();
+    this->isPaused = false;
+    startBtn->show();
 }
 
-//Insert comment here
+// Insert comment here
 BuildableLabel* GameWindow::getClickedLabel()
 {
     for (QObject *obj : gameDisplay->children())
@@ -119,7 +122,7 @@ BuildableLabel* GameWindow::getClickedLabel()
     return NULL;
 }
 
-//Insert comment here
+// Insert comment here
 ChooseTower* GameWindow::getTowerChosen()
 {
     for (QObject *obj : actionDisplay->children())
@@ -140,6 +143,7 @@ GameWindow::~GameWindow()
     parent->close();
 }
 
+// Displays winning team and closes game.
 void GameWindow::doGameOver(QString command)
 {
      QStringList commandArgs = command.split(" ");
@@ -171,7 +175,7 @@ void GameWindow::dataReceived()
     }
 }
 
-//Creates tower creation command and sends it to the server.
+// Creates tower creation command and sends it to the server.
 void GameWindow::on_btn_clicked() {
     QString serverMsg = "";
     ChooseTower* tower = getTowerChosen();
@@ -193,7 +197,7 @@ void GameWindow::on_btn_clicked() {
     }
 }
 
-//Creates a unit creation command and sends it to the server.
+// Creates a unit creation command and sends it to the server.
 void GameWindow::on_btnUnits_clicked()
 {
     QString unitCreate = "";
@@ -222,7 +226,7 @@ void GameWindow::on_btnUnits_clicked()
     }
 }
 
-//Saves current game state to file.
+// Saves current game state to file.
 void GameWindow::on_saveGame_clicked()
 {
     QString serverMsg;
@@ -239,14 +243,15 @@ void GameWindow::on_saveGame_clicked()
     }
 }
 
-//Sends signal to server to start game timer.
+// Sends signal to server to start game timer.
 void GameWindow::on_start_clicked()
 {
     QString serverMsg = "5 \n";
     socket->write(serverMsg.toLocal8Bit());
+    this->isPaused = !this->isPaused;
 }
 
-//Closes current game.
+// Closes current game.
 void GameWindow::on_btnExitGame_clicked()
 {
     this->close();
@@ -301,7 +306,7 @@ void GameWindow::getTileInfo(QString command)
     windowSized = true;
 }
 
-//Insert comment here
+// Insert comment here
 void GameWindow::getBuildingInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -312,7 +317,7 @@ void GameWindow::getBuildingInfo(QString command)
     stats.push_back(stat);
 }
 
-//Insert comment here.
+// Insert comment here.
 void GameWindow::getUnitInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -322,14 +327,14 @@ void GameWindow::getUnitInfo(QString command)
     stats.push_back(stat);
 }
 
-//Currently not implemented.
+// Currently not implemented.
 void GameWindow::getPlayerInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
 }
 
 
-//Processes server command to create a new tower.
+// Processes server command to create a new tower.
 void GameWindow::createBuilding(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -346,25 +351,17 @@ void GameWindow::createBuilding(QString command)
 }
 
 
-//Depricated/not implemented
+// Changes player health based on command from server.
 void GameWindow::getPlayerHealth(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int team, health;
-    team = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
-
-    if (ok)
-    {
-
-    } else
-    {
-
+    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
+        health->setText(QString("Current Health: ") + commandArgs.at(2));
     }
 }
 
+// Changes player money value based on command from server.
 void GameWindow::getPlayerMoney(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -374,18 +371,18 @@ void GameWindow::getPlayerMoney(QString command)
     }
 }
 
-//Depricated/not implemented
+// Depricated
 void GameWindow::getPlayerHealthMoney(QString command)
 {
-    QStringList commandArgs = command.split(" ");
+//    QStringList commandArgs = command.split(" ");
 
-    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
-        money->setText(QString("Current Money: ") + commandArgs.at(2));
-        health->setText(QString("Current Health: ") + commandArgs.at(3));
-    }
+//    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
+//        money->setText(QString("Current Money: ") + commandArgs.at(2));
+//        health->setText(QString("Current Health: ") + commandArgs.at(3));
+//    }
 }
 
-//Currently not implemented. Processes server command to upgrade a building.
+// Deprecated & not implemented. Processes server command to upgrade a building.
 void GameWindow::getBuildingUpgrade(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -411,7 +408,7 @@ void GameWindow::getBuildingUpgrade(QString command)
     }
 }
 
-//Currently not implemented. Processes server command to delete a building.
+//Currently not implemented. Processes server command to delete a building. (Why do we even have this?)
 void GameWindow::getBuildingDeath(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -430,7 +427,7 @@ void GameWindow::getBuildingDeath(QString command)
     }
 }
 
-//Processes server command to create a new unit.
+// Processes server command to create a new unit.
 void GameWindow::getUnitCreation(QString command)
 {
         QStringList commandArgs = command.split(" ");
@@ -456,7 +453,7 @@ void GameWindow::getUnitCreation(QString command)
         }
 }
 
-// Currently not implemented. Processes server command to move a unit.
+// Processes server command to move a unit.
 void GameWindow::getUnitMove(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -475,7 +472,7 @@ void GameWindow::getUnitMove(QString command)
     }
 }
 
-//Currently not implemented. Processes server command to move a unit and to change the image facing direction.
+// Processes server command to move a unit and to change the image facing direction.
 void GameWindow::getUnitMoveTurn(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -623,7 +620,7 @@ void GameWindow::updateGameState(QString srvrMsg)
             getPlayerMoney(commands.at(i));
             break;
         case 17:
-            getPlayerHealthMoney(commands.at(i));
+            getPlayerHealthMoney(commands.at(i)); // Remove this
             break;
         case 21:
             createBuilding(commands.at(i));
@@ -656,7 +653,7 @@ void GameWindow::updateGameState(QString srvrMsg)
             getBulletInfo(commands.at(i));
             break;
         case 5:
-            doGamePause();
+            doGamePause(); // Remove this
             break;
         case 100:
             doGameOver(commands.at(i));
