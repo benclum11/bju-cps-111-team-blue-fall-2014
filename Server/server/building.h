@@ -21,7 +21,7 @@ public:
     void setAttack(int init) { attack = init; }
     void setProduction(int init) { production = init; }
     void setRange(int init) { range = init; }
-    void setSpeed(int init) { speed = init; counter = 100/speed;}
+    void setSpeed(int init) { speed = init; counter = 200/speed;}
     void setUnlock(QStringList& init) { unlock = init; }
     void addtoTotalCost() { totalcost += cost; }
 

@@ -389,7 +389,7 @@ void World::updateTower(Building* building)
                             livingUnits.erase(i);
                             return;
                         }
-                        int percentHealth = (unit->getHealth()/(getUnitType(unit->getType()).getHealth())) * 100;
+                        int percentHealth = (100 * unit->getHealth())/(getUnitType(unit->getType()).getHealth());
                         sendToClient += QString("34 ") + QString::number(unit->getID()) + " " + QString::number(percentHealth) + "%%";
                         return;
                     }
