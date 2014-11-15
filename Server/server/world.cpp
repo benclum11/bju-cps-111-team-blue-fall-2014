@@ -156,7 +156,11 @@ void World::loadPlayer(QStringList &data)
 
 void World::gameOver(int team)
 {
-    sendToClient = QString("100 ") + QString::number(team) + "%%";
+    if (gameEnded != true)
+    {
+        sendToClient = QString("100 ") + QString::number(team) + "%%";
+        gameEnded = true;
+    }
 }
 
 Tile* World::findTileAt(int xCoord, int yCoord)
@@ -258,10 +262,10 @@ void World::updateUnit(Unit* unit, bool &finished)
             getPlayer(1)->setHealth(getPlayer(1)->getHealth() - unit->getDamage()); //hurt health
             World::Instance()->updateHealth(getPlayer(1)->getTeam(), getPlayer(1)->getHealth()); //update player info
         }
-        if (getPlayer(1)->getHealth() == 0) {
+        if (getPlayer(1)->getHealth() <= 0) {
             gameOver(1);
         }
-        if (getPlayer(2)->getHealth() == 0) {
+        if (getPlayer(2)->getHealth() <= 0) {
             gameOver(2);
         }
         delete unit;
@@ -633,7 +637,7 @@ void World::buyTower(QStringList& data)
 {
     Tile* tile = findTileAt(data.at(2).toInt(), data.at(3).toInt());
     int cost = getBuildingType(data.at(1)).getCost();
-    if (getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
+    if (getPlayer(tile->getTeam())->attemptToSpendMoney(cost)) {
         buildTower(data.at(1), tile);
         tile->getBuilding()->addtoTotalCost();
     }
@@ -642,7 +646,7 @@ void World::buyTower(QStringList& data)
 void World::buyUnit(QStringList& data)
 {
     int cost = getUnitType(data[1]).getCost();
-    if (getPlayer(data[2].toInt())->attempttoSpendMoney(cost)) {
+    if (getPlayer(data[2].toInt())->attemptToSpendMoney(cost)) {
         QString type = QString(data.at(1));
         int team = data.at(2).toInt();
         deployUnit(type, team);

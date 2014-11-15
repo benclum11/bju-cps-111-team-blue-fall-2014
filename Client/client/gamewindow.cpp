@@ -306,7 +306,7 @@ void GameWindow::on_btnExitGame_clicked()
     this->close();
 }
 
-
+// Someone who knows what this does, please add a comment here.
 void GameWindow::getTileInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -355,7 +355,7 @@ void GameWindow::getTileInfo(QString command)
     windowSized = true;
 }
 
-// Insert comment here
+// Updates buildings with info from the server.
 void GameWindow::getBuildingInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -366,7 +366,7 @@ void GameWindow::getBuildingInfo(QString command)
     stats.push_back(stat);
 }
 
-// Insert comment here.
+// Updates units with info from the server.
 void GameWindow::getUnitInfo(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -434,49 +434,49 @@ void GameWindow::getPlayerHealthMoney(QString command)
 //    }
 }
 
-// Deprecated & not implemented. Processes server command to upgrade a building.
+// Deprecated. Processes server command to upgrade a building.
 void GameWindow::getBuildingUpgrade(QString command)
 {
-    QStringList commandArgs = command.split(" ");
+//    QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int x, y, type, nxtLvlAttack, nxtLvlSpeed, nxtLvlRange, nxtLvlProd, nxtLvlCost;
-    x = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
-    if (ok) type = commandArgs.at(2).toInt(&ok, 10);
-    if (ok) nxtLvlAttack = commandArgs.at(3).toInt(&ok, 10);
-    if (ok) nxtLvlSpeed = commandArgs.at(4).toInt(&ok, 10);
-    if (ok) nxtLvlRange = commandArgs.at(5).toInt(&ok, 10);
-    if (ok) nxtLvlProd = commandArgs.at(6).toInt(&ok, 10);
-    if (ok) nxtLvlCost = commandArgs.at(7).toInt(&ok, 10);
-    QString unlock = commandArgs.at(8);
+//    bool ok;
+//    int x, y, type, nxtLvlAttack, nxtLvlSpeed, nxtLvlRange, nxtLvlProd, nxtLvlCost;
+//    x = commandArgs.at(0).toInt(&ok, 10);
+//    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
+//    if (ok) type = commandArgs.at(2).toInt(&ok, 10);
+//    if (ok) nxtLvlAttack = commandArgs.at(3).toInt(&ok, 10);
+//    if (ok) nxtLvlSpeed = commandArgs.at(4).toInt(&ok, 10);
+//    if (ok) nxtLvlRange = commandArgs.at(5).toInt(&ok, 10);
+//    if (ok) nxtLvlProd = commandArgs.at(6).toInt(&ok, 10);
+//    if (ok) nxtLvlCost = commandArgs.at(7).toInt(&ok, 10);
+//    QString unlock = commandArgs.at(8);
 
-    if (ok)
-    {
+//    if (ok)
+//    {
 
-    } else
-    {
+//    } else
+//    {
 
-    }
+//    }
 }
 
-//Currently not implemented. Processes server command to delete a building. (Why do we even have this?)
+// Currently not implemented. Processes server command to delete a building. (Why do we even have this?)
 void GameWindow::getBuildingDeath(QString command)
 {
-    QStringList commandArgs = command.split(" ");
+//    QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int x, y;
-    x = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
+//    bool ok;
+//    int x, y;
+//    x = commandArgs.at(0).toInt(&ok, 10);
+//    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
 
-    if (ok)
-    {
+//    if (ok)
+//    {
 
-    } else
-    {
+//    } else
+//    {
 
-    }
+//    }
 }
 
 // Processes server command to create a new unit.
@@ -547,51 +547,51 @@ void GameWindow::getUnitMoveTurn(QString command)
     }
 }
 
-//Deprecated.
+// Deprecated.
 void GameWindow::getUnitMoveHealth(QString command)
 {
-    QStringList commandArgs = command.split(" ");
+//    QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int id = commandArgs.at(0).toInt(&ok, 10);
-    int x, y, health;
-    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
-    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
+//    bool ok;
+//    int id = commandArgs.at(0).toInt(&ok, 10);
+//    int x, y, health;
+//    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
+//    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
+//    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
 
-    if (ok)
-    {
-        //call unit commands
-    } else
-    {
-        //what happens if it fails?
-    }
+//    if (ok)
+//    {
+//        //call unit commands
+//    } else
+//    {
+//        //what happens if it fails?
+//    }
 }
 
-//Deprecated.
+// Deprecated.
 void GameWindow::getUnitMoveTurnHealth(QString command)
 {
-    QStringList commandArgs = command.split(" ");
+//    QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int id, health, x, y, facing;
+//    bool ok;
+//    int id, health, x, y, facing;
 
-    id = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
-    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
-    if (ok) facing = commandArgs.at(4).toInt(&ok, 10);
+//    id = commandArgs.at(0).toInt(&ok, 10);
+//    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
+//    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
+//    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
+//    if (ok) facing = commandArgs.at(4).toInt(&ok, 10);
 
-    if (ok)
-    {
-        //call unit commands
-    } else
-    {
-        //what happens if it fails?
-    }
+//    if (ok)
+//    {
+//        //call unit commands
+//    } else
+//    {
+//        //what happens if it fails?
+//    }
 }
 
-//Currently not implemented. Processes server command to destroy unit.
+// Processes server command to destroy unit.
 void GameWindow::getUnitDeath(QString command)
 {
     QStringList commandArgs = command.split(" ");
@@ -602,31 +602,33 @@ void GameWindow::getUnitDeath(QString command)
         units *unit = dynamic_cast<units*>(obj);
         if (unit != NULL) {
             if (unit->getID() == id) {
+                unit->hide(); // I've added this to try to fix a once-in-a-while bug that leaves a unit visible once it reaches the end of its path. I don't know if it works.
                 delete unit;
             }
         }
     }
 }
 
-//Currently not implemented. Processes server command regarding bullets.
+// Deprecated
 void GameWindow::getBulletInfo(QString command)
 {
-    QStringList commandArgs = command.split(" ");
+//    QStringList commandArgs = command.split(" ");
 
-    bool ok;
-    int x, y;
-    x = commandArgs.at(0).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
+//    bool ok;
+//    int x, y;
+//    x = commandArgs.at(0).toInt(&ok, 10);
+//    if (ok) y = commandArgs.at(1).toInt(&ok, 10);
 
-    if (ok)
-    {
+//    if (ok)
+//    {
 
-    } else
-    {
+//    } else
+//    {
 
-    }
+//    }
 }
 
+// Toggles buttons enable/disable so that buttons are only available when they are supposed to be.
 void GameWindow::doGamePause()
 {
     this->isPaused = !this->isPaused;

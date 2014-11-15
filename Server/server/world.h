@@ -25,7 +25,7 @@ class World {
     int nextID;
     int counter, rows, columns, tileWidth, tileHeight;
     QString sendToClient, worldBegin;
-    bool sentTeam1, sentTeam2;
+    bool sentTeam1, sentTeam2, gameEnded;
 
     World();
 

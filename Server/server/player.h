@@ -24,7 +24,7 @@ public:
 
     void setInitialUnlocks(vector<Building>&, vector<Unit>&);
 
-    bool attempttoSpendMoney(int);
+    bool attemptToSpendMoney(int);
 
     void addToUnitCue(int, int);
 
