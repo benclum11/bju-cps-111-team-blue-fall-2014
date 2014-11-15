@@ -36,7 +36,7 @@
     </rect>
    </property>
    <property name="plainText">
-    <string>User starts with a home base. There are predefined routes around which towers can be placed strategically. The user can spawn units to attack on one route while defending the other route with those strategic towers.</string>
+    <string>User starts with a home base. Each user's objective is to destroy the enemy base. Towers can be placed on non-path squares. The user can spawn units that attack on one side while defending the other side with the strategic towers.</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
