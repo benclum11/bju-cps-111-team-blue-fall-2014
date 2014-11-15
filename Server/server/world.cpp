@@ -262,7 +262,7 @@ void World::updateUnit(Unit* unit, bool &finished)
             getPlayer(1)->setHealth(getPlayer(1)->getHealth() - unit->getDamage()); //hurt health
             World::Instance()->updateHealth(getPlayer(1)->getTeam(), getPlayer(1)->getHealth()); //update player info
         }
-        if (getPlayer(1)->getHealth() <= 0) {
+        if (getPlayer(1)->getHealth() <= 0) { //Move this?
             gameOver(1);
         }
         if (getPlayer(2)->getHealth() <= 0) {

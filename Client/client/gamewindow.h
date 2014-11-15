@@ -44,17 +44,21 @@ class GameWindow : public QDialog
     void createBuilding(QString);
     void getPlayerHealth(QString);
     void getPlayerMoney(QString);
-    void getPlayerHealthMoney(QString);
-    void getBuildingUpgrade(QString);
-    void getBuildingDeath(QString);
     void getUnitCreation(QString);
     void getUnitMove(QString);
     void getUnitMoveTurn(QString);
+    void getUnitDeath(QString);
+    void doGamePause();
+
+//Deprecated methods
+/*
+    void getPlayerHealthMoney(QString);
+    void getBuildingUpgrade(QString);
+    void getBuildingDeath(QString);
     void getUnitMoveHealth(QString);
     void getUnitMoveTurnHealth(QString);
-    void getUnitDeath(QString);
     void getBulletInfo(QString);
-    void doGamePause();
+*/
 
     void displayBuildingInfo();
 
