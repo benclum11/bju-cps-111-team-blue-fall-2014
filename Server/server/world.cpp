@@ -636,6 +636,7 @@ void World::readPlayerFile(QString filename)
 void World::buildTower(QString type, Tile* tile)
 {
     Building* building = new Building(getBuildingType(type));
+    building->setTeam(tile->getTeam());
     tile->placeBuilding(building);
 
     type.replace(type.length() - 1, 1, type[type.length() - 1].digitValue() + 49);
