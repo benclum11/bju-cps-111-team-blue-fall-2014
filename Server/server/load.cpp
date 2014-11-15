@@ -20,9 +20,9 @@ void Load::loadFile(QFile &file) {
         QString line = in.readLine();
         QStringList data = line.split(" ");
 
-        if (data.size() == 1) { //skip over size 1 strings
+        if (data.size() == 1 || data.at(0) == "") { //skip over size 1 strings
         } else if (data.at(0) == "player") { //load player
-           // World::Instance()->loadPlayer(data);
+            World::Instance()->loadPlayer(data);
         } else {
             QStringList typeList;
             for (int i = 0; i < data.size(); ++i) {
@@ -37,10 +37,7 @@ void Load::loadFile(QFile &file) {
                     tile->getBuilding()->addtoTotalCost();
                 }
             } else if (typeList.at(0).toInt() == 2) { //create unit
-                int team = 1;
-                if (data.at(2).toInt() < 250) { team = 1; }
-                if (data.at(2).toInt() > 250) { team = 2; }
-                World::Instance()->loadUnit(data.at(1), team, data.at(2).toInt(), data.at(3).toInt(), data.at(4).toInt(), data.at(5).toInt());
+                World::Instance()->loadUnit(data.at(1), data.at(6).toInt(), data.at(2).toInt(), data.at(3).toInt(), data.at(4).toInt(), data.at(5).toInt());
 
             }
         }

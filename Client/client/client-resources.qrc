@@ -22,5 +22,8 @@
         <file>Resources/frameythingy.png</file>
         <file>Resources/redframeythingy.png</file>
         <file>Resources/logo.png</file>
+        <file>Resources/connection.png</file>
+        <file>Resources/gameplay.png</file>
+        <file>Resources/help.png</file>
     </qresource>
 </RCC>

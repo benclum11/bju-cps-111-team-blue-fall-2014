@@ -18,11 +18,11 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 
     //Display for game events.
     gameDisplay = new QWidget(this);
-    HighlightedLabel *label = new HighlightedLabel(gameDisplay); //used to select items in the game display
+    new HighlightedLabel(gameDisplay); //used to select items in the game display
 
     //Display for buttons and selections.
     actionDisplay = new QWidget(this);
-    HighlightedLabel *towerLabel = new HighlightedLabel(actionDisplay); //used to select items in the action display
+    new HighlightedLabel(actionDisplay); //used to select items in the action display
 
     updateGameState(initMsg);
     parent->hide();

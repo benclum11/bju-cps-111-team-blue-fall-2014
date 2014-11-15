@@ -20,16 +20,6 @@ void Save::saveFile(QFile &file) {
     //needs more for counters. How do I get "all" the counters?
     out << World::Instance()->getCounter() << endl;
 
-    //player 1 info
-    QString player1 = QString("player 1 ") + QString::number(World::Instance()->getPlayer(1)->getMoney()) +
-            " " + QString::number(World::Instance()->getPlayer(1)->getHealth());
-    out << player1 << endl;
-
-    //player 2 info
-    QString player2 = QString("player 2 ") + QString::number(World::Instance()->getPlayer(2)->getMoney()) +
-            " " + QString::number(World::Instance()->getPlayer(2)->getHealth());
-    out << player2 << endl;
-
     for (int y = 0; y < World::Instance()->getRows(); ++y) {
         for (int x = 0; x < World::Instance()->getColumns(); ++x) {
             Tile* tile = World::Instance()->getTile(y,x);
@@ -48,8 +38,19 @@ void Save::saveFile(QFile &file) {
     for (unsigned int x = 0; x < livingUnits.size(); ++x) {
         Unit* unit = livingUnits.at(x);
         QString writeToFile = QString::number(unit->getID()) + " " + unit->getType() + " " + QString::number(unit->getXCoord()) + " " +
-                QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + " " + QString::number(unit->getIndexOfPath());
+                QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + " " + QString::number(unit->getIndexOfPath())
+                + " " + QString::number(unit->getTeam());
         out << writeToFile << endl;
     }
+
+    //player 1 info
+    QString player1 = QString("player 1 ") + QString::number(World::Instance()->getPlayer(1)->getMoney()) +
+            " " + QString::number(World::Instance()->getPlayer(1)->getHealth());
+    out << player1 << endl;
+
+    //player 2 info
+    QString player2 = QString("player 2 ") + QString::number(World::Instance()->getPlayer(2)->getMoney()) +
+            " " + QString::number(World::Instance()->getPlayer(2)->getHealth());
+    out << player2 << endl;
 }
 

@@ -118,6 +118,9 @@ void World::deployUnit(QString type, int team)
 void World::loadUnit(QString type, int team, int x, int y, int direction, int indexofpath)
 {
     Unit* unit = new Unit(getUnitType(type));
+    unit->setId(nextID);
+    ++nextID;
+    if(nextID == 1000) { nextID = 0;}
     unit->setXCoord(x);
     unit->setYCoord(y);
     unit->setTeam(team);
@@ -385,8 +388,8 @@ void World::updateTower(Building* building)
                         unit->setHealth(unit->getHealth() - building->getAttack());
                         if (unit->getHealth() <= 0) {
                             sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%";
-                            delete unit;
                             livingUnits.erase(i);
+                            delete unit;
                             return;
                         }
                         int percentHealth = (100 * unit->getHealth())/(getUnitType(unit->getType()).getHealth());
