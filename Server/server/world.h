@@ -49,6 +49,7 @@ public:
     void buildTower(QString, Tile*);
     void removeTeam(int);
 
+    void cheatMode(QStringList);
 
     Tile* findTileAt(int, int);
     static World* Instance();

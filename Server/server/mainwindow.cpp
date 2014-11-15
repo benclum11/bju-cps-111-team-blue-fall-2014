@@ -115,7 +115,11 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
         World::Instance()->upgrade(data);
     } else if (command == "9") {
         World::Instance()->removeTeam(data.at(1).toInt());
-    } else if (command == "10") { timer->start(); }
+    } else if (command == "10") {
+        timer->start();
+    } else if (command == "11") {
+        World::Instance()->cheatMode(data);
+    }
     for(QObject* obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL) {

@@ -72,6 +72,17 @@ void World::removeTeam(int team)
     }
 }
 
+void World::cheatMode(QStringList data)
+{
+    Player* player = getPlayer(data.at(1).toInt());
+    if (data.at(2).toInt() == 1) {
+          player->setCheatMode(true);
+    } else {
+          player->setCheatMode(false);
+    }
+
+}
+
 //increases calls the upgrade method of the building and passes the info to use
 void World::upgradeTower(Tile* tile)
 {
