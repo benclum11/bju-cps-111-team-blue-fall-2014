@@ -27,7 +27,7 @@ class GameWindow : public QDialog
     ChooseTower *tower1, *tower2, *tower3;
     ChooseTower *unit1, *unit2, *unit3;
     QWidget *parent, *gameDisplay, *actionDisplay;
-    QPushButton *btn, *btnUnits, *saveGame, *startBtn;
+    QPushButton *btn, *btnUnits, *saveGame, *startBtn, *cheatBtn;
     QTextEdit *filename;
     QLabel *money, *health; //label that displays money/health
     Ui::GameWindow* ui;
@@ -90,6 +90,8 @@ private slots:
     void on_saveGame_clicked();
 
     void on_start_clicked();
+
+    void on_cheat_clicked();
 };
 
 #endif // GAMEWINDOW_H

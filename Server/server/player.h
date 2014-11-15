@@ -38,6 +38,7 @@ public:
 
     void setMoney(int init) { money = init; }
     void setHealth(int init) { health = init; }
+    void setCheatMode(bool init) { cheatMode = init; }
 
 
     vector<int> getUnlockedBuildings() {return unlockedBuildings;}

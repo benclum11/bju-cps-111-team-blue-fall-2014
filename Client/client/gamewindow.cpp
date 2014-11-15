@@ -35,25 +35,34 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 // Creates labels and buttons for the game state
 void GameWindow::createLabelsandButtons()
 {
-    //button is created that can be shown and hidden that will do different things (text can be set and changed, etc)
+    //button to create towers
     btn = new QPushButton("Create Tower", this->actionDisplay);
     connect(btn, &QPushButton::clicked, this, &GameWindow::on_btn_clicked);
-    btn->setGeometry(actionDisplay->width() - 100, actionDisplay->height()- 26 ,100, 25);
+    btn->setGeometry(155, actionDisplay->height()- 60 , 100, 25);
     btn->raise();
     btn->show();
     btn->setEnabled(false);
 
+    //button to create units
+    btnUnits = new QPushButton("Create Unit", this->actionDisplay);
+    btnUnits->setGeometry(50, actionDisplay->height() - 60, 100, 25);
+    btnUnits->setObjectName(QString::fromUtf8("btnUnits"));
+    btnUnits->raise();
+    btnUnits->show();
+    btnUnits->setEnabled(false);
+    connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
+
     //button to save game
-    saveGame = new QPushButton("Save Game", this);
+    saveGame = new QPushButton("Save Game", this->actionDisplay);
     connect(saveGame, &QPushButton::clicked, this, &GameWindow::on_saveGame_clicked);
-    saveGame->setGeometry(this->width() - 265, this->height()- 40 ,100, 25);
+    saveGame->setGeometry(50, actionDisplay->height() - 26 ,100, 25);
     saveGame->raise();
     saveGame->show();
     saveGame->setEnabled(false);
 
     //Textbox for saved game filename.
-    filename = new QTextEdit(this);
-    filename->setGeometry(this->width() - 150, this->height()- 40 ,100, 25);
+    filename = new QTextEdit(this->actionDisplay);
+    filename->setGeometry(155, actionDisplay->height()- 26, 100, 25);
     filename->raise();
     filename->show();
 
@@ -78,15 +87,6 @@ void GameWindow::createLabelsandButtons()
     unit3 = new ChooseTower(actionDisplay, 6);
     unit3->make(":/Resources/Units/2/2.png", 170, 110, 50, 50, true);
 
-    //button to create units
-    btnUnits = new QPushButton("Create Unit", this->actionDisplay);
-    btnUnits->setGeometry(actionDisplay->width() - 215, actionDisplay->height() -26, 100, 25);
-    btnUnits->setObjectName(QString::fromUtf8("btnUnits"));
-    btnUnits->raise();
-    btnUnits->show();
-    btnUnits->setEnabled(false);
-    connect(btnUnits, &QPushButton::clicked, this, &GameWindow::on_btnUnits_clicked);
-
     //label that displays the users money
     money = new QLabel(this->actionDisplay);
     money->setGeometry(50,200,200,50);
@@ -102,12 +102,34 @@ void GameWindow::createLabelsandButtons()
     health->show();
 
     //button to start the timer
-    startBtn = new QPushButton("Start/Pause Timer", this);
+    startBtn = new QPushButton("Start Timer", this);
     connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
-    startBtn->setGeometry(5, 612, 150, 25);
+    startBtn->setGeometry(50, 612, 140, 25);
     startBtn->raise();
     this->isPaused = true;
     startBtn->show();
+
+    //button to start the timer
+    cheatBtn = new QPushButton("Cheat On", this);
+    connect(cheatBtn, &QPushButton::clicked, this, &GameWindow::on_cheat_clicked);
+    cheatBtn->setGeometry(410, 612, 145, 25);
+    cheatBtn->raise();
+    cheatBtn->show();
+}
+
+void GameWindow::on_cheat_clicked()
+{\
+    QString serverMsg = "";
+    if (cheatBtn->text() == "Cheat On") {
+        serverMsg = "11 " + QString::number(team) + " 1\n";
+        cheatBtn->setText("Cheat Off");
+
+    } else {
+        serverMsg = "11 " + QString::number(team) + " 2\n";
+        cheatBtn->setText("Cheat On");
+    }
+    socket->write(serverMsg.toLocal8Bit());
+
 }
 
 // Insert comment here
@@ -249,6 +271,10 @@ void GameWindow::on_saveGame_clicked()
 // Sends signal to server to start game timer.
 void GameWindow::on_start_clicked()
 {
+    if (startBtn->text() == "Start Timer") {
+        startBtn->setText("Stop Timer");
+    } else { startBtn->setText("Start Timer"); }
+
     QString serverMsg = "5 \n";
     socket->write(serverMsg.toLocal8Bit());
 }
