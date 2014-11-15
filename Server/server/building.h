@@ -14,14 +14,14 @@ class Building : public Object {
     QStringList unlock;
 
 public:
-    Building() : counter(50), totalcost(0) {}
+    Building() : totalcost(0) {}
 
     bool checkCounter();
 
     void setAttack(int init) { attack = init; }
     void setProduction(int init) { production = init; }
     void setRange(int init) { range = init; }
-    void setSpeed(int init) { speed = init; }
+    void setSpeed(int init) { speed = init; counter = 100/speed;}
     void setUnlock(QStringList& init) { unlock = init; }
     void addtoTotalCost() { totalcost += cost; }
 

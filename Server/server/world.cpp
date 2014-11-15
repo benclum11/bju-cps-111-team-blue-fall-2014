@@ -240,7 +240,6 @@ void World::updateWorld()
 
 void World::updateUnit(Unit* unit, bool &finished)
 {
-    //deletes unit when it reaches base
     int direction = unit->getDirection();
     vector<Tile*> path = getPath(unit->getTeam());
     if (direction == 1) {
@@ -370,10 +369,13 @@ void World::moveWest(Unit* unit, vector<Tile*>& path)
 void World::updateTower(Building* building)
 {
     if (building->checkCounter()) {
-        Player* player = getPlayer(building->getTeam());
-        player->setMoney(player->getMoney()+building->getProduction());
-        sendToClient += QString("16 ") + QString::number(player->getTeam()) + " " + QString::number(player->getMoney()) + "%%";
-        for (Unit* unit: livingUnits) {
+        if (building->getProduction() > 0) {
+            Player* player = getPlayer(building->getTeam());
+            player->setMoney(player->getMoney()+building->getProduction());
+            sendToClient += QString("16 ") + QString::number(player->getTeam()) + " " + QString::number(player->getMoney()) + "%%";
+        }
+        for (vector<Unit*>::iterator i = livingUnits.begin(); i < livingUnits.end(); ++i) {
+            Unit* unit = *i;
             if (unit->getTeam() != building->getTeam()) {
                 if (building ->getRange() > 0) {
                     int xdist = unit->getXCoord() - building->getXCoord();
@@ -383,6 +385,8 @@ void World::updateTower(Building* building)
                         unit->setHealth(unit->getHealth() - building->getAttack());
                         if (unit->getHealth() <= 0) {
                             sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%";
+                            delete unit;
+                            livingUnits.erase(i);
                             return;
                         }
                         int percentHealth = (unit->getHealth()/(getUnitType(unit->getType()).getHealth())) * 100;

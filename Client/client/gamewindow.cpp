@@ -559,9 +559,9 @@ void GameWindow::getUnitHealth(QString command)
     QStringList commandArgs = command.split(" ");
 
     bool ok;
-    int id = commandArgs.at(0).toInt(&ok, 10);
+    int id = commandArgs.at(1).toInt(&ok, 10);
     int health;
-    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) health = commandArgs.at(2).toInt(&ok, 10);
 
     if (ok)
     {
