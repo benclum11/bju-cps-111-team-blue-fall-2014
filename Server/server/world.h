@@ -50,6 +50,7 @@ public:
     void removeTeam(int);
 
     void cheatMode(QStringList);
+    void setTimerBtn(int);
 
     Tile* findTileAt(int, int);
     static World* Instance();

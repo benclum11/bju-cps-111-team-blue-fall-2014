@@ -204,6 +204,21 @@ void GameWindow::doGameOver(QString command)
 
 }
 
+void GameWindow::changeTimerButton(QString command)
+{
+   QStringList commandArgs = command.split(" ");
+
+   int timer = commandArgs.at(1).toInt();
+
+   if (timer == 1) {
+       startBtn->setText("Stop Timer");
+   } else {
+       startBtn->setText("Start Timer");
+   }
+
+
+}
+
 void GameWindow::serverDisconnected()
 {
     this->close();
@@ -716,6 +731,9 @@ void GameWindow::updateGameState(QString srvrMsg)
             break;
         case 4:
             getBulletInfo(commands.at(i)); // Deprecated
+            break;
+        case 40:
+            changeTimerButton(commands.at(i));
             break;
         case 100:
             doGameOver(commands.at(i));

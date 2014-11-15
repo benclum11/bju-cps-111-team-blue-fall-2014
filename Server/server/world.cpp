@@ -83,6 +83,11 @@ void World::cheatMode(QStringList data)
 
 }
 
+void World::setTimerBtn(int timer)
+{
+    sendToClient = "40 " + QString::number(timer) + "%%";
+}
+
 //increases calls the upgrade method of the building and passes the info to use
 void World::upgradeTower(Tile* tile)
 {
