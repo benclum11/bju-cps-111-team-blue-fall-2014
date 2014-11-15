@@ -56,7 +56,7 @@ public:
     static World* Instance();
 
 
-    void loadUnit(QString type, int team, int x, int y, int direction);
+    void loadUnit(QString type, int team, int x, int y, int direction, int indexofpath);
     void updateMoney(int, int);
     void updateHealth(int, int);
     Building& getBuildingType(QString); //returns building based on type

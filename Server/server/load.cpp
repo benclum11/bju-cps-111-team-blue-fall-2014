@@ -40,7 +40,7 @@ void Load::loadFile(QFile &file) {
                 int team = 1;
                 if (data.at(2).toInt() < 250) { team = 1; }
                 if (data.at(2).toInt() > 250) { team = 2; }
-                World::Instance()->loadUnit(data.at(1), team, data.at(2).toInt(), data.at(3).toInt(), data.at(4).toInt());
+                World::Instance()->loadUnit(data.at(1), team, data.at(2).toInt(), data.at(3).toInt(), data.at(4).toInt(), data.at(5).toInt());
 
             }
         }

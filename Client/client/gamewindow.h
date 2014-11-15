@@ -45,6 +45,7 @@ class GameWindow : public QDialog
     void getPlayerHealth(QString);
     void getPlayerMoney(QString);
     void getUnitCreation(QString);
+    void getUnitHealth(QString);
     void getUnitMove(QString);
     void getUnitMoveTurn(QString);
     void getUnitDeath(QString);
@@ -54,7 +55,6 @@ class GameWindow : public QDialog
 /*
     void getBuildingUpgrade(QString);
     void getBuildingDeath(QString);
-    void getUnitMoveHealth(QString);
     void getUnitMoveTurnHealth(QString);
     void getBulletInfo(QString);
 */

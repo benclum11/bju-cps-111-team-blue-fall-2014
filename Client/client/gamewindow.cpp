@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include <QString>
 #include <QDebug>
+#include <QProgressBar>
 
 GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
     QDialog(parent), parent(parent), ui(new Ui::GameWindow),
@@ -502,11 +503,8 @@ void GameWindow::getUnitCreation(QString command)
 
         if (ok)
         {
-            units* unit = new units(id, type, x, y, facing, gameDisplay);
+            /*units* unit = */ new units(id, type, x, y, facing, gameDisplay);
 
-        } else
-        {
-            //what happens if it fails?
         }
 }
 
@@ -556,25 +554,37 @@ void GameWindow::getUnitMoveTurn(QString command)
 }
 
 // Deprecated for this version
-/*void GameWindow::getUnitMoveHealth(QString command)
+void GameWindow::getUnitHealth(QString command)
 {
     QStringList commandArgs = command.split(" ");
 
     bool ok;
     int id = commandArgs.at(0).toInt(&ok, 10);
-    int x, y, health;
+    int health;
     if (ok) health = commandArgs.at(1).toInt(&ok, 10);
-    if (ok) x = commandArgs.at(2).toInt(&ok, 10);
-    if (ok) y = commandArgs.at(3).toInt(&ok, 10);
 
     if (ok)
     {
-        //call unit commands
+        for (QObject *lbl : this->gameDisplay->children()) {
+            units *unit = dynamic_cast<units*>(lbl);
+            if (unit != nullptr) {
+                if (unit->getID() == id) {
+                    for (QObject *obj : unit->children())
+                    {
+                        QProgressBar *healthBar = dynamic_cast<QProgressBar *>(obj);
+                        if (healthBar != NULL)
+                        {
+                            healthBar->setValue(health);
+                        }
+                    }
+                }
+            }
+        }
     } else
     {
         //what happens if it fails?
     }
-}*/
+}
 
 // Deprecated for this version
 /*void GameWindow::getUnitMoveTurnHealth(QString command)
@@ -714,10 +724,7 @@ void GameWindow::updateGameState(QString srvrMsg)
             getUnitMoveTurn(commands.at(i));
             break;
         case 34:
-            //getUnitMoveHealth(commands.at(i));
-            break;
-        case 35:
-            //getUnitMoveTurnHealth(commands.at(i));
+            getUnitHealth(commands.at(i));
             break;
         case 30:
             getUnitDeath(commands.at(i));

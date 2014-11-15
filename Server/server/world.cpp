@@ -115,13 +115,14 @@ void World::deployUnit(QString type, int team)
 
 }
 
-void World::loadUnit(QString type, int team, int x, int y, int direction)
+void World::loadUnit(QString type, int team, int x, int y, int direction, int indexofpath)
 {
     Unit* unit = new Unit(getUnitType(type));
     unit->setXCoord(x);
     unit->setYCoord(y);
     unit->setTeam(team);
     unit->setDirection(direction);
+    unit->setIndexOfPath(indexofpath);
     unit->setEndOfPath(false);
     livingUnits.push_back(unit);
     sendToClient += QString("31 ") + QString::number(unit->getID()) + " "
@@ -691,11 +692,15 @@ void World::upgrade(QStringList& data)
 void World::load(QString filename)
 {
     Load *load = new Load(filename);
+
+    delete load;
 }
 
 void World::save(QString filename)
 {
     Save *save = new Save(filename);
+
+    delete save;
 
 }
 

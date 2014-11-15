@@ -48,7 +48,7 @@ void Save::saveFile(QFile &file) {
     for (unsigned int x = 0; x < livingUnits.size(); ++x) {
         Unit* unit = livingUnits.at(x);
         QString writeToFile = QString::number(unit->getID()) + " " + unit->getType() + " " + QString::number(unit->getXCoord()) + " " +
-                QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection());
+                QString::number(unit->getYCoord()) + " " + QString::number(unit->getDirection()) + " " + QString::number(unit->getIndexOfPath());
         out << writeToFile << endl;
     }
 }
