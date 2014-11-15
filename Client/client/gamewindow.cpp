@@ -181,14 +181,26 @@ void GameWindow::doGameOver(QString command)
 
      int deadTeam = commandArgs.at(1).toInt();
 
+     // Chooses which team health tag to set to zero.
+     if (deadTeam == team)
+     {
+        health->setText("Current Health: 0");
+     } else
+     {
+         enemyHealth->setText("Enemy Health: 0");
+     }
+
      if (deadTeam == 1) {
-          QMessageBox::critical(this, "GAME OVER", "Player 2 Wins!");
+
+         QMessageBox::critical(this, "GAME OVER", "Player 2 Wins!");
           this->close();
      }
      else if (deadTeam == 2) {
+
          QMessageBox::critical(this, "GAME OVER", "Player 1 Wins!");
          this->close();
      }
+
 
 }
 
