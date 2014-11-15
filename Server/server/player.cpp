@@ -36,7 +36,7 @@ void Player::setInitialUnlocks(vector<Building>& buildingData, vector<Unit>& uni
     }
 }
 
-bool Player::attempttoSpendMoney(int amount)
+bool Player::attemptToSpendMoney(int amount)
 {
     if (cheatMode) { return true; }
     if (amount <= money) {
