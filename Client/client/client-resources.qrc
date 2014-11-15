@@ -21,5 +21,6 @@
         <file>Resources/titlescreen.png</file>
         <file>Resources/frameythingy.png</file>
         <file>Resources/redframeythingy.png</file>
+        <file>Resources/logo.png</file>
     </qresource>
 </RCC>
