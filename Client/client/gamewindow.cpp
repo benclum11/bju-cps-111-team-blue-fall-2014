@@ -559,9 +559,9 @@ void GameWindow::getUnitHealth(QString command)
     QStringList commandArgs = command.split(" ");
 
     bool ok;
-    int id = commandArgs.at(0).toInt(&ok, 10);
+    int id = commandArgs.at(1).toInt(&ok, 10);
     int health;
-    if (ok) health = commandArgs.at(1).toInt(&ok, 10);
+    if (ok) health = commandArgs.at(2).toInt(&ok, 10);
 
     if (ok)
     {
@@ -569,20 +569,10 @@ void GameWindow::getUnitHealth(QString command)
             units *unit = dynamic_cast<units*>(lbl);
             if (unit != nullptr) {
                 if (unit->getID() == id) {
-                    for (QObject *obj : unit->children())
-                    {
-                        QProgressBar *healthBar = dynamic_cast<QProgressBar *>(obj);
-                        if (healthBar != NULL)
-                        {
-                            healthBar->setValue(health);
-                        }
-                    }
+                    unit->healthbar->setValue(health);
                 }
             }
         }
-    } else
-    {
-        //what happens if it fails?
     }
 }
 

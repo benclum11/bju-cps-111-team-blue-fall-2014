@@ -1,7 +1,7 @@
 //This files contains code to create, display, and move the units.
 
 #include "units.h"
-#include <QProgressBar>
+
 
 // Creates a QString containing the needed resource address
 QString createImageString(int unitType, int direction)
@@ -79,7 +79,7 @@ units::units(int ID, QString unitType,int xCoord, int yCoord, int direction, QWi
         this->raise();
         this->show();
 
-        QProgressBar* healthbar = new QProgressBar(this);
+        healthbar = new QProgressBar(this);
         healthbar->setGeometry(10,0,30,10);
         healthbar->setValue(100);
         healthbar->setTextVisible(false);
