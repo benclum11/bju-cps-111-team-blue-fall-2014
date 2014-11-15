@@ -35,6 +35,13 @@ GameWindow::GameWindow(QString& initMsg, QWidget* parent, QTcpSocket* socket) :
 // Creates labels and buttons for the game state
 void GameWindow::createLabelsandButtons()
 {
+    QLabel *logo = new QLabel(this);
+    logo->setPixmap(QPixmap(":/Resources/logo.png"));
+    logo->setScaledContents(true);
+    logo->setGeometry(50,75,514,85);
+    logo->raise();
+    logo->show();
+
     //button to create towers
     btn = new QPushButton("Create Tower", this->actionDisplay);
     connect(btn, &QPushButton::clicked, this, &GameWindow::on_btn_clicked);
