@@ -80,23 +80,29 @@ void MainWindow::processClientMessage(QString& message, QTcpSocket* sock)
     if(command == "5") {
         if (paused) {
             timer->start();
+            World::Instance()->setTimerBtn(1);
             paused = false;
             QString clientMsg = "5%%\n";
             for(QObject* obj : server->children()) {
                 QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
                 if (anotherSock != NULL) {
                     anotherSock->write(clientMsg.toLocal8Bit());
+                    QString str = (World::Instance()->getSendToClient());
+                    anotherSock->write(str.toLocal8Bit());
                 }
             }
             return;
         } else {
             timer->stop();
+            World::Instance()->setTimerBtn(2);
             paused = true;
             QString clientMsg = "5%%\n";
             for(QObject* obj : server->children()) {
                 QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
                 if (anotherSock != NULL) {
                     anotherSock->write(clientMsg.toLocal8Bit());
+                    QString str = (World::Instance()->getSendToClient());
+                    anotherSock->write(str.toLocal8Bit());
                 }
             }
             return;

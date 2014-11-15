@@ -74,7 +74,12 @@ public:
 
     void doGameOver(QString);
 
+    void changeTimerButton(QString);
+
+
     bool isPaused;
+
+
 
 private slots:
     void serverDisconnected();
