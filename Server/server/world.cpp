@@ -372,6 +372,7 @@ void World::updateTower(Building* building)
     if (building->checkCounter()) {
         Player* player = getPlayer(building->getTeam());
         player->setMoney(player->getMoney()+building->getProduction());
+        sendToClient += QString("16 ") + QString::number(player->getTeam()) + " " + QString::number(player->getMoney()) + "%%";
         for (Unit* unit: livingUnits) {
             if (unit->getTeam() != building->getTeam()) {
                 if (building ->getRange() > 0) {
@@ -638,6 +639,8 @@ void World::buildTower(QString type, Tile* tile)
 {
     Building* building = new Building(getBuildingType(type));
     building->setTeam(tile->getTeam());
+    building->setXCoord(tile->getXCoord());
+    building->setYCoord(tile->getYCoord());
     tile->placeBuilding(building);
 
     type.replace(type.length() - 1, 1, type[type.length() - 1].digitValue() + 49);
