@@ -10,14 +10,26 @@
     <height>350</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>350</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>500</width>
+    <height>350</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Help</string>
   </property>
   <widget class="QPushButton" name="exitHelp">
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>300</y>
+     <y>310</y>
      <width>81</width>
      <height>27</height>
     </rect>
@@ -30,7 +42,7 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>90</y>
+     <y>120</y>
      <width>231</width>
      <height>171</height>
     </rect>
@@ -42,9 +54,9 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>290</y>
-     <width>101</width>
+     <x>310</x>
+     <y>80</y>
+     <width>141</width>
      <height>31</height>
     </rect>
    </property>
@@ -52,19 +64,25 @@
     <string notr="true">font: 15pt &quot;Ubuntu&quot;;</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#fc0303;&quot;&gt;Gameplay:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string/>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="client-resources.qrc">:/Resources/gameplay.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>-1</x>
-     <y>-1</y>
-     <width>511</width>
-     <height>351</height>
+     <x>0</x>
+     <y>0</y>
+     <width>500</width>
+     <height>350</height>
     </rect>
    </property>
    <property name="text">
@@ -78,7 +96,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>90</y>
+     <y>120</y>
      <width>231</width>
      <height>171</height>
     </rect>
@@ -87,11 +105,51 @@
     <string>Enter an IP address in the text box to connect to a remote game, or leave blank to connect to localhost. Then, press Start to start a game. Once in the Game Lobby press start to start immediately or wait until another person joins the game.</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>80</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="client-resources.qrc">:/Resources/connection.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>10</y>
+     <width>121</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="client-resources.qrc">:/Resources/help.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
   <zorder>label_3</zorder>
   <zorder>exitHelp</zorder>
   <zorder>plainTextEdit</zorder>
   <zorder>label</zorder>
   <zorder>plainTextEdit_3</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_4</zorder>
  </widget>
  <resources>
   <include location="client-resources.qrc"/>

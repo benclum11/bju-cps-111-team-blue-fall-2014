@@ -25,7 +25,7 @@ void Load::loadFile(QFile &file) {
             World::Instance()->loadPlayer(data);
         } else {
             QStringList typeList;
-            for (int i = 0; i < data.size(); ++i) {
+            for (int i = 0; i < data.size(); ++i) { //finds type
                 if (data.at(i).contains("_")) { typeList = data.at(i).split("_"); }
             }
 

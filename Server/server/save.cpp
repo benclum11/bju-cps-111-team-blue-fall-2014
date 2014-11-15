@@ -17,9 +17,6 @@ Save::Save(QString filename) {
 void Save::saveFile(QFile &file) {
     QTextStream out(&file);
 
-    //needs more for counters. How do I get "all" the counters?
-    out << World::Instance()->getCounter() << endl;
-
     for (int y = 0; y < World::Instance()->getRows(); ++y) {
         for (int x = 0; x < World::Instance()->getColumns(); ++x) {
             Tile* tile = World::Instance()->getTile(y,x);
