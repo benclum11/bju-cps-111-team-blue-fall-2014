@@ -32,7 +32,7 @@ void Load::loadFile(QFile &file) {
             if (typeList.at(0).toInt() == 1) { //create building
                 Tile* tile = World::Instance()->findTileAt(data.at(0).toInt(), data.at(1).toInt());
                 int cost = World::Instance()->getBuildingType(data.at(2)).getCost();
-                if (World::Instance()->getPlayer(tile->getTeam())->attempttoSpendMoney(cost)) {
+                if (World::Instance()->getPlayer(tile->getTeam())->attemptToSpendMoney(cost)) {
                     World::Instance()->buildTower(data.at(2), tile);
                     tile->getBuilding()->addtoTotalCost();
                 }
