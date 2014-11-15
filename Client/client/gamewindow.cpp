@@ -569,20 +569,10 @@ void GameWindow::getUnitHealth(QString command)
             units *unit = dynamic_cast<units*>(lbl);
             if (unit != nullptr) {
                 if (unit->getID() == id) {
-                    for (QObject *obj : unit->children())
-                    {
-                        QProgressBar *healthBar = dynamic_cast<QProgressBar *>(obj);
-                        if (healthBar != NULL)
-                        {
-                            healthBar->setValue(health);
-                        }
-                    }
+                    unit->healthbar->setValue(health);
                 }
             }
         }
-    } else
-    {
-        //what happens if it fails?
     }
 }
 
