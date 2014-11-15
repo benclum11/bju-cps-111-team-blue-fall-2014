@@ -19,6 +19,7 @@ public:
     void incrementIndexOfPath() {++indexOfPath;}
     void setId(int init) {ID = init;}
     void setEndOfPath(bool init) {endOfPath = init;}
+    void setIndexOfPath(int init) {indexOfPath = init;}
 
     int getHealth() {return health;}
     int getSpeed() {return speed;}
