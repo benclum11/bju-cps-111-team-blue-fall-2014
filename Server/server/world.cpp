@@ -208,7 +208,7 @@ World::~World()
     world->team2path.clear();
 }
 
-//runs every 20 milliseconds
+//runs every 50 milliseconds
 void World::updateWorld()
 {
     sendToClient = "";
@@ -228,7 +228,6 @@ void World::updateWorld()
             livingUnits.erase(livingUnits.begin() + i);
         }
     }
-    /*
     for(int i = 0; i < rows; ++i) {
         for(int j = 0; j < columns; ++j) {
             if (map[i][j]->isBuildable() && map[i][j]->getBuilding() != nullptr) {
@@ -236,7 +235,6 @@ void World::updateWorld()
             }
         }
     }
-    */
 }
 
 void World::updateUnit(Unit* unit, bool &finished)
@@ -370,7 +368,29 @@ void World::moveWest(Unit* unit, vector<Tile*>& path)
 
 void World::updateTower(Building* building)
 {
-    (void)building;//stub
+    if (building->checkCounter()) {
+        Player* player = getPlayer(building->getTeam());
+        player->setMoney(player->getMoney()+building->getProduction());
+        for (Unit* unit: livingUnits) {
+            if (unit->getTeam() != building->getTeam()) {
+                if (building ->getRange() > 0) {
+                    int xdist = unit->getXCoord() - building->getXCoord();
+                    int ydist = unit->getYCoord() - building->getYCoord();
+                    double distance = sqrt(xdist*xdist+ydist*ydist);
+                    if (distance < building->getRange()) {
+                        unit->setHealth(unit->getHealth() - building->getAttack());
+                        if (unit->getHealth() <= 0) {
+                            sendToClient += QString("30 ") + QString::number(unit->getID()) + "%%";
+                            return;
+                        }
+                        int percentHealth = (unit->getHealth()/(getUnitType(unit->getType()).getHealth())) * 100;
+                        sendToClient += QString("34 ") + QString::number(unit->getID()) + " " + QString::number(percentHealth) + "%%";
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }
 
 bool World::calculateDirection(Unit* unit)

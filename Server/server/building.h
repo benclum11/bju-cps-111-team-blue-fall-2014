@@ -10,11 +10,13 @@ using namespace std;
 
 class Building : public Object {
 
-    int attack, production, range, speed, totalcost;
+    int attack, production, range, speed, totalcost, counter;
     QStringList unlock;
 
 public:
-    Building() { totalcost = 0; }
+    Building() : counter(50), totalcost(0) {}
+
+    bool checkCounter();
 
     void setAttack(int init) { attack = init; }
     void setProduction(int init) { production = init; }
