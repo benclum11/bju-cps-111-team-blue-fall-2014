@@ -29,7 +29,7 @@ class GameWindow : public QDialog
     QWidget *parent, *gameDisplay, *actionDisplay;
     QPushButton *btn, *btnUnits, *saveGame, *startBtn, *cheatBtn;
     QTextEdit *filename;
-    QLabel *money, *health; //label that displays money/health
+    QLabel *money, *health, *enemyHealth; //label that displays money/health
     Ui::GameWindow* ui;
     QTcpSocket* socket;
     bool unexpected, windowSized;

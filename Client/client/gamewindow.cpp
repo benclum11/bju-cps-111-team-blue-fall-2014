@@ -101,6 +101,12 @@ void GameWindow::createLabelsandButtons()
     health->raise();
     health->show();
 
+    enemyHealth = new QLabel(this->actionDisplay);
+    enemyHealth->setGeometry(50, 300, 200, 50);
+    enemyHealth->setText("Enemy Health: 20");
+    enemyHealth->raise();
+    enemyHealth->show();
+
     //button to start the timer
     startBtn = new QPushButton("Start Timer", this);
     connect(startBtn, &QPushButton::clicked, this, &GameWindow::on_start_clicked);
@@ -386,6 +392,9 @@ void GameWindow::getPlayerHealth(QString command)
 
     if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
         health->setText(QString("Current Health: ") + commandArgs.at(2));
+    } else
+    {
+        enemyHealth->setText(QString("Enemy Health: ") + commandArgs.at(2));
     }
 }
 
@@ -399,7 +408,7 @@ void GameWindow::getPlayerMoney(QString command)
     }
 }
 
-// Depricated
+// Deprecated
 void GameWindow::getPlayerHealthMoney(QString command)
 {
 //    QStringList commandArgs = command.split(" ");
