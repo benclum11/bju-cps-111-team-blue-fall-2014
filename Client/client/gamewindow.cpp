@@ -199,12 +199,12 @@ void GameWindow::doGameOver(QString command)
 
      if (deadTeam == 1) {
 
-         QMessageBox::critical(this, "GAME OVER", "Player 2 Wins!");
+         QMessageBox::information(this, "GAME OVER", "Player 2 Wins!");
           this->close();
      }
-     else if (deadTeam == 2) {
+     else {
 
-         QMessageBox::critical(this, "GAME OVER", "Player 1 Wins!");
+         QMessageBox::information(this, "GAME OVER", "Player 1 Wins!");
          this->close();
      }
 
@@ -439,17 +439,6 @@ void GameWindow::getPlayerMoney(QString command)
         money->setText(QString("Current Money: ") + commandArgs.at(2));
     }
 }
-
-// Deprecated for this version
-/*void GameWindow::getPlayerHealthMoney(QString command)
-{
-    QStringList commandArgs = command.split(" ");
-
-    if (BuildableLabel::getClientTeam() == commandArgs.at(1).toInt()) {
-        money->setText(QString("Current Money: ") + commandArgs.at(2));
-        health->setText(QString("Current Health: ") + commandArgs.at(3));
-    }
-}*/
 
 // Deprecated for this version. Processes server command to upgrade a building.
 /*void GameWindow::getBuildingUpgrade(QString command)
@@ -705,9 +694,6 @@ void GameWindow::updateGameState(QString srvrMsg)
             break;
         case 16:
             getPlayerMoney(commands.at(i));
-            break;
-        case 17:
-            //getPlayerHealthMoney(commands.at(i)); // Remove this?
             break;
         case 21:
             createBuilding(commands.at(i));

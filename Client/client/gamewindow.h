@@ -52,7 +52,6 @@ class GameWindow : public QDialog
 
 //Deprecated methods
 /*
-    void getPlayerHealthMoney(QString);
     void getBuildingUpgrade(QString);
     void getBuildingDeath(QString);
     void getUnitMoveHealth(QString);
