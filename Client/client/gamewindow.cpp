@@ -495,17 +495,12 @@ void GameWindow::getUnitCreation(QString command)
 
         id = commandArgs.at(1).toInt();
         type = commandArgs.at(2);
-        //team = commandArgs.at(1).toInt(&ok, 10);
-        //if (ok) health = commandArgs.at(2).toInt(&ok, 10);
-        if (ok) x = commandArgs.at(3).toInt(&ok, 10);
-        if (ok) y = commandArgs.at(4).toInt(&ok, 10);
-        if (ok) facing = commandArgs.at(5).toInt(&ok, 10);
 
-        if (ok)
-        {
-            /*units* unit = */ new units(id, type, x, y, facing, gameDisplay);
+        x = commandArgs.at(3).toInt();
+        y = commandArgs.at(4).toInt();
+        facing = commandArgs.at(5).toInt();
 
-        }
+        new units(id, type, x, y, facing, gameDisplay);
 }
 
 // Processes server command to move a unit.
